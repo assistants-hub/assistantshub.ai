@@ -28,9 +28,11 @@ export default function RootLayout({
       </head>
       <body className={twMerge('bg-gray-50 dark:bg-gray-900', inter.className)}>
         <Flowbite theme={{ theme: flowbiteTheme }}>
-          <Header/>
-          {children}
-          <PageFooter/>
+          <div className="h-screen">
+            <Header/>
+            {children}
+            <PageFooter/>
+          </div>
         </Flowbite>
       </body>
     </html>

@@ -5,7 +5,7 @@ import Typewriter from 'typewriter-effect';
 
 export default function Home() {
   return (
-    <div>
+    <div className="h-[calc(100vh-120px)] justify-center bg-gray-50 ">
       <section
         className="bg-center bg-cover bg-[url('/landing.png')]">
         <div className="px-4 mx-auto max-w-screen-xl text-left py-24 lg:py-56">
