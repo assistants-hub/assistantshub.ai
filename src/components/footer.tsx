@@ -1,4 +1,5 @@
 import { Footer, FooterCopyright, FooterLink, FooterLinkGroup } from 'flowbite-react';
+import { BsGithub } from 'react-icons/bs';
 
 export function PageFooter() {
   return (
@@ -8,10 +9,7 @@ export function PageFooter() {
           <FooterCopyright href="#" by="Assistants Hub" year={new Date().getFullYear()} />
           <FooterLinkGroup>
             <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
-              <FooterLink href="#">About</FooterLink>
-              <FooterLink href="#">Privacy Policy</FooterLink>
-              <FooterLink href="#">Licensing</FooterLink>
-              <FooterLink href="#">Contact</FooterLink>
+              <Footer.Icon href="https://github.com/santthosh/assistants-hub" icon={BsGithub} />
             </div>
           </FooterLinkGroup>
         </div>
