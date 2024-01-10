@@ -4,6 +4,8 @@ import { Inter } from 'next/font/google';
 import { twMerge } from 'tailwind-merge';
 import './globals.css';
 import { flowbiteTheme } from './theme';
+import { Header } from '@/components/header'
+import { PageFooter } from '@/components/footer'
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,7 +27,11 @@ export default function RootLayout({
         <ThemeModeScript />
       </head>
       <body className={twMerge('bg-gray-50 dark:bg-gray-900', inter.className)}>
-        <Flowbite theme={{ theme: flowbiteTheme }}>{children}</Flowbite>
+        <Flowbite theme={{ theme: flowbiteTheme }}>
+          <Header/>
+          {children}
+          <PageFooter/>
+        </Flowbite>
       </body>
     </html>
   );
