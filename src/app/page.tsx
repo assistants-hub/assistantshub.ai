@@ -15,7 +15,6 @@ export default function Home() {
               autoStart: true,
               loop: true,
             }}
-            className="text-blue-600"
           />AI assistants<br/>in minutes.</h1>
         </div>
       </section>
