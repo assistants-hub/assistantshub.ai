@@ -15,15 +15,14 @@ export const UserProfile = async () => {
         arrowIcon={false}
         inline
         label={
-          <Avatar alt="User settings" img={session.user.image} rounded />
+          <Avatar alt="User settings" img={session?.user?.image ?  session.user.image : undefined } rounded />
         }
       >
         <DropdownHeader>
-          <span className="block text-sm">{session.user.name}</span>
-          <span className="block truncate text-sm font-medium">{session.user.email}</span>
+          <span className="block text-sm">{session?.user?.name}</span>
+          <span className="block truncate text-sm font-medium">{session?.user?.email}</span>
         </DropdownHeader>
         <SignOut/>
       </Dropdown>
-      <NavbarToggle />
     </div>
 };
