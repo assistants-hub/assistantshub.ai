@@ -9,8 +9,10 @@ export function Header() {
         <Image
           src='/logo.png'
           alt='Assistants Hub Logo'
-          width='48'
-          height='48'
+          width={0}
+          height={0}
+          sizes="10vw"
+          style={{ width: '10%', height: 'auto' }} // optional
         />
         <span className='self-center whitespace-nowrap pl-2 text-xl font-semibold dark:text-white'>
           Assistants Hub

@@ -1,10 +1,13 @@
-'use client';
-
 import React from 'react';
 import { Card } from 'flowbite-react';
+import { getServerSession } from "next-auth/next"
+import { redirect } from 'next/navigation';
 
-export default function Page() {
+export default async function Page() {
+  const session = await getServerSession()
+
   return (
+    !session ? redirect("api/auth/signin") :
     <div className='bg-grey flex h-[calc(100vh-120px)] items-center justify-center '>
       <Card
         className='max-w-sm'

@@ -1,21 +1,10 @@
 'use client';
 
-import { Button } from 'flowbite-react';
+import { DropdownItem } from 'flowbite-react';
 import { signOut } from 'next-auth/react';
 
-export const SignOut = function (
-  props: React.ComponentPropsWithRef<typeof Button>
-) {
+export const SignOut = function () {
   return (
-    <Button
-      outline
-      gradientDuoTone='purpleToBlue'
-      size='sm'
-      onClick={() => {
-        signOut();
-      }}
-    >
-      Sign Out
-    </Button>
+    <DropdownItem onClick={() => {signOut()}}>Sign Out</DropdownItem>
   );
 };

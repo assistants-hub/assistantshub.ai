@@ -8,6 +8,10 @@ export const handler = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  theme: {
+    colorScheme: "auto", // "auto" | "dark" | "light"
+    logo: "/logo.png", // Absolute URL to image
+  }
 });
 
 export { handler as GET, handler as POST };
