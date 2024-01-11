@@ -5,14 +5,15 @@ import { Card } from 'flowbite-react';
 
 export default function Page() {
   return (
-    <div className="h-[calc(100vh-120px)] flex items-center justify-center bg-grey ">
+    <div className='bg-grey flex h-[calc(100vh-120px)] items-center justify-center '>
       <Card
-        className="max-w-sm"
-        imgAlt="Get Started"
-        imgSrc="/images/getstarted.png"
+        className='max-w-sm'
+        imgAlt='Get Started'
+        imgSrc='/images/getstarted.png'
       >
-        <p className="font-normal text-gray-700 text-center dark:text-gray-400">
-          An Assistant has instructions and can leverage models, tools, and knowledge to respond to users through conversations.
+        <p className='text-center font-normal text-gray-700 dark:text-gray-400'>
+          An Assistant has instructions and can leverage models, tools, and
+          knowledge to respond to users through conversations.
         </p>
       </Card>
     </div>

@@ -1,16 +1,23 @@
-
-import { Button, Navbar, NavbarBrand } from 'flowbite-react';
+import { Navbar, NavbarBrand } from 'flowbite-react';
 import Image from 'next/image';
+import { UserProfile } from '@/components/user-profile';
 
 export function Header() {
   return (
     <Navbar fluid rounded>
-      <NavbarBrand href="https://assistants-hub.vercel.app">
-        <Image src="/logo.png" alt="Assistants Hub Logo" width="48" height="48" />
-        <span className="pl-2 self-center whitespace-nowrap text-xl font-semibold dark:text-white">Assistants Hub</span>
+      <NavbarBrand href='https://assistants-hub.vercel.app'>
+        <Image
+          src='/logo.png'
+          alt='Assistants Hub Logo'
+          width='48'
+          height='48'
+        />
+        <span className='self-center whitespace-nowrap pl-2 text-xl font-semibold dark:text-white'>
+          Assistants Hub
+        </span>
       </NavbarBrand>
-      <div className="flex md:order-2">
-        <Button outline gradientDuoTone="purpleToBlue" size="sm">Login</Button>
+      <div className='flex md:order-2'>
+        <UserProfile />
       </div>
     </Navbar>
   );

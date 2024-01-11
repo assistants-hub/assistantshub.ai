@@ -4,8 +4,8 @@ import { Inter } from 'next/font/google';
 import { twMerge } from 'tailwind-merge';
 import './globals.css';
 import { flowbiteTheme } from './theme';
-import { Header } from '@/components/header'
-import { PageFooter } from '@/components/footer'
+import { Header } from '@/components/header';
+import { PageFooter } from '@/components/footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,13 +26,14 @@ export default function RootLayout({
         <title>Assistants Hub</title>
         <ThemeModeScript />
       </head>
-      <body className={twMerge('bg-gray-50 dark:bg-gray-900', inter.className)}>
+      <body
+        className={twMerge('bg-gray-50 dark:bg-gray-900', inter.className)}
+        suppressHydrationWarning={process.env.NODE_ENV === 'development'}
+      >
         <Flowbite theme={{ theme: flowbiteTheme }}>
-          <div className="h-screen">
-            <Header/>
-            {children}
-            <PageFooter/>
-          </div>
+          <Header />
+          {children}
+          <PageFooter />
         </Flowbite>
       </body>
     </html>
