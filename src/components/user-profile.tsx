@@ -1,8 +1,15 @@
 import { getServerSession } from 'next-auth/next';
 import { SignOut } from '@/components/signout';
 import { SignIn } from '@/components/signin';
-import { Avatar, Dropdown, DropdownHeader, NavbarLink, NavbarCollapse, NavbarToggle } from 'flowbite-react';
-import { headers } from "next/headers";
+import {
+  Avatar,
+  Dropdown,
+  DropdownHeader,
+  NavbarLink,
+  NavbarCollapse,
+  NavbarToggle,
+} from 'flowbite-react';
+import { headers } from 'next/headers';
 
 export const UserProfile = async () => {
   const session = await getServerSession();
@@ -28,17 +35,17 @@ export const UserProfile = async () => {
           <DropdownHeader>
             <span className='block text-sm'>{session?.user?.name}</span>
             <span className='block truncate text-sm font-medium'>
-            {session?.user?.email}
-          </span>
+              {session?.user?.email}
+            </span>
           </DropdownHeader>
           <SignOut />
         </Dropdown>
       </div>
-      <NavbarCollapse className="rtl:space-x-reverse">
-        <NavbarLink href="/">Home</NavbarLink>
-        <NavbarLink href="/launchpad">Assistants</NavbarLink>
-        <NavbarLink href="/docs">Documentation</NavbarLink>
-        <NavbarLink href="mailto:santthosh@gmail.com">Help</NavbarLink>
+      <NavbarCollapse className='rtl:space-x-reverse'>
+        <NavbarLink href='/'>Home</NavbarLink>
+        <NavbarLink href='/launchpad'>Assistants</NavbarLink>
+        <NavbarLink href='/docs'>Documentation</NavbarLink>
+        <NavbarLink href='mailto:santthosh@gmail.com'>Help</NavbarLink>
       </NavbarCollapse>
     </>
   );

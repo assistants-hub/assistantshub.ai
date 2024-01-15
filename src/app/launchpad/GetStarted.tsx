@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, Button, Spinner} from 'flowbite-react';
+import { Card, Button, Spinner } from 'flowbite-react';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -20,7 +20,9 @@ export default function GetStarted() {
   return (
     <>
       {status === 'loading' ? (
-        <div className='bg-grey flex h-[calc(100vh-120px)] items-center justify-center '><Spinner/></div>
+        <div className='bg-grey flex h-[calc(100vh-120px)] items-center justify-center '>
+          <Spinner />
+        </div>
       ) : (
         <div className='bg-grey flex h-[calc(100vh-120px)] items-center justify-center '>
           <Card

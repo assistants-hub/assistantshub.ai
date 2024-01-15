@@ -79,7 +79,7 @@ export default function CreateAssistant(props: CreateAssistantProps) {
                     // @ts-ignore
                     return model.owned_by === 'openai';
                   })
-                  .map((model,index) => {
+                  .map((model, index) => {
                     // @ts-ignore
                     return <option key={index}>{model.id}</option>;
                   })}
@@ -90,7 +90,7 @@ export default function CreateAssistant(props: CreateAssistantProps) {
             <div className='mb-2 block'>
               <Label htmlFor='model' value='Tools' />
             </div>
-            <div className='grid s:grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
+            <div className='s:grid-cols-1 grid gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
               <ToggleSwitch
                 checked={codeInterpreterTool}
                 label='Code Interpreter'
