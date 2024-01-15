@@ -1,4 +1,4 @@
-import { Navbar, NavbarBrand } from 'flowbite-react';
+import { Navbar, NavbarBrand, NavbarToggle } from 'flowbite-react';
 import Image from 'next/image';
 import { UserProfile } from '@/components/user-profile';
 
@@ -18,9 +18,7 @@ export function Header() {
           Assistants Hub
         </span>
       </NavbarBrand>
-      <div className='flex md:order-2'>
-        <UserProfile />
-      </div>
+      <UserProfile />
     </Navbar>
   );
 }
