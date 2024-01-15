@@ -11,7 +11,7 @@ export function Header() {
           alt='Assistants Hub Logo'
           width={0}
           height={0}
-          sizes="10vw"
+          sizes='10vw'
           style={{ width: '10%', height: 'auto' }} // optional
         />
         <span className='self-center whitespace-nowrap pl-2 text-xl font-semibold dark:text-white'>
