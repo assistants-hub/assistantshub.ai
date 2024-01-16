@@ -44,8 +44,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
         );
       }
 
-      console.log(models);
-
       // Signed in
       let credential = await prisma.credentials.upsert({
         where: {

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Label, Modal } from 'flowbite-react';
 import { TextInput } from 'flowbite-react';
 import { setCredentials } from '@/app/launchpad/client';
-import { Credential } from '@/app/types/credential';
+import { toast } from 'react-hot-toast';
 
 export interface CreateCredentialsModalProps {
   open: boolean;
@@ -26,6 +26,7 @@ export default function CreateCredentialsModal(
     if (status === 201) {
       props.setCredentialCreated(true);
       setUpdatingCredentials(false);
+      toast.success('OpenAI API Key added successfully.', { duration: 4000 });
       props.setOpen(false);
     } else {
       setApiKeyError(response?.message);

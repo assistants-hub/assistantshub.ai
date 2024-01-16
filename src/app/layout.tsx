@@ -6,6 +6,7 @@ import './globals.css';
 import { flowbiteTheme } from './theme';
 import { Header } from '@/components/header';
 import { PageFooter } from '@/components/footer';
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         <Flowbite theme={{ theme: flowbiteTheme }}>
           <Header />
+          <Toaster position='top-center' />
           {children}
           <PageFooter />
         </Flowbite>

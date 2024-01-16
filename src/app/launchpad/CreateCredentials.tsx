@@ -42,7 +42,7 @@ export default function CreateCredentials(props: CreateCredentialsProps) {
             gradientDuoTone='purpleToBlue'
             onClick={() => setOpenCreateCredentialsModal(true)}
           >
-            Set OpenAI Credentials
+            Set OpenAI API Key
           </Button>
         </p>
       </Card>
