@@ -11,6 +11,7 @@
     "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@prisma/client": "5.8.1",
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.2",
     "next": "14.0.4",
@@ -35,6 +36,7 @@
     "postcss": "^8.4.33",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.11",
+    "prisma": "^5.8.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
