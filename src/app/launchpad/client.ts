@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import { useMemo } from 'react';
 import { Model } from '@/app/types/model';
 import { Credential } from '@/app/types/credential';
+import { Assistant } from '@/app/types/assistant';
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -59,6 +60,24 @@ export async function setCredentials(openAiApiKey: string) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ openAiApiKey: openAiApiKey }),
+  });
+
+  return [response.status, await response.json()];
+}
+
+export async function createAssistant(assistant: Assistant) {
+  let response = await fetch('/api/openai/assistants', {
+    method: 'POST',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: assistant.model,
+      name: assistant.name,
+      description: assistant.description,
+      instructions: assistant.instructions,
+    }),
   });
 
   return [response.status, await response.json()];

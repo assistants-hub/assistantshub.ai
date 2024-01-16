@@ -10,7 +10,8 @@ import {
   ToggleSwitch,
   Spinner,
 } from 'flowbite-react';
-import { useGetModels } from '@/app/launchpad/client';
+import { createAssistant, useGetModels } from '@/app/launchpad/client';
+import { toast } from 'react-hot-toast';
 
 export interface CreateAssistantProps {
   open: boolean;
@@ -21,9 +22,51 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
   const [codeInterpreterTool, setCodeInterpreterTool] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [model, setModel] = useState('');
+  const [instructions, setInstructions] = useState('');
   const [functionTool, setFunctionTool] = useState(false);
   const [retrievalTool, setRetrievalTool] = useState(false);
   const { modelsLoading, models } = useGetModels();
+
+  const [creatingAssistant, setCreatingAssistant] = useState(false);
+
+  const getOpenAIModels = () => {
+    return models.filter((model) => {
+      // @ts-ignore
+      return model.owned_by === 'openai';
+    });
+  };
+
+  const handleCreateAssistant = async () => {
+    setCreatingAssistant(true);
+
+    let selectedModel = model;
+    if (!selectedModel) {
+      // If no selection was made, pick the first one on the list
+      selectedModel = getOpenAIModels()[0].id;
+      setModel(selectedModel);
+    }
+
+    let assistant = {
+      name: name,
+      description: description,
+      instructions: instructions,
+      model: selectedModel,
+    };
+
+    let [status, response] = await createAssistant(assistant);
+
+    if (status === 201) {
+      setCreatingAssistant(false);
+      toast.success('Assistant ' + name + ' created successfully.', {
+        duration: 4000,
+      });
+      props.setOpen(false);
+    } else {
+      toast.error(response?.message, { duration: 4000 });
+      setCreatingAssistant(false);
+    }
+  };
 
   return (
     <Modal show={props.open} size={'3xl'} onClose={() => props.setOpen(false)}>
@@ -37,7 +80,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
               </div>
               <TextInput
                 id='name'
-                placeholder='Example: Data Visualizer'
+                placeholder='Example: Math Tutor'
                 required
                 onChange={(e) => {
                   setName(e.target.value);
@@ -45,18 +88,31 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
               />
             </div>
           </div>
+          <div className='flex max-w-3xl flex-col gap-4'>
+            <div>
+              <div className='mb-2 block'>
+                <Label htmlFor='Assistant description' value='Description' />
+              </div>
+              <TextInput
+                id='description'
+                placeholder='Example: Math Tutor for study group #1'
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                }}
+              />
+            </div>
+          </div>
           <div className='max-w-3xl'>
             <div className='mb-2 block'>
-              <Label htmlFor='description' value='Description' />
+              <Label htmlFor='instructions' value='Instructions' />
             </div>
             <Textarea
-              id='description'
-              placeholder='Example: You are great at creating beautiful data visualizations. You analyze data present in .csv files, understand trends, and come up with data visualizations relevant to those trends. You also share a brief text summary of the trends observed.'
-              required
+              id='instructions'
+              placeholder='Example: You are a personal math tutor. When asked a question, write and run Python code to answer the question.'
               rows={6}
-              value={description}
+              value={instructions}
               onChange={(e) => {
-                setDescription(e.target.value);
+                setInstructions(e.target.value);
               }}
             />
           </div>
@@ -73,16 +129,22 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
                 <span className='pl-3'>Loading available models...</span>
               </>
             ) : (
-              <Select id='countries' required>
-                {models
-                  .filter((model) => {
-                    // @ts-ignore
-                    return model.owned_by === 'openai';
-                  })
-                  .map((model, index) => {
-                    // @ts-ignore
-                    return <option key={index}>{model.id}</option>;
-                  })}
+              <Select
+                id='model'
+                required
+                value={model}
+                onChange={(e) => {
+                  setModel(e.target.value);
+                }}
+              >
+                {getOpenAIModels().map((model, index) => {
+                  // @ts-ignore
+                  return (
+                    <option key={index} value={model.id}>
+                      {model.id}
+                    </option>
+                  );
+                })}
               </Select>
             )}
           </div>
@@ -113,8 +175,9 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
       <Modal.Footer>
         <Button
           gradientDuoTone='purpleToBlue'
-          onClick={() => props.setOpen(false)}
-          disabled={!name && !description}
+          onClick={handleCreateAssistant}
+          disabled={!name}
+          isProcessing={creatingAssistant}
         >
           Create
         </Button>
