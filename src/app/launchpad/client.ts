@@ -61,5 +61,5 @@ export async function setCredentials(openAiApiKey: string) {
     body: JSON.stringify({ openAiApiKey: openAiApiKey }),
   });
 
-  return response.json();
+  return [response.status, await response.json()];
 }

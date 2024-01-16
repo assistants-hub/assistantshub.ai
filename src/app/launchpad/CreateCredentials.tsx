@@ -21,19 +21,19 @@ export default function CreateCredentials(props: CreateCredentialsProps) {
           <Image
             width={600}
             height={600}
-            src='/images/getcredentials.jpeg'
+            src='/images/getcredentials.jpg'
             alt='Set Credentials'
           />
         )}
       >
         <p className='text-center font-normal text-gray-700 dark:text-gray-400'>
-          Before we can get started, we need your{' '}
+          Before we can get started, we need an{' '}
           <a
             href={'https://platform.openai.com/docs/quickstart?context=python'}
             className='text-blue-600'
             target='_blank'
           >
-            OpenAI API Keys
+            OpenAI API Key
           </a>
           .
         </p>
