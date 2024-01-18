@@ -1,32 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Badge, Button, Card, Dropdown, Navbar, Spinner } from 'flowbite-react';
-import { useGetAssistants, useGetCredentials } from '@/app/launchpad/client';
+import { Badge, Button, Card } from 'flowbite-react';
+import { useGetAssistants } from '@/app/launchpad/client';
 import Image from 'next/image';
 import { HiPlus } from 'react-icons/hi';
 import CreateAssistantModal from '@/app/launchpad/CreateAssistantModal';
-
-const getImageHash = function (input: string | undefined) {
-  let min = 1;
-  let max = 25;
-  if (input) {
-    let output = input
-      .split('')
-      .map((char) => char.charCodeAt(0))
-      .reduce((current, previous) => previous + current);
-    output = output % 24;
-
-    if (output <= 0) {
-      output = 1;
-    }
-    return output;
-  } else {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-  }
-};
+import { getImageHash } from '@/app/utils/hash';
+import { redirect, RedirectType } from 'next/navigation';
+import Link from 'next/link';
 
 export default function ListAssistants() {
   const [openCreateAssistantModal, setOpenCreateAssistantModal] =
@@ -67,6 +49,7 @@ export default function ListAssistants() {
                     }
                     alt='Assistant'
                     className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'
+                    style={{ width: '100%', height: 'auto' }}
                   />
                   <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
                     {assistant.name}
@@ -80,11 +63,15 @@ export default function ListAssistants() {
                     {assistant.description}
                   </span>
                   <div className='mt-4 flex space-x-3 lg:mt-6'>
-                    <Button gradientDuoTone='greenToBlue' onClick={() => {}}>
-                      Dashboard
+                    <Button gradientDuoTone='greenToBlue'>
+                      <Link href={'/assistants/' + assistant.id + '/dashboard'}>
+                        Dashboard
+                      </Link>
                     </Button>
                     <Button color={'light'} onClick={() => {}}>
-                      Settings
+                      <Link href={'/assistants/' + assistant.id + '/settings'}>
+                        Settings
+                      </Link>
                     </Button>
                   </div>
                 </div>

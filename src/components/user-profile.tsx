@@ -20,32 +20,40 @@ export const UserProfile = async () => {
   ) : (
     <>
       <NavbarToggle />
-      <div className='flex md:order-2'>
-        <Dropdown
-          arrowIcon={false}
-          inline
-          label={
-            <Avatar
-              alt='User settings'
-              img={session?.user?.image ? session.user.image : undefined}
-              rounded
-            />
-          }
-        >
-          <DropdownHeader>
-            <span className='block text-sm'>{session?.user?.name}</span>
-            <span className='block truncate text-sm font-medium'>
-              {session?.user?.email}
-            </span>
-          </DropdownHeader>
-          <SignOut />
-        </Dropdown>
-      </div>
       <NavbarCollapse className='rtl:space-x-reverse'>
-        <NavbarLink href='/'>Home</NavbarLink>
-        <NavbarLink href='/launchpad'>Assistants</NavbarLink>
-        <NavbarLink href='/docs'>Documentation</NavbarLink>
-        <NavbarLink href='mailto:santthosh@gmail.com'>Help</NavbarLink>
+        <div className='order-last flex pb-2 pl-2 pt-2 md:pl-10'>
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar
+                alt='User settings'
+                img={session?.user?.image ? session.user.image : undefined}
+                rounded
+              />
+            }
+          >
+            <DropdownHeader>
+              <span className='block text-sm'>{session?.user?.name}</span>
+              <span className='block truncate text-sm font-medium'>
+                {session?.user?.email}
+              </span>
+            </DropdownHeader>
+            <SignOut />
+          </Dropdown>
+        </div>
+        <NavbarLink href='/'>
+          <div className='pt-2 text-xl font-normal'>Home</div>
+        </NavbarLink>
+        <NavbarLink href='/launchpad' className='justify-end'>
+          <div className='pt-2 text-xl font-normal'>Assistants</div>
+        </NavbarLink>
+        <NavbarLink href='/docs' className='justify-end'>
+          <div className='pt-2 text-xl font-normal'>Docs</div>
+        </NavbarLink>
+        <NavbarLink href='mailto:santthosh@gmail.com' className='justify-end'>
+          <div className='pt-2 text-xl font-normal'>Help</div>
+        </NavbarLink>
       </NavbarCollapse>
     </>
   );

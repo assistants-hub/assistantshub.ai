@@ -14,7 +14,7 @@ export function Header() {
           sizes='10vw'
           style={{ width: '10%', height: 'auto' }} // optional
         />
-        <span className='self-center whitespace-nowrap pl-2 text-xl font-semibold dark:text-white'>
+        <span className='self-center whitespace-nowrap pl-2 text-2xl font-semibold dark:text-white'>
           Assistants Hub
         </span>
       </NavbarBrand>
