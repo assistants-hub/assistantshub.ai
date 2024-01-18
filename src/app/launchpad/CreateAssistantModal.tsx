@@ -16,6 +16,7 @@ import { toast } from 'react-hot-toast';
 export interface CreateAssistantProps {
   open: boolean;
   setOpen: any;
+  setAssistantCreated?: any;
 }
 
 export default function CreateAssistantModal(props: CreateAssistantProps) {
@@ -57,6 +58,10 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
     let [status, response] = await createAssistant(assistant);
 
     if (status === 201) {
+      if (props.setAssistantCreated) {
+        props.setAssistantCreated(true);
+      }
+
       setCreatingAssistant(false);
       toast.success('Assistant ' + name + ' created successfully.', {
         duration: 4000,

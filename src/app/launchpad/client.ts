@@ -82,3 +82,27 @@ export async function createAssistant(assistant: Assistant) {
 
   return [response.status, await response.json()];
 }
+
+export function useGetAssistants() {
+  let { data, isLoading, error, isValidating, mutate } = useSWR(
+    '/api/openai/assistants',
+    fetcher,
+    {
+      revalidateIfStale: true,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+
+  return useMemo(
+    () => ({
+      assistants: data?.body?.data as Assistant[],
+      assistantsLoading: isLoading,
+      assistantsError: error,
+      assistantsValidating: isValidating,
+      assistantsEmpty: !isLoading && !data?.body?.data.length,
+      reload: mutate,
+    }),
+    [data, error, isLoading, isValidating, mutate]
+  );
+}

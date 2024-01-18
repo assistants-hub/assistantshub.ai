@@ -5,7 +5,7 @@ import { Card, Button } from 'flowbite-react';
 import Image from 'next/image';
 import CreateAssistantModal from '@/app/launchpad/CreateAssistantModal';
 
-export default function GetStarted() {
+export default function CreateAssistant() {
   const [openCreateAssistantModal, setOpenCreateAssistantModal] =
     useState(false);
 
