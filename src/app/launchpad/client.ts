@@ -3,8 +3,7 @@ import { useMemo } from 'react';
 import { Model } from '@/app/types/model';
 import { Credential } from '@/app/types/credential';
 import { Assistant } from '@/app/types/assistant';
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { fetcher } from '@/app/utils/fetcher';
 
 export function useGetModels() {
   const { data, isLoading, error, isValidating } = useSWR(

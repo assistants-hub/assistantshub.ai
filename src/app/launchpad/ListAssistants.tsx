@@ -69,8 +69,8 @@ export default function ListAssistants() {
                       </Link>
                     </Button>
                     <Button color={'light'} onClick={() => {}}>
-                      <Link href={'/assistants/' + assistant.id + '/settings'}>
-                        Settings
+                      <Link href={'/assistants/' + assistant.id + '/configure'}>
+                        Configure
                       </Link>
                     </Button>
                   </div>
