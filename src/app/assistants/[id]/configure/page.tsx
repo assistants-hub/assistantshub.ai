@@ -4,7 +4,9 @@ import { Button, Modal, Table } from 'flowbite-react';
 import { useState } from 'react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useParams } from 'next/navigation';
-import { useGetAssistant } from '@/app/assistants/[id]/client';
+import { deleteAssistant, useGetAssistant } from '@/app/assistants/[id]/client';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export default function Configure() {
   const [openModal, setOpenModal] = useState(false);
@@ -13,8 +15,26 @@ export default function Configure() {
     params.id
   );
 
-  const handleAssistantDelete = () => {
-    setOpenModal(true);
+  const { push } = useRouter();
+
+  const handleAssistantDelete = async () => {
+    if (assistant && assistant.id) {
+      let [status, response] = await deleteAssistant(assistant.id);
+      if (status === 200) {
+        toast.success(
+          'Assistant ' + assistant.name + ' deleted successfully.',
+          {
+            duration: 4000,
+          }
+        );
+        setOpenModal(false);
+        push('/launchpad');
+      } else {
+        toast.error('Assistant ' + assistant.name + ' could not be deleted.', {
+          duration: 4000,
+        });
+      }
+    }
   };
 
   return (
@@ -37,7 +57,7 @@ export default function Configure() {
                 <Button
                   outline
                   gradientDuoTone='pinkToOrange'
-                  onClick={handleAssistantDelete}
+                  onClick={() => setOpenModal(true)}
                 >
                   Delete
                 </Button>
@@ -61,7 +81,7 @@ export default function Configure() {
               <a className='font-bold'>{assistant.name}</a>?
             </h3>
             <div className='flex justify-center gap-4'>
-              <Button color='failure' onClick={() => setOpenModal(false)}>
+              <Button color='failure' onClick={handleAssistantDelete}>
                 {"Yes, I'm sure"}
               </Button>
               <Button color='gray' onClick={() => setOpenModal(false)}>

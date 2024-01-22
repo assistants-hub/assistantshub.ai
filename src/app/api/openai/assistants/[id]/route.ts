@@ -45,3 +45,39 @@ export async function GET(req: NextRequest, res: NextResponse) {
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });
   }
 }
+
+export async function DELETE(req: NextRequest, res: NextResponse) {
+  const token = await getToken({ req });
+
+  const id = getId(req);
+
+  if (token) {
+    let credential = await prisma.credentials.findFirst({
+      where: {
+        owner: token.sub,
+        ownerType: 'personal',
+      },
+    });
+
+    if (credential) {
+      const openai = new OpenAI({
+        apiKey: credential.openAIApiKey,
+      });
+
+      try {
+        const deleteResponse = await openai.beta.assistants.del(id);
+        return Response.json(deleteResponse, { status: 200 });
+      } catch (err: any) {
+        return Response.json({ message: err.message }, { status: err.status });
+      }
+    } else {
+      return Response.json(
+        { message: 'OpenAI API Key does not exist' },
+        { status: 400 }
+      );
+    }
+  } else {
+    // Not Signed in
+    return Response.json({ message: 'Unauthenticated' }, { status: 401 });
+  }
+}

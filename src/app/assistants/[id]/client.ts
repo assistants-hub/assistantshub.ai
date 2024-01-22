@@ -24,3 +24,13 @@ export function useGetAssistant(id: string) {
     [data, error, isLoading, isValidating, mutate]
   );
 }
+
+export async function deleteAssistant(id: string) {
+  let response = await fetch('/api/openai/assistants/' + id, {
+    method: 'DELETE',
+  });
+
+  console.log(response);
+
+  return [response.status, await response.json()];
+}

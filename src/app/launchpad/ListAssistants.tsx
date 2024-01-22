@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { HiPlus } from 'react-icons/hi';
 import CreateAssistantModal from '@/app/launchpad/CreateAssistantModal';
 import { getImageHash } from '@/app/utils/hash';
-import { redirect, RedirectType } from 'next/navigation';
 import Link from 'next/link';
 
 export default function ListAssistants() {
