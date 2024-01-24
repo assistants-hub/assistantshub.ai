@@ -9,8 +9,8 @@ import { BsGithub } from 'react-icons/bs';
 export function PageFooter() {
   return (
     <Footer container>
-      <div className='w-full text-center'>
-        <div className='w-full justify-between sm:flex sm:items-center sm:justify-between'>
+      <div className='flex items-end justify-end'>
+        <div className='flex justify-end space-x-3 sm:flex sm:items-center sm:justify-between'>
           <FooterCopyright
             href='#'
             by='Assistants Hub'

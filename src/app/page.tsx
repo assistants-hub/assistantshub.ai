@@ -2,13 +2,14 @@
 
 import React from 'react';
 import Typewriter from 'typewriter-effect';
+import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className='h-[calc(100vh-120px)] justify-center bg-gray-50 '>
-      <section className="bg-[url('/landing.jpg')] bg-cover bg-center">
-        <div className='mx-auto max-w-screen-xl px-4 py-24 text-left lg:py-56'>
-          <h1 className='mb-4 text-2xl font-extrabold leading-none tracking-tight md:text-5xl lg:text-6xl'>
+    <div className='h-[calc(100vh-115px)] justify-center bg-gray-50 '>
+      <div className='grid sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-5'>
+        <div className='mx-auto max-w-screen-xl px-4 py-24 text-left sm:col-span-1 md:col-span-2 lg:col-span-1 lg:py-56'>
+          <h1 className='mb-4 text-4xl font-normal leading-none tracking-tight md:text-5xl lg:text-6xl'>
             <Typewriter
               options={{
                 strings: ['Build', 'Deploy', 'Integrate'],
@@ -21,7 +22,10 @@ export default function Home() {
             in minutes.
           </h1>
         </div>
-      </section>
+        <div className='flex sm:col-span-1 md:col-span-4'>
+          <Image src='/landing.jpg' alt='Welcome' width='3000' height='1688' />
+        </div>
+      </div>
     </div>
   );
 }
