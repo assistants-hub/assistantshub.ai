@@ -23,8 +23,8 @@ export default function AssistantsLayout({
           <Spinner />
         </div>
       ) : (
-        <div className='flex grid sm:grid-cols-1 md:grid-cols-5'>
-          <div className={'col-span-1 items-center bg-red-500'}>
+        <div className='flex grid h-[calc(100vh-120px)] sm:grid-cols-1 md:grid-cols-5'>
+          <div className={'col-span-1 items-center'}>
             <SideNavigation assistant={assistant} />
           </div>
           <div
