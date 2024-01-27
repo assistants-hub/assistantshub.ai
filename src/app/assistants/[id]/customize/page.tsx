@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useGetAssistant } from '@/app/assistants/[id]/client';
-import Chat from '@/app/assistants/[id]/chat/page';
+import ChatAgent from '@/app/assistants/[id]/chat/ChatAgent';
 
 export default function Customize() {
   const params = useParams<{ id: string }>();
@@ -10,5 +10,5 @@ export default function Customize() {
     params.id
   );
 
-  return <Chat assistant={assistant} />;
+  return <ChatAgent assistant={assistant} />;
 }
