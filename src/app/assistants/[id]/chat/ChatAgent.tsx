@@ -2,7 +2,7 @@
 
 import { ChatProps } from '@/app/assistants/[id]/chat/ChatProps';
 import ChatPopup from '@/app/assistants/[id]/chat/ChatPopup';
-import { Avatar, Dropdown } from 'flowbite-react';
+import { Avatar, Dropdown, Textarea } from 'flowbite-react';
 import { getImageHash } from '@/app/utils/hash';
 import { useState } from 'react';
 
@@ -30,6 +30,7 @@ export default function ChatAgent(props: ChatProps) {
             placement={'top-end'}
             arrowIcon={false}
             inline={true}
+            dismissOnClick={false}
             className='border-transparent bg-transparent'
           >
             <ChatPopup assistant={props.assistant} />

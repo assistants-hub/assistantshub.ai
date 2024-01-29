@@ -3,12 +3,12 @@ import { getImageHash } from '@/app/utils/hash';
 import { HiOutlineUserCircle, HiUserCircle } from 'react-icons/hi';
 
 export interface ChatMessageProps extends ChatProps {
-  from?: 'user' | 'assistant';
-  message: string;
+  role?: 'user' | 'assistant';
+  content: string;
 }
 
 export default function ChatMessage(props: ChatMessageProps) {
-  return !props.from || props.from === 'assistant' ? (
+  return !props.role || props.role === 'assistant' ? (
     <div className='flex items-end gap-1 justify-self-start'>
       <img
         className='h-8 w-8 rounded-full'
@@ -27,7 +27,7 @@ export default function ChatMessage(props: ChatMessageProps) {
           </span>
         </div>
         <p className='text-sm font-normal text-gray-900 dark:text-white'>
-          {props.message}
+          {props.content}
         </p>
       </div>
     </div>
@@ -43,7 +43,7 @@ export default function ChatMessage(props: ChatMessageProps) {
           </span>
         </div>
         <p className='text-sm font-normal text-gray-900 dark:text-white'>
-          {props.message}
+          {props.content}
         </p>
       </div>
       <div className='flex'>
