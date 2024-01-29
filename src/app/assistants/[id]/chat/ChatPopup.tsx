@@ -12,12 +12,30 @@ export default function ChatPopup(props: ChatProps) {
   const [typedMessage, setTypedMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([
     {
+      created_at: Date.now() / 1000,
       role: 'assistant',
-      content: 'Hello, I am your assistant. How can I help you?',
+      content: [
+        {
+          type: 'text',
+          text: {
+            value: 'Hello, I am your assistant. How can I help you?',
+            annotations: [],
+          },
+        },
+      ],
     },
     {
+      created_at: Date.now() / 1000,
       role: 'user',
-      content: 'Hello I need som help.',
+      content: [
+        {
+          type: 'text',
+          text: {
+            value: 'Hello I need som help.',
+            annotations: [],
+          },
+        },
+      ],
     },
   ]);
   const messagesRef = useRef<HTMLDivElement | null>(null);
@@ -35,8 +53,17 @@ export default function ChatPopup(props: ChatProps) {
     setMessages([
       ...messages,
       {
+        created_at: Date.now() / 1000,
         role: 'user',
-        content: typedMessage,
+        content: [
+          {
+            type: 'text',
+            text: {
+              value: typedMessage,
+              annotations: [],
+            },
+          },
+        ],
       },
     ]);
     setTypedMessage('');
@@ -69,9 +96,8 @@ export default function ChatPopup(props: ChatProps) {
                     return (
                       <ChatMessage
                         key={index}
-                        role={message.role}
                         assistant={props.assistant}
-                        content={message.content}
+                        message={message}
                       />
                     );
                   })}

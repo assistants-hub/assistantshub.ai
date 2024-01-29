@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@prisma/client": "5.8.1",
+    "@vercel/analytics": "^1.1.2",
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.2",
     "next": "14.0.4",

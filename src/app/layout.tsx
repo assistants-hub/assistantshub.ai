@@ -7,6 +7,7 @@ import { flowbiteTheme } from './theme';
 import { Header } from '@/components/header';
 import { PageFooter } from '@/components/footer';
 import { Toaster } from 'react-hot-toast';
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -35,6 +36,7 @@ export default function RootLayout({
           <Header />
           <Toaster position='top-center' />
           {children}
+          <Analytics />
           <PageFooter />
         </Flowbite>
       </body>

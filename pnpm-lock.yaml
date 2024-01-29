@@ -8,6 +8,9 @@ dependencies:
   '@prisma/client':
     specifier: 5.8.1
     version: 5.8.1(prisma@5.8.1)
+  '@vercel/analytics':
+    specifier: ^1.1.2
+    version: 1.1.2
   flowbite:
     specifier: ^2.2.1
     version: 2.2.1
@@ -1745,6 +1748,15 @@ packages:
       {
         integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==,
       }
+
+  /@vercel/analytics@1.1.2:
+    resolution:
+      {
+        integrity: sha512-CodhkLCQ/EHzjX8k+Qg+OzTBY0UadykrcfolfSOJVZZY/ZJM5nbhztm9KdbYvMfqKlasAr1+OYy0ThZnDA/MYA==,
+      }
+    dependencies:
+      server-only: 0.0.1
+    dev: false
 
   /abort-controller@3.0.0:
     resolution:
@@ -7481,6 +7493,13 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
+
+  /server-only@0.0.1:
+    resolution:
+      {
+        integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==,
+      }
+    dev: false
 
   /set-function-length@1.1.1:
     resolution:

@@ -1,14 +1,15 @@
 import { ChatProps } from '@/app/assistants/[id]/chat/ChatProps';
 import { getImageHash } from '@/app/utils/hash';
 import { HiOutlineUserCircle, HiUserCircle } from 'react-icons/hi';
+import { formatRelativeUnixTime } from '@/app/utils/date';
+import { Message } from '@/app/types/message';
 
 export interface ChatMessageProps extends ChatProps {
-  role?: 'user' | 'assistant';
-  content: string;
+  message: Message;
 }
 
 export default function ChatMessage(props: ChatMessageProps) {
-  return !props.role || props.role === 'assistant' ? (
+  return !props.message.role || props.message.role === 'assistant' ? (
     <div className='flex items-end gap-1 justify-self-start'>
       <img
         className='h-8 w-8 rounded-full'
@@ -22,12 +23,12 @@ export default function ChatMessage(props: ChatMessageProps) {
           <span className='text-sm font-semibold text-gray-900 dark:text-white'>
             {props.assistant.name}
           </span>
-          <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
-            11:46
+          <span className='text-xs font-normal text-gray-400 dark:text-gray-400'>
+            {formatRelativeUnixTime(props.message.created_at)}
           </span>
         </div>
         <p className='text-sm font-normal text-gray-900 dark:text-white'>
-          {props.content}
+          {props.message.content[0]?.text?.value}
         </p>
       </div>
     </div>
@@ -38,12 +39,12 @@ export default function ChatMessage(props: ChatMessageProps) {
           <span className='text-sm font-semibold text-gray-900 dark:text-white'>
             You
           </span>
-          <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
-            11:46
+          <span className='text-xs font-normal text-gray-400 dark:text-gray-400'>
+            {formatRelativeUnixTime(props.message.created_at)}
           </span>
         </div>
         <p className='text-sm font-normal text-gray-900 dark:text-white'>
-          {props.content}
+          {props.message.content[0]?.text?.value}
         </p>
       </div>
       <div className='flex'>
