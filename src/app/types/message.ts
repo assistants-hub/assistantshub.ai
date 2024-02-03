@@ -11,6 +11,6 @@ export interface Content {
 export interface Message {
   id?: string;
   created_at?: number;
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system' | 'agent';
   content: Content[];
 }

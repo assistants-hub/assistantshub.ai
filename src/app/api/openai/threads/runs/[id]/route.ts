@@ -4,14 +4,21 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function POST(req: NextRequest, res: NextResponse) {
+const getId = (req: Request) => {
+  const url = new URL(req.url);
+  return url.pathname.split('/').splice(-1, 1)[0];
+};
+
+export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    const body = await req.json();
-    let assistantId = body.assistant_id;
+    let assistantId = req.headers.get('X-Assistant-Id');
+    let threadId = req.headers.get('X-Thread-Id');
+
+    let runId = getId(req);
 
     let assistant = await prisma.assistant.findFirst({
       where: {
-        id: assistantId,
+        id: assistantId ? assistantId : undefined,
       },
       include: {
         credentials: true,
@@ -25,29 +32,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
       );
     }
 
-    console.log(JSON.stringify(assistant));
     const openai = new OpenAI({
       apiKey: assistant?.credentials?.openAIApiKey,
     });
 
-    let messages = body.thread.messages.filter(
-      (message: any) => message.role === 'user'
+    let runResponse = await openai.beta.threads.runs.retrieve(
+      threadId ? threadId : '',
+      runId
     );
-    messages = messages.map((message: any) => {
-      return {
-        role: message.role,
-        content: message.content[0].text.value,
-      };
-    });
-
-    let request = {
-      assistant_id: body.assistant_id,
-      thread: {
-        messages: messages,
-      },
-    };
-
-    let runResponse = await openai.beta.threads.createAndRun(request);
     return Response.json(runResponse, { status: 201 });
   } catch (err: any) {
     console.log(err);

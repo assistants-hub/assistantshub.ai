@@ -7,13 +7,22 @@ import { getStyleHash } from '@/app/utils/hash';
 import { Button, Textarea } from 'flowbite-react';
 import { useState, useRef, useEffect } from 'react';
 import { Message } from '@/app/types/message';
+import {
+  createAndRunThread,
+  getMessages,
+  getRun,
+} from '@/app/assistants/[id]/client';
+import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default function ChatPopup(props: ChatProps) {
   const [typedMessage, setTypedMessage] = useState('');
+  const [messageRunInProgress, setMessageRunInProgress] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       created_at: Date.now() / 1000,
-      role: 'assistant',
+      role: 'system',
       content: [
         {
           type: 'text',
@@ -33,7 +42,7 @@ export default function ChatPopup(props: ChatProps) {
     }
   }, [messages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!typedMessage || !typedMessage.trim() || typedMessage.length <= 0) {
       return;
     }
@@ -54,6 +63,48 @@ export default function ChatPopup(props: ChatProps) {
       },
     ]);
     setTypedMessage('');
+    setMessageRunInProgress(true);
+
+    let [status, runResponse] = await createAndRunThread(
+      props.assistant.id,
+      messages
+    );
+    console.log(runResponse);
+
+    do {
+      await sleep(1000);
+      // @ts-ignore
+      [status, runResponse] = await getRun(
+        props.assistant.id,
+        runResponse.thread_id,
+        runResponse.id
+      );
+      console.log(runResponse);
+    } while (
+      runResponse.status === 'in_progress' ||
+      runResponse.status === 'queued' ||
+      runResponse.status === 'cancelling'
+    );
+
+    let [threadedMessageStatus, threadMessages] = await getMessages(
+      props.assistant.id,
+      runResponse.thread_id
+    );
+    console.log(threadMessages);
+
+    //@ts-ignore
+    threadMessages.data.forEach((message) => {
+      setMessages([
+        ...messages,
+        {
+          created_at: message.created_at,
+          role: 'assistant',
+          content: message.content,
+        },
+      ]);
+    });
+
+    setMessageRunInProgress(false);
   };
 
   return (
@@ -88,6 +139,11 @@ export default function ChatPopup(props: ChatProps) {
                       />
                     );
                   })}
+                  {messageRunInProgress ? (
+                    <ChatTyping assistant={props.assistant} />
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             </div>
@@ -98,11 +154,19 @@ export default function ChatPopup(props: ChatProps) {
               borderColor: getStyleHash(props.assistant.id).secondaryColor,
             }}
           >
+            {messageRunInProgress ? (
+              <span className='text-xs font-normal text-gray-500 dark:text-white'>
+                {props.assistant.name} is typing...
+              </span>
+            ) : (
+              <></>
+            )}
             <div className='flex items-center rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-700'>
               <Textarea
                 className='mx-4 block w-full rounded-lg border bg-white text-sm text-gray-900 dark:text-white dark:placeholder-gray-400'
                 placeholder='Your message...'
                 readOnly={false}
+                disabled={messageRunInProgress}
                 value={typedMessage}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
@@ -121,7 +185,8 @@ export default function ChatPopup(props: ChatProps) {
                 disabled={
                   !typedMessage ||
                   !typedMessage.trim() ||
-                  typedMessage.length <= 0
+                  typedMessage.length <= 0 ||
+                  messageRunInProgress
                 }
                 color={'gray'}
                 onClick={handleSendMessage}
