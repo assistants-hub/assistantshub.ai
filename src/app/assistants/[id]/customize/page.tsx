@@ -10,5 +10,5 @@ export default function Customize() {
     params.id
   );
 
-  return <ChatAgent assistant={assistant} />;
+  return assistant.id ? <ChatAgent assistant_id={assistant.id} /> : <></>;
 }

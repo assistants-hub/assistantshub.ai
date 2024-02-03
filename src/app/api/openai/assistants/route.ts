@@ -27,6 +27,22 @@ export async function POST(req: NextRequest, res: NextResponse) {
       try {
         createResponse = await openai.beta.assistants.create(body);
 
+        await prisma.assistant.upsert({
+          where: {
+            id: createResponse.id,
+          },
+          update: {
+            id: createResponse.id,
+            credentialsOwner: token.sub,
+            credentialsOwnerType: 'personal',
+          },
+          create: {
+            id: createResponse.id,
+            credentialsOwner: token.sub,
+            credentialsOwnerType: 'personal',
+          },
+        });
+
         return Response.json(createResponse, { status: 201 });
       } catch (err: any) {
         return Response.json({ message: err.message }, { status: err.status });

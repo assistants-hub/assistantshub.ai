@@ -66,6 +66,13 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
 
       try {
         const deleteResponse = await openai.beta.assistants.del(id);
+
+        await prisma.assistant.delete({
+          where: {
+            id: id,
+          },
+        });
+
         return Response.json(deleteResponse, { status: 200 });
       } catch (err: any) {
         return Response.json({ message: err.message }, { status: err.status });

@@ -24,19 +24,6 @@ export default function ChatPopup(props: ChatProps) {
         },
       ],
     },
-    {
-      created_at: Date.now() / 1000,
-      role: 'user',
-      content: [
-        {
-          type: 'text',
-          text: {
-            value: 'Hello I need som help.',
-            annotations: [],
-          },
-        },
-      ],
-    },
   ]);
   const messagesRef = useRef<HTMLDivElement | null>(null);
 

@@ -12,10 +12,20 @@ datasource db {
 
 model Credentials {
   owner        String
-  ownerType    String   @default("personal")
+  ownerType    String      @default("personal")
   openAIApiKey String
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  Assistant    Assistant[]
 
   @@id([owner, ownerType])
+}
+
+model Assistant {
+  id                   String       @id
+  credentialsOwner     String?
+  credentialsOwnerType String?
+  credentials          Credentials? @relation(fields: [credentialsOwner, credentialsOwnerType], references: [owner, ownerType])
+  created_at           DateTime     @default(now())
+  updated_at           DateTime     @updatedAt
 }

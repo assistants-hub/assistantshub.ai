@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import { useMemo } from 'react';
 import { Assistant } from '@/app/types/assistant';
 import { fetcher } from '@/app/utils/fetcher';
+import { Message } from '@/app/types/message';
 
 export function useGetAssistant(id: string) {
   let key = '/api/openai/assistants/' + id;
@@ -30,7 +31,23 @@ export async function deleteAssistant(id: string) {
     method: 'DELETE',
   });
 
-  console.log(response);
+  return [response.status, await response.json()];
+}
+
+export async function createAndRunThread(id: string, messages: Message[]) {
+  let response = await fetch('/api/openai/assistants/' + id + '/threads', {
+    method: 'POST',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      assistant_id: id,
+      thread: {
+        messages: messages,
+      },
+    }),
+  });
 
   return [response.status, await response.json()];
 }
