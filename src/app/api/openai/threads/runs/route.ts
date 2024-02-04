@@ -25,7 +25,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       );
     }
 
-    console.log(JSON.stringify(assistant));
     const openai = new OpenAI({
       apiKey: assistant?.credentials?.openAIApiKey,
     });
@@ -33,6 +32,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     let messages = body.thread.messages.filter(
       (message: any) => message.role === 'user'
     );
+
     messages = messages.map((message: any) => {
       return {
         role: message.role,

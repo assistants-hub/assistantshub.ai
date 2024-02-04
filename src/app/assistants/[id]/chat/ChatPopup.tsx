@@ -19,10 +19,11 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 export default function ChatPopup(props: ChatProps) {
   const [typedMessage, setTypedMessage] = useState('');
   const [messageRunInProgress, setMessageRunInProgress] = useState(false);
+  const [messageStatus, setMessageStatus] = useState('' as string);
   const [messages, setMessages] = useState<Message[]>([
     {
       created_at: Date.now() / 1000,
-      role: 'system',
+      role: 'assistant',
       content: [
         {
           type: 'text',
@@ -40,31 +41,15 @@ export default function ChatPopup(props: ChatProps) {
     if (messagesRef?.current && 'scrollIntoView' in messagesRef.current) {
       messagesRef.current.scrollIntoView({ block: 'end', behavior: 'smooth' });
     }
+
+    if (messageStatus === 'in_progress') {
+      sendMessageAndPoll().then(() => {
+        setMessageStatus('completed');
+      });
+    }
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    if (!typedMessage || !typedMessage.trim() || typedMessage.length <= 0) {
-      return;
-    }
-    setMessages([
-      ...messages,
-      {
-        created_at: Date.now() / 1000,
-        role: 'user',
-        content: [
-          {
-            type: 'text',
-            text: {
-              value: typedMessage,
-              annotations: [],
-            },
-          },
-        ],
-      },
-    ]);
-    setTypedMessage('');
-    setMessageRunInProgress(true);
-
+  const sendMessageAndPoll = async () => {
     let [status, runResponse] = await createAndRunThread(
       props.assistant.id,
       messages
@@ -90,21 +75,47 @@ export default function ChatPopup(props: ChatProps) {
       props.assistant.id,
       runResponse.thread_id
     );
-    console.log(threadMessages);
+
+    let newMessages:Message[] = [];
 
     //@ts-ignore
     threadMessages.data.forEach((message) => {
-      setMessages([
-        ...messages,
-        {
-          created_at: message.created_at,
-          role: 'assistant',
-          content: message.content,
-        },
-      ]);
+      newMessages.push({
+        created_at: message.created_at,
+        role: message.role,
+        content: message.content,
+      });
     });
 
+    console.log(newMessages);
+
     setMessageRunInProgress(false);
+    setMessages([...newMessages]);
+  };
+
+  const handleSendMessage = async () => {
+    if (!typedMessage || !typedMessage.trim() || typedMessage.length <= 0) {
+      return;
+    }
+    setMessages([
+      ...messages,
+      {
+        created_at: Date.now() / 1000,
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: {
+              value: typedMessage,
+              annotations: [],
+            },
+          },
+        ],
+      },
+    ]);
+    setTypedMessage('');
+    setMessageRunInProgress(true);
+    setMessageStatus('in_progress' as string);
   };
 
   return (

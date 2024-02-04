@@ -40,7 +40,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
       threadId ? threadId : '',
       runId
     );
-    return Response.json(runResponse, { status: 201 });
+
+    return Response.json(runResponse, { status: 200 });
   } catch (err: any) {
     console.log(err);
     return Response.json({ message: err.message }, { status: err.status });
