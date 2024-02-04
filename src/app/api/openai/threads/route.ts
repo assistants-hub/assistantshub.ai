@@ -4,17 +4,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-const getId = (req: Request) => {
-  const url = new URL(req.url);
-  return url.pathname.split('/').splice(-1, 1)[0];
-};
-
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
     let assistantId = req.headers.get('X-Assistant-Id');
-    let threadId = req.headers.get('X-Thread-Id');
-
-    let runId = getId(req);
 
     let assistant = await prisma.assistant.findFirst({
       where: {
@@ -36,12 +28,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
       apiKey: assistant?.credentials?.openAIApiKey,
     });
 
-    let runResponse = await openai.beta.threads.runs.retrieve(
-      threadId ? threadId : '',
-      runId
-    );
-
-    return Response.json(runResponse, { status: 200 });
+    let createThreadResponse = await openai.beta.threads.create();
+    return Response.json(createThreadResponse, { status: 201 });
   } catch (err: any) {
     console.log(err);
     return Response.json({ message: err.message }, { status: err.status });

@@ -34,26 +34,42 @@ export async function deleteAssistant(id: string) {
   return [response.status, await response.json()];
 }
 
-export async function createAndRunThread(
+export async function createThread(id: string | undefined) {
+  if (!id) {
+    return [400, { error: 'Assistant ID is required' }];
+  }
+
+  let response = await fetch('/api/openai/threads', {
+    method: 'POST',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+      'X-Assistant-Id': id || '',
+    },
+  });
+
+  return [response.status, await response.json()];
+}
+
+export async function createRun(
   id: string | undefined,
-  messages: Message[]
+  threadId: string | null
 ) {
   if (!id) {
     return [400, { error: 'Assistant ID is required' }];
   }
 
-  let response = await fetch('/api/openai/threads/runs', {
+  if (!threadId) {
+    return [400, { error: 'Thread ID is required' }];
+  }
+
+  let response = await fetch('/api/openai/threads/' + threadId + '/runs', {
     method: 'POST',
     headers: {
       accept: 'application.json',
       'Content-Type': 'application/json',
+      'X-Assistant-Id': id || '',
     },
-    body: JSON.stringify({
-      assistant_id: id,
-      thread: {
-        messages: messages,
-      },
-    }),
   });
 
   return [response.status, await response.json()];
@@ -68,14 +84,40 @@ export async function getRun(
     return [400, { error: 'Run ID is required' }];
   }
 
-  let response = await fetch('/api/openai/threads/runs/' + id, {
-    method: 'GET',
+  let response = await fetch(
+    '/api/openai/threads/' + threadId + '/runs/' + id,
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application.json',
+        'Content-Type': 'application/json',
+        'X-Assistant-Id': assistantId || '',
+      },
+    }
+  );
+
+  return [response.status, await response.json()];
+}
+
+export async function createMessage(
+  assistantId: string | undefined,
+  threadId: string | null,
+  message: Message | undefined
+) {
+  if (!message) {
+    return [400, { error: 'Message is required' }];
+  }
+
+  let response = await fetch('/api/openai/threads/' + threadId + '/messages', {
+    method: 'POST',
     headers: {
       accept: 'application.json',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application',
       'X-Assistant-Id': assistantId || '',
-      'X-Thread-Id': threadId || '',
     },
+    body: JSON.stringify({
+      message: message,
+    }),
   });
 
   return [response.status, await response.json()];
@@ -83,20 +125,24 @@ export async function getRun(
 
 export async function getMessages(
   assistantId: string | undefined,
-  threadId: string | undefined
+  threadId: string | undefined,
+  after: string | undefined
 ) {
   if (!threadId) {
     return [400, { error: 'Thread ID is required' }];
   }
 
-  let response = await fetch('/api/openai/threads/' + threadId + '/messages', {
-    method: 'GET',
-    headers: {
-      accept: 'application.json',
-      'Content-Type': 'application/json',
-      'X-Assistant-Id': assistantId || '',
-    },
-  });
+  let response = await fetch(
+    '/api/openai/threads/' + threadId + '/messages?after=' + after,
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application.json',
+        'Content-Type': 'application/json',
+        'X-Assistant-Id': assistantId || '',
+      },
+    }
+  );
 
   return [response.status, await response.json()];
 }
