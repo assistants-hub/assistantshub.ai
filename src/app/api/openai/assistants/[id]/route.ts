@@ -10,36 +10,27 @@ const getId = (req: Request) => {
   return url.pathname.split('/').splice(-1, 1)[0];
 };
 
-// TODO: Use local DB instead of OpenAI API
+// TODO: Limit these to same domain requests
 export async function GET(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
-
   const id = getId(req);
 
-  if (token) {
-    let assistant = await prisma.assistant.findFirst({
-      where: {
-        id: id,
-        accountOwner: token.sub,
-        accountOwnerType: 'personal',
-      },
-      select: {
-        id: true,
-        object: true,
-      },
-    });
+  let assistant = await prisma.assistant.findFirst({
+    where: {
+      id: id,
+    },
+    select: {
+      id: true,
+      object: true,
+    },
+  });
 
-    if (!assistant) {
-      return Response.json(
-        { message: 'Assistant does not exist' },
-        { status: 404 }
-      );
-    }
-    return Response.json(assistant.object, { status: 200 });
-  } else {
-    // Not Signed in
-    return Response.json({ message: 'Unauthenticated' }, { status: 401 });
+  if (!assistant) {
+    return Response.json(
+      { message: 'Assistant does not exist' },
+      { status: 404 }
+    );
   }
+  return Response.json(assistant.object, { status: 200 });
 }
 
 export async function DELETE(req: NextRequest, res: NextResponse) {
