@@ -5,19 +5,20 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
+// Note: We should not cache the models list as it may change frequently for different organizations
 export async function GET(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
   if (token) {
-    let credential = await prisma.credentials.findFirst({
+    let account = await prisma.account.findFirst({
       where: {
         owner: token.sub,
         ownerType: 'personal',
       },
     });
 
-    if (credential) {
+    if (account) {
       const openai = new OpenAI({
-        apiKey: credential.openAIApiKey,
+        apiKey: account.openAIApiKey,
       });
       const models = await openai.models.list();
       return Response.json(models);

@@ -10,36 +10,32 @@ const getId = (req: Request) => {
   return url.pathname.split('/').splice(-1, 1)[0];
 };
 
+// TODO: Use local DB instead of OpenAI API
 export async function GET(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
 
   const id = getId(req);
 
   if (token) {
-    let credential = await prisma.credentials.findFirst({
+    let assistant = await prisma.assistant.findFirst({
       where: {
-        owner: token.sub,
-        ownerType: 'personal',
+        id: id,
+        accountOwner: token.sub,
+        accountOwnerType: 'personal',
+      },
+      select: {
+        id: true,
+        object: true,
       },
     });
 
-    if (credential) {
-      const openai = new OpenAI({
-        apiKey: credential.openAIApiKey,
-      });
-
-      try {
-        const listResponse = await openai.beta.assistants.retrieve(id);
-        return Response.json(listResponse, { status: 200 });
-      } catch (err: any) {
-        return Response.json({ message: err.message }, { status: err.status });
-      }
-    } else {
+    if (!assistant) {
       return Response.json(
-        { message: 'OpenAI API Key does not exist' },
-        { status: 400 }
+        { message: 'Assistant does not exist' },
+        { status: 404 }
       );
     }
+    return Response.json(assistant.object, { status: 200 });
   } else {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });
@@ -52,16 +48,16 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
   const id = getId(req);
 
   if (token) {
-    let credential = await prisma.credentials.findFirst({
+    let account = await prisma.account.findFirst({
       where: {
         owner: token.sub,
         ownerType: 'personal',
       },
     });
 
-    if (credential) {
+    if (account) {
       const openai = new OpenAI({
-        apiKey: credential.openAIApiKey,
+        apiKey: account.openAIApiKey,
       });
 
       try {

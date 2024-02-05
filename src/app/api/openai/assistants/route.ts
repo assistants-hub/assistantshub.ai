@@ -9,16 +9,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
 
   if (token) {
-    let credential = await prisma.credentials.findFirst({
+    let account = await prisma.account.findFirst({
       where: {
         owner: token.sub,
         ownerType: 'personal',
       },
     });
 
-    if (credential) {
+    if (account) {
       const openai = new OpenAI({
-        apiKey: credential.openAIApiKey,
+        apiKey: account.openAIApiKey,
       });
 
       const body = await req.json();
@@ -33,18 +33,21 @@ export async function POST(req: NextRequest, res: NextResponse) {
           },
           update: {
             id: createResponse.id,
-            credentialsOwner: token.sub,
-            credentialsOwnerType: 'personal',
+            accountOwner: token.sub,
+            accountOwnerType: 'personal',
+            object: createResponse as any,
           },
           create: {
             id: createResponse.id,
-            credentialsOwner: token.sub,
-            credentialsOwnerType: 'personal',
+            accountOwner: token.sub,
+            accountOwnerType: 'personal',
+            object: createResponse as any,
           },
         });
 
         return Response.json(createResponse, { status: 201 });
       } catch (err: any) {
+        console.log(err);
         return Response.json({ message: err.message }, { status: err.status });
       }
     } else {
@@ -63,30 +66,20 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
 
   if (token) {
-    let credential = await prisma.credentials.findFirst({
+    let assistants = await prisma.assistant.findMany({
       where: {
-        owner: token.sub,
-        ownerType: 'personal',
+        accountOwner: token.sub,
+        accountOwnerType: 'personal',
+      },
+      select: {
+        id: true,
+        object: true,
       },
     });
-
-    if (credential) {
-      const openai = new OpenAI({
-        apiKey: credential.openAIApiKey,
-      });
-
-      try {
-        const listResponse = await openai.beta.assistants.list();
-        return Response.json(listResponse, { status: 200 });
-      } catch (err: any) {
-        return Response.json({ message: err.message }, { status: err.status });
-      }
-    } else {
-      return Response.json(
-        { message: 'OpenAI API Key does not exist' },
-        { status: 400 }
-      );
-    }
+    let assistantsCollection = assistants.map((assistant) => {
+      return assistant.object;
+    });
+    return Response.json(assistantsCollection, { status: 200 });
   } else {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });

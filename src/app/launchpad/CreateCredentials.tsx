@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Card, Button } from 'flowbite-react';
 import Image from 'next/image';
 import CreateCredentialsModal from '@/app/launchpad/CreateCredentialsModal';
+import UseSystemCredentialsModal from '@/app/launchpad/UseSystemCredentialsModal';
 
 export interface CreateCredentialsProps {
   setCredentialCreated: any;
@@ -13,10 +14,13 @@ export default function CreateCredentials(props: CreateCredentialsProps) {
   const [openCreateCredentialsModal, setOpenCreateCredentialsModal] =
     useState(false);
 
+  const [openSystemCredentialsModal, setOpenSystemCredentialsModal] =
+    useState(false);
+
   return (
     <div className='bg-grey flex h-[calc(100vh-120px)] items-center justify-center '>
       <Card
-        className='max-w-md'
+        className='max-w-xl'
         renderImage={() => (
           <Image
             width={600}
@@ -37,18 +41,29 @@ export default function CreateCredentials(props: CreateCredentialsProps) {
           </a>
           .
         </p>
-        <p className='flex self-center'>
+        <p className='flex gap-4 self-center'>
           <Button
             gradientDuoTone='purpleToBlue'
             onClick={() => setOpenCreateCredentialsModal(true)}
           >
             Set OpenAI API Key
           </Button>
+          <Button
+            color='gray'
+            onClick={() => setOpenSystemCredentialsModal(true)}
+          >
+            Use OpenAI API Key provided by Assistant Hub
+          </Button>
         </p>
       </Card>
       <CreateCredentialsModal
         open={openCreateCredentialsModal}
         setOpen={setOpenCreateCredentialsModal}
+        setCredentialCreated={props.setCredentialCreated}
+      />
+      <UseSystemCredentialsModal
+        open={openSystemCredentialsModal}
+        setOpen={setOpenSystemCredentialsModal}
         setCredentialCreated={props.setCredentialCreated}
       />
     </div>

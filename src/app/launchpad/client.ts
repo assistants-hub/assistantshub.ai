@@ -95,11 +95,11 @@ export function useGetAssistants() {
 
   return useMemo(
     () => ({
-      assistants: data?.body?.data as Assistant[],
+      assistants: data as Assistant[],
       assistantsLoading: isLoading,
       assistantsError: error,
       assistantsValidating: isValidating,
-      assistantsEmpty: !isLoading && !data?.body?.data.length,
+      assistantsEmpty: !isLoading && !data?.length,
       reload: mutate,
     }),
     [data, error, isLoading, isValidating, mutate]
