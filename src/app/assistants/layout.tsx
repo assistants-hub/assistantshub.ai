@@ -1,13 +1,18 @@
 import React from 'react';
 import { Header } from '@/components/header';
+import { Toaster } from 'react-hot-toast';
 import { PageFooter } from '@/components/footer';
-import Home from '@/components/home';
 
-export default function Landing() {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className={'bg-gray-50 dark:bg-gray-900'}>
       <Header />
-      <Home />
+      <Toaster position='top-center' />
+      {children}
       <PageFooter />
     </div>
   );

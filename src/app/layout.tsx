@@ -1,12 +1,8 @@
 import { Flowbite, ThemeModeScript } from 'flowbite-react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { twMerge } from 'tailwind-merge';
 import './globals.css';
 import { flowbiteTheme } from './theme';
-import { Header } from '@/components/header';
-import { PageFooter } from '@/components/footer';
-import { Toaster } from 'react-hot-toast';
 import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -29,15 +25,12 @@ export default function RootLayout({
         <ThemeModeScript />
       </head>
       <body
-        className={twMerge('bg-gray-50 dark:bg-gray-900', inter.className)}
+        className={inter.className}
         suppressHydrationWarning={process.env.NODE_ENV === 'development'}
       >
         <Flowbite theme={{ theme: flowbiteTheme }}>
-          <Header />
-          <Toaster position='top-center' />
           {children}
           <Analytics />
-          <PageFooter />
         </Flowbite>
       </body>
     </html>

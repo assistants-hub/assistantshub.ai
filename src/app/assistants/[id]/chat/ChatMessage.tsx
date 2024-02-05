@@ -19,7 +19,7 @@ export default function ChatMessage(props: ChatMessageProps) {
         alt='Assistant'
       />
       <div className='leading-1.5 flex w-full max-w-[320px] flex-col rounded-br-xl rounded-tl-xl rounded-tr-xl border-gray-200 bg-gray-100 p-4 dark:bg-gray-700'>
-        <div className='flex items-center space-x-2 rtl:space-x-reverse'>
+        <div className='flex items-center space-x-1 rtl:space-x-reverse'>
           <span className='text-sm font-semibold text-gray-900 dark:text-white'>
             {props.assistant.name}
           </span>

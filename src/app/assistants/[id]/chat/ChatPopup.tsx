@@ -142,7 +142,7 @@ export default function ChatPopup(props: ChatProps) {
             }}
           >
             <div className='flex flex-col space-y-2 rounded-b rounded-t-none border border-t-0'>
-              <div className='max-h-72 flex-grow-0 overflow-y-auto bg-white'>
+              <div className='max-h-80 flex-grow-0 overflow-y-auto bg-white'>
                 <div
                   className='flex flex-col gap-3 px-6 py-4'
                   ref={messagesRef}
