@@ -12,7 +12,7 @@ export const SignIn = function (
       gradientDuoTone='purpleToBlue'
       size='sm'
       onClick={() => {
-        signIn(undefined, { callbackUrl: '/launchpad' });
+        signIn(undefined, { callbackUrl: '/assistants' });
       }}
     >
       Sign In

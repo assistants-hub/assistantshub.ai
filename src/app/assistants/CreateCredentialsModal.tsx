@@ -3,24 +3,25 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Label, Modal } from 'flowbite-react';
 import { TextInput } from 'flowbite-react';
-import { setCredentials } from '@/app/launchpad/client';
+import { setCredentials } from '@/app/assistants/client';
 import { toast } from 'react-hot-toast';
 
-export interface UseSystemCredentialsModalProps {
+export interface CreateCredentialsModalProps {
   open: boolean;
   setOpen: any;
   setCredentialCreated: (b: boolean) => {};
 }
 
-export default function UseSystemCredentialsModal(
-  props: UseSystemCredentialsModalProps
+export default function CreateCredentialsModal(
+  props: CreateCredentialsModalProps
 ) {
+  const [openAiApiKey, setOpenAiApiKey] = useState('');
   const [apiKeyError, setApiKeyError] = useState('');
   const [updatingCredentials, setUpdatingCredentials] = useState(false);
 
   const handleSetOpenAiApiKey = async () => {
     setUpdatingCredentials(true);
-    let [status, response] = await setCredentials('use-default');
+    let [status, response] = await setCredentials(openAiApiKey);
 
     if (status === 201) {
       props.setCredentialCreated(true);
@@ -37,15 +38,33 @@ export default function UseSystemCredentialsModal(
 
   return (
     <Modal show={props.open} size={'3xl'} onClose={() => props.setOpen(false)}>
-      <Modal.Header>Use Keys from Assistants Hub</Modal.Header>
+      <Modal.Header>Set OpenAI API Key</Modal.Header>
       <Modal.Body>
-        <div className='space-y-2 p-6'>
+        <div className='space-y-6 p-6'>
           <div className='flex max-w-3xl flex-col gap-2'>
-            <div className='block'>
+            <div className='mb-2 block'>
               <Label htmlFor='openAiApiKey'>
-                I am OK with using OpenAI API Key provided by Assistant Hub and
-                accept the terms and conditions.
+                <a
+                  href='https://help.openai.com/en/articles/4936850-where-do-i-find-my-api-key'
+                  className='text-blue-600'
+                  target='_blank'
+                >
+                  Where do I find my API key?
+                </a>
               </Label>
+            </div>
+            <div>
+              <TextInput
+                id='openAiApiKey'
+                placeholder=''
+                required
+                onChange={(e) => {
+                  setApiKeyError('');
+                  setOpenAiApiKey(e.target.value);
+                }}
+                color={apiKeyError ? 'failure' : ''}
+                helperText={apiKeyError ? apiKeyError : ''}
+              />
             </div>
           </div>
         </div>
@@ -54,9 +73,10 @@ export default function UseSystemCredentialsModal(
         <Button
           gradientDuoTone='purpleToBlue'
           onClick={handleSetOpenAiApiKey}
+          disabled={!openAiApiKey}
           isProcessing={updatingCredentials}
         >
-          Agree and Continue
+          Set
         </Button>
         <Button color='gray' onClick={() => props.setOpen(false)}>
           Cancel

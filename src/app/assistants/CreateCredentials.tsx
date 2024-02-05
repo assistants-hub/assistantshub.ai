@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { Card, Button } from 'flowbite-react';
 import Image from 'next/image';
-import CreateCredentialsModal from '@/app/launchpad/CreateCredentialsModal';
-import UseSystemCredentialsModal from '@/app/launchpad/UseSystemCredentialsModal';
+import CreateCredentialsModal from '@/app/assistants/CreateCredentialsModal';
+import UseSystemCredentialsModal from '@/app/assistants/UseSystemCredentialsModal';
 
 export interface CreateCredentialsProps {
   setCredentialCreated: any;

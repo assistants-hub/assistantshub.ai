@@ -45,7 +45,7 @@ export const UserProfile = async () => {
         <NavbarLink href='/'>
           <div className='pt-2 text-xl font-normal'>Home</div>
         </NavbarLink>
-        <NavbarLink href='/launchpad' className='justify-end'>
+        <NavbarLink href='/assistants' className='justify-end'>
           <div className='pt-2 text-xl font-normal'>Assistants</div>
         </NavbarLink>
         <NavbarLink href='/docs' className='justify-end'>

@@ -10,7 +10,7 @@ import {
   ToggleSwitch,
   Spinner,
 } from 'flowbite-react';
-import { createAssistant, useGetModels } from '@/app/launchpad/client';
+import { createAssistant, useGetModels } from '@/app/assistants/client';
 import { toast } from 'react-hot-toast';
 
 export interface CreateAssistantProps {

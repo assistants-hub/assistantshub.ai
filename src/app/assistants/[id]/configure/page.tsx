@@ -28,7 +28,7 @@ export default function Configure() {
           }
         );
         setOpenModal(false);
-        push('/launchpad');
+        push('/assistants');
       } else {
         toast.error('Assistant ' + assistant.name + ' could not be deleted.', {
           duration: 4000,

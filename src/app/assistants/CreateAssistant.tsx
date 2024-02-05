@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Card, Button } from 'flowbite-react';
 import Image from 'next/image';
-import CreateAssistantModal from '@/app/launchpad/CreateAssistantModal';
+import CreateAssistantModal from '@/app/assistants/CreateAssistantModal';
 
 export default function CreateAssistant() {
   const [openCreateAssistantModal, setOpenCreateAssistantModal] =

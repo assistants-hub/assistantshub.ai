@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { Spinner } from 'flowbite-react';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import CreateAssistant from '@/app/launchpad/CreateAssistant';
-import CreateCredentials from '@/app/launchpad/CreateCredentials';
-import { useGetAssistants, useGetCredentials } from '@/app/launchpad/client';
-import ListAssistants from '@/app/launchpad/ListAssistants';
+import CreateAssistant from '@/app/assistants/CreateAssistant';
+import CreateCredentials from '@/app/assistants/CreateCredentials';
+import { useGetAssistants, useGetCredentials } from '@/app/assistants/client';
+import ListAssistants from '@/app/assistants/ListAssistants';
 
 export default function GetStarted() {
   const { status } = useSession({

@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { Badge, Button, Card } from 'flowbite-react';
-import { useGetAssistants } from '@/app/launchpad/client';
+import { useGetAssistants } from '@/app/assistants/client';
 import Image from 'next/image';
 import { HiPlus } from 'react-icons/hi';
-import CreateAssistantModal from '@/app/launchpad/CreateAssistantModal';
+import CreateAssistantModal from '@/app/assistants/CreateAssistantModal';
 import { getImageHash } from '@/app/utils/hash';
 import Link from 'next/link';
 
