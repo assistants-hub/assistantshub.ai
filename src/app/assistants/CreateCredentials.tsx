@@ -44,15 +44,15 @@ export default function CreateCredentials(props: CreateCredentialsProps) {
         <p className='flex gap-4 self-center'>
           <Button
             gradientDuoTone='purpleToBlue'
-            onClick={() => setOpenCreateCredentialsModal(true)}
+            onClick={() => setOpenSystemCredentialsModal(true)}
           >
-            Set OpenAI API Key
+            Assistant Hub's Open API Key
           </Button>
           <Button
             color='gray'
-            onClick={() => setOpenSystemCredentialsModal(true)}
+            onClick={() => setOpenCreateCredentialsModal(true)}
           >
-            Use OpenAI API Key provided by Assistant Hub
+           My OpenAI API Key
           </Button>
         </p>
       </Card>

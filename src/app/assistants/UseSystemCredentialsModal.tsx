@@ -43,8 +43,8 @@ export default function UseSystemCredentialsModal(
           <div className='flex max-w-3xl flex-col gap-2'>
             <div className='block'>
               <Label htmlFor='openAiApiKey'>
-                I am OK with using OpenAI API Key provided by Assistant Hub and
-                accept the terms and conditions.
+                I am OK with using OpenAI API Key provided by Assistant Hub,
+                accept the terms and conditions and promise to pay for the cost incurred due to my assistants.
               </Label>
             </div>
           </div>
