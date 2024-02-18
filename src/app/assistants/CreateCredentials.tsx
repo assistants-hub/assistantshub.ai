@@ -46,7 +46,7 @@ export default function CreateCredentials(props: CreateCredentialsProps) {
             gradientDuoTone='purpleToBlue'
             onClick={() => setOpenSystemCredentialsModal(true)}
           >
-            Assistant Hub's Open API Key
+            Assistant Hub&apos;s Open API Key
           </Button>
           <Button
             color='gray'
