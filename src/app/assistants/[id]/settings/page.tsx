@@ -8,7 +8,7 @@ import { deleteAssistant, useGetAssistant } from '@/app/assistants/[id]/client';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
-export default function Configure() {
+export default function Settings() {
   const [openModal, setOpenModal] = useState(false);
   const params = useParams<{ id: string }>();
   let { assistantLoading, assistant, assistantEmpty, reload } = useGetAssistant(
@@ -39,6 +39,7 @@ export default function Configure() {
 
   return (
     <div className='stack items-center justify-center'>
+      <h3 className='pb-4 text-3xl font-bold dark:text-white'>Settings</h3>
       <h1 className='p-2 pl-5 text-2xl font-bold'>Danger Zone</h1>
       <div>
         <Table className='flex-auto self-center'>

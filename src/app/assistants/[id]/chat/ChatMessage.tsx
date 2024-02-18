@@ -3,6 +3,8 @@ import { getImageHash } from '@/app/utils/hash';
 import { HiOutlineUserCircle, HiUserCircle } from 'react-icons/hi';
 import { formatRelativeUnixTime } from '@/app/utils/date';
 import { Message } from '@/app/types/message';
+import Markdown from 'marked-react';
+import Image from 'next/image';
 
 export interface ChatMessageProps extends ChatProps {
   message: Message;
@@ -11,11 +13,13 @@ export interface ChatMessageProps extends ChatProps {
 export default function ChatMessage(props: ChatMessageProps) {
   return !props.message.role || props.message.role === 'assistant' ? (
     <div className='flex items-end gap-1 justify-self-start'>
-      <img
+      <Image
         className='h-8 w-8 rounded-full'
         src={
           '/images/people/avatar/' + getImageHash(props.assistant.id) + '.jpg'
         }
+        width={32}
+        height={32}
         alt='Assistant'
       />
       <div className='leading-1.5 flex w-full max-w-[320px] flex-col rounded-br-xl rounded-tl-xl rounded-tr-xl border-gray-200 bg-gray-100 p-4 dark:bg-gray-700'>
@@ -27,9 +31,9 @@ export default function ChatMessage(props: ChatMessageProps) {
             {formatRelativeUnixTime(props.message.created_at)}
           </span>
         </div>
-        <p className='text-sm font-normal text-gray-900 dark:text-white'>
-          {props.message.content[0]?.text?.value}
-        </p>
+        <div className='text-sm font-normal text-gray-900 dark:text-white'>
+          <Markdown>{props.message.content[0]?.text?.value as string}</Markdown>
+        </div>
       </div>
     </div>
   ) : (
@@ -43,9 +47,9 @@ export default function ChatMessage(props: ChatMessageProps) {
             {formatRelativeUnixTime(props.message.created_at)}
           </span>
         </div>
-        <p className='text-sm font-normal text-gray-900 dark:text-white'>
-          {props.message.content[0]?.text?.value}
-        </p>
+        <div className='text-sm font-normal text-gray-900 dark:text-white'>
+          <Markdown>{props.message.content[0]?.text?.value as string}</Markdown>
+        </div>
       </div>
       <div className='flex'>
         <HiUserCircle size={'40'} />

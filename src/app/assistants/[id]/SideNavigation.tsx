@@ -52,28 +52,16 @@ export default function SideNavigation(props: AssistantComponentProps) {
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup>
             <Sidebar.Item
-              href={getAssistantComponentUrl(props.assistant, 'dashboard')}
-              icon={HiChartPie}
-            >
-              Dashboard
-            </Sidebar.Item>
-            <Sidebar.Item
               href={getAssistantComponentUrl(props.assistant, 'customize')}
               icon={HiColorSwatch}
             >
               Customize
             </Sidebar.Item>
             <Sidebar.Item
-              href={getAssistantComponentUrl(props.assistant, 'integrate')}
-              icon={HiPuzzle}
-            >
-              Integrate
-            </Sidebar.Item>
-            <Sidebar.Item
-              href={getAssistantComponentUrl(props.assistant, 'configure')}
+              href={getAssistantComponentUrl(props.assistant, 'settings')}
               icon={HiCog}
             >
-              Configure
+              Settings
             </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>

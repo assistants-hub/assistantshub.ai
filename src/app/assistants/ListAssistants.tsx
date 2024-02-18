@@ -63,13 +63,13 @@ export default function ListAssistants() {
                   </span>
                   <div className='mt-4 flex space-x-3 lg:mt-6'>
                     <Button gradientDuoTone='greenToBlue'>
-                      <Link href={'/assistants/' + assistant.id + '/dashboard'}>
-                        Dashboard
+                      <Link href={'/assistants/' + assistant.id + '/customize'}>
+                        Customize
                       </Link>
                     </Button>
                     <Button color={'light'} onClick={() => {}}>
-                      <Link href={'/assistants/' + assistant.id + '/customize'}>
-                        Customize
+                      <Link href={'/assistants/' + assistant.id + '/settings'}>
+                        Settings
                       </Link>
                     </Button>
                   </div>
