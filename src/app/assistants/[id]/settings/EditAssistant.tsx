@@ -1,4 +1,12 @@
-import { Button, Label, Select, Spinner, Textarea, TextInput, ToggleSwitch } from 'flowbite-react';
+import {
+  Button,
+  Label,
+  Select,
+  Spinner,
+  Textarea,
+  TextInput,
+  ToggleSwitch,
+} from 'flowbite-react';
 import React, { useState } from 'react';
 import { createAssistant, useGetModels } from '@/app/assistants/client';
 import { Assistant } from '@/app/types/assistant';
@@ -6,7 +14,7 @@ import { toast } from 'react-hot-toast';
 import { updateAssistant } from '@/app/assistants/[id]/client';
 
 export interface EditAssistantProps {
-  assistant: Assistant
+  assistant: Assistant;
 }
 
 export default function EditAssistant(props: EditAssistantProps) {
@@ -14,7 +22,9 @@ export default function EditAssistant(props: EditAssistantProps) {
   const [name, setName] = useState(props.assistant.name);
   const [description, setDescription] = useState(props.assistant.description);
   const [model, setModel] = useState(props.assistant.model);
-  const [instructions, setInstructions] = useState(props.assistant.instructions);
+  const [instructions, setInstructions] = useState(
+    props.assistant.instructions
+  );
   //TODO: Add tools to assistant type
   const [functionTool, setFunctionTool] = useState(false);
   const [retrievalTool, setRetrievalTool] = useState(false);
@@ -61,118 +71,120 @@ export default function EditAssistant(props: EditAssistantProps) {
     }
   };
 
-  return <td>
-    <div className='space-y-6 p-6'>
-      <div className='flex max-w-3xl flex-col gap-4'>
-        <div>
-          <div className='mb-2 block'>
-            <Label htmlFor='Assistant Name' value='Name' />
-          </div>
-          <TextInput
-            id='name'
-            placeholder='Example: Math Tutor'
-            required
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
-        </div>
-      </div>
-      <div className='flex max-w-3xl flex-col gap-4'>
-        <div>
-          <div className='mb-2 block'>
-            <Label htmlFor='Assistant description' value='Description' />
-          </div>
-          <TextInput
-            id='description'
-            placeholder='Example: Math Tutor for study group #1'
-            value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
-          />
-        </div>
-      </div>
-      <div className='max-w-3xl'>
-        <div className='mb-2 block'>
-          <Label htmlFor='instructions' value='Instructions' />
-        </div>
-        <Textarea
-          id='instructions'
-          placeholder='Example: You are a personal math tutor. When asked a question, write and run Python code to answer the question.'
-          rows={6}
-          value={instructions}
-          onChange={(e) => {
-            setInstructions(e.target.value);
-          }}
-        />
-      </div>
-      <div className='max-w-3xl'>
-        <div className='mb-2 block'>
-          <Label htmlFor='model' value='Model' />
-        </div>
-        {modelsLoading ? (
-          <>
-            <Spinner
-              aria-label='Alternate spinner button example'
-              size='sm'
+  return (
+    <td>
+      <div className='space-y-6 p-6'>
+        <div className='flex max-w-3xl flex-col gap-4'>
+          <div>
+            <div className='mb-2 block'>
+              <Label htmlFor='Assistant Name' value='Name' />
+            </div>
+            <TextInput
+              id='name'
+              placeholder='Example: Math Tutor'
+              required
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
-            <span className='pl-3'>Loading available models...</span>
-          </>
-        ) : (
-          <Select
-            id='model'
-            required
-            value={model}
+          </div>
+        </div>
+        <div className='flex max-w-3xl flex-col gap-4'>
+          <div>
+            <div className='mb-2 block'>
+              <Label htmlFor='Assistant description' value='Description' />
+            </div>
+            <TextInput
+              id='description'
+              placeholder='Example: Math Tutor for study group #1'
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+        <div className='max-w-3xl'>
+          <div className='mb-2 block'>
+            <Label htmlFor='instructions' value='Instructions' />
+          </div>
+          <Textarea
+            id='instructions'
+            placeholder='Example: You are a personal math tutor. When asked a question, write and run Python code to answer the question.'
+            rows={6}
+            value={instructions}
             onChange={(e) => {
-              setModel(e.target.value);
+              setInstructions(e.target.value);
             }}
+          />
+        </div>
+        <div className='max-w-3xl'>
+          <div className='mb-2 block'>
+            <Label htmlFor='model' value='Model' />
+          </div>
+          {modelsLoading ? (
+            <>
+              <Spinner
+                aria-label='Alternate spinner button example'
+                size='sm'
+              />
+              <span className='pl-3'>Loading available models...</span>
+            </>
+          ) : (
+            <Select
+              id='model'
+              required
+              value={model}
+              onChange={(e) => {
+                setModel(e.target.value);
+              }}
+            >
+              {getOpenAIModels().map((model, index) => {
+                // @ts-ignore
+                return (
+                  <option key={index} value={model.id}>
+                    {model.id}
+                  </option>
+                );
+              })}
+            </Select>
+          )}
+        </div>
+        <div className='flex max-w-3xl flex-col gap-4'>
+          <div className='mb-2 block'>
+            <Label htmlFor='model' value='Tools' />
+          </div>
+          <div className='s:grid-cols-1 grid gap-3 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3'>
+            <ToggleSwitch
+              checked={codeInterpreterTool}
+              label='Code Interpreter'
+              onChange={setCodeInterpreterTool}
+            />
+            <ToggleSwitch
+              checked={functionTool}
+              label='Function'
+              onChange={setFunctionTool}
+            />
+            <ToggleSwitch
+              checked={retrievalTool}
+              label='Retrieval'
+              onChange={setRetrievalTool}
+            />
+          </div>
+        </div>
+        <div>
+          <Button
+            gradientDuoTone='purpleToBlue'
+            outline={true}
+            onClick={handleEditAssistant}
+            disabled={!name}
+            isProcessing={editingAssistant}
           >
-            {getOpenAIModels().map((model, index) => {
-              // @ts-ignore
-              return (
-                <option key={index} value={model.id}>
-                  {model.id}
-                </option>
-              );
-            })}
-          </Select>
-        )}
-      </div>
-      <div className='flex max-w-3xl flex-col gap-4'>
-        <div className='mb-2 block'>
-          <Label htmlFor='model' value='Tools' />
-        </div>
-        <div className='s:grid-cols-1 grid gap-3 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3'>
-          <ToggleSwitch
-            checked={codeInterpreterTool}
-            label='Code Interpreter'
-            onChange={setCodeInterpreterTool}
-          />
-          <ToggleSwitch
-            checked={functionTool}
-            label='Function'
-            onChange={setFunctionTool}
-          />
-          <ToggleSwitch
-            checked={retrievalTool}
-            label='Retrieval'
-            onChange={setRetrievalTool}
-          />
+            Save
+          </Button>
         </div>
       </div>
-      <div>
-        <Button
-          gradientDuoTone='purpleToBlue'
-          outline={true}
-          onClick={handleEditAssistant}
-          disabled={!name}
-          isProcessing={editingAssistant}
-        >
-          Save
-        </Button>
-      </div>
-    </div>
-  </td>
+    </td>
+  );
 }

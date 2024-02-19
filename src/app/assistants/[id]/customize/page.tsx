@@ -19,7 +19,7 @@ export default function Customize() {
   });
 
   return assistant.id ? (
-    <div className="flex max-w-8xl flex-col gap-4">
+    <div className='max-w-8xl flex flex-col gap-4'>
       <ChatAgent assistant_id={assistant.id} />
       <h3 className='pb-4 text-3xl font-bold dark:text-white'>Customize</h3>
       <p className='pb-2 text-sm font-normal text-gray-500 dark:text-gray-400 lg:text-lg'>

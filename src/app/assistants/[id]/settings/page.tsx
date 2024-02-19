@@ -1,6 +1,16 @@
 'use client';
 
-import { Button, Label, Modal, Select, Spinner, Table, Textarea, TextInput, ToggleSwitch } from 'flowbite-react';
+import {
+  Button,
+  Label,
+  Modal,
+  Select,
+  Spinner,
+  Table,
+  Textarea,
+  TextInput,
+  ToggleSwitch,
+} from 'flowbite-react';
 import React, { useState } from 'react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useParams } from 'next/navigation';
@@ -48,25 +58,25 @@ export default function Settings() {
               <EditAssistant assistant={assistant} />
             </Table.Row>
             <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-              <td className="flex max-w-3xl flex-col gap-4">
-                <h1 className="p-2 pl-5 text-2xl font-bold">Danger Zone</h1>
+              <td className='flex max-w-3xl flex-col gap-4'>
+                <h1 className='p-2 pl-5 text-2xl font-bold'>Danger Zone</h1>
               </td>
             </Table.Row>
-            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <td className="flex gap-4">
-                <Table.Cell className="font-medium text-gray-900 dark:text-white">
-                  <h2 className="p2 text-lg text-gray-800">
+            <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+              <td className='flex gap-4'>
+                <Table.Cell className='font-medium text-gray-900 dark:text-white'>
+                  <h2 className='p2 text-lg text-gray-800'>
                     Delete this assistant
                   </h2>
-                  <h3 className="p2 text-gray-400">
-                    Once you delete this assistant, there is no going back. Please
-                    be certain.
+                  <h3 className='p2 text-gray-400'>
+                    Once you delete this assistant, there is no going back.
+                    Please be certain.
                   </h3>
                 </Table.Cell>
                 <Table.Cell>
                   <Button
                     outline
-                    gradientDuoTone="pinkToOrange"
+                    gradientDuoTone='pinkToOrange'
                     onClick={() => setOpenModal(true)}
                   >
                     Delete

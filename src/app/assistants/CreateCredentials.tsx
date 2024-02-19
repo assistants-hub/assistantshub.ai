@@ -52,7 +52,7 @@ export default function CreateCredentials(props: CreateCredentialsProps) {
             color='gray'
             onClick={() => setOpenCreateCredentialsModal(true)}
           >
-           My OpenAI API Key
+            My OpenAI API Key
           </Button>
         </p>
       </Card>

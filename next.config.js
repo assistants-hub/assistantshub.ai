@@ -13,7 +13,7 @@ const nextConfig = {
         permanent: false,
       },
     ];
-  }
+  },
 };
 
 module.exports = nextConfig;

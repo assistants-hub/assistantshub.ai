@@ -57,7 +57,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
         const body = await req.json();
         delete body.id;
 
-        const updateResponse = await openai.beta.assistants.update(id, body)
+        const updateResponse = await openai.beta.assistants.update(id, body);
         console.log(updateResponse);
 
         await prisma.assistant.upsert({

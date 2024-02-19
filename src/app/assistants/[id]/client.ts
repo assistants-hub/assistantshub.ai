@@ -45,7 +45,6 @@ export async function updateAssistant(assistant: Assistant) {
   return [response.status, await response.json()];
 }
 
-
 export async function deleteAssistant(id: string) {
   let response = await fetch('/api/openai/assistants/' + id, {
     method: 'DELETE',
