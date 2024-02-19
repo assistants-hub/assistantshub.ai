@@ -26,6 +26,26 @@ export function useGetAssistant(id: string) {
   );
 }
 
+export async function updateAssistant(assistant: Assistant) {
+  let response = await fetch('/api/openai/assistants/' + assistant.id, {
+    method: 'PATCH',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id: assistant.id,
+      model: assistant.model,
+      name: assistant.name,
+      description: assistant.description,
+      instructions: assistant.instructions,
+    }),
+  });
+
+  return [response.status, await response.json()];
+}
+
+
 export async function deleteAssistant(id: string) {
   let response = await fetch('/api/openai/assistants/' + id, {
     method: 'DELETE',

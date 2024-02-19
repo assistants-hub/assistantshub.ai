@@ -53,6 +53,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
       description: description,
       instructions: instructions,
       model: selectedModel,
+      //TODO: Add tools to assistant type
     };
 
     let [status, response] = await createAssistant(assistant);

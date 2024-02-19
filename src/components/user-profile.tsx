@@ -48,7 +48,7 @@ export const UserProfile = async () => {
         <NavbarLink href='/assistants' className='justify-end'>
           <div className='pt-2 text-xl font-normal'>Assistants</div>
         </NavbarLink>
-        <NavbarLink href='/docs' className='justify-end'>
+        <NavbarLink href='https://github.com/Assistants-Hub/assistantshub.ai/blob/main/README.md' className='justify-end'>
           <div className='pt-2 text-xl font-normal'>Docs</div>
         </NavbarLink>
         <NavbarLink href='mailto:santthosh@gmail.com' className='justify-end'>

@@ -24,7 +24,7 @@ export default function ListAssistants() {
   }, [assistantCreated, reload]);
 
   return (
-    <div className='flex grid grid-cols-1 p-10'>
+    <div className='flex grid min-h-[calc(100vh-160px)] grid-cols-1 p-10'>
       <div>
         <Button
           className='float-right'

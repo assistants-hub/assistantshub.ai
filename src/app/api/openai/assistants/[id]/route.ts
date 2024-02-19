@@ -33,6 +33,67 @@ export async function GET(req: NextRequest, res: NextResponse) {
   return Response.json(assistant.object, { status: 200 });
 }
 
+export async function PATCH(req: NextRequest, res: NextResponse) {
+  const token = await getToken({ req });
+
+  const id = getId(req);
+
+  console.log(id);
+
+  if (token) {
+    let account = await prisma.account.findFirst({
+      where: {
+        owner: token.sub,
+        ownerType: 'personal',
+      },
+    });
+
+    if (account) {
+      const openai = new OpenAI({
+        apiKey: account.openAIApiKey,
+      });
+
+      try {
+        const body = await req.json();
+        delete body.id;
+
+        const updateResponse = await openai.beta.assistants.update(id, body)
+        console.log(updateResponse);
+
+        await prisma.assistant.upsert({
+          where: {
+            id: updateResponse.id,
+          },
+          update: {
+            id: updateResponse.id,
+            accountOwner: token.sub,
+            accountOwnerType: 'personal',
+            object: updateResponse as any,
+          },
+          create: {
+            id: updateResponse.id,
+            accountOwner: token.sub,
+            accountOwnerType: 'personal',
+            object: updateResponse as any,
+          },
+        });
+
+        return Response.json(updateResponse, { status: 200 });
+      } catch (err: any) {
+        return Response.json({ message: err.message }, { status: err.status });
+      }
+    } else {
+      return Response.json(
+        { message: 'OpenAI API Key does not exist' },
+        { status: 400 }
+      );
+    }
+  } else {
+    // Not Signed in
+    return Response.json({ message: 'Unauthenticated' }, { status: 401 });
+  }
+}
+
 export async function DELETE(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
 

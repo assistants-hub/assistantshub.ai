@@ -19,7 +19,7 @@ export default function Customize() {
   });
 
   return assistant.id ? (
-    <>
+    <div className="flex max-w-8xl flex-col gap-4">
       <ChatAgent assistant_id={assistant.id} />
       <h3 className='pb-4 text-3xl font-bold dark:text-white'>Customize</h3>
       <p className='pb-2 text-sm font-normal text-gray-500 dark:text-gray-400 lg:text-lg'>
@@ -30,7 +30,7 @@ export default function Customize() {
         <iframe src="${window.location.origin}/embed/${assistant.id}"
          style="right: 0; position: fixed; overflow: hidden; height: 100vh; border: 0 none; width: 480px; bottom: -30px;"
          allowFullScreen allowTransparency></iframe>`}</Markdown>
-    </>
+    </div>
   ) : (
     <></>
   );
