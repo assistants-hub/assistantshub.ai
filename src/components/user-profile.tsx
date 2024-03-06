@@ -16,7 +16,18 @@ export const UserProfile = async () => {
   // const pathname = headers().get('next-url'); - see https://github.com/vercel/next.js/issues/43704#issuecomment-1462971600
 
   return !session ? (
-    <SignIn />
+    <>
+      <NavbarToggle />
+      <NavbarCollapse className='rtl:space-x-reverse'>
+        <NavbarLink
+          href='https://docs.assistantshub.ai/'
+          className='justify-end'
+        >
+          <div className='pt-1 text-xl font-normal'>Docs</div>
+        </NavbarLink>
+        <SignIn />
+      </NavbarCollapse>
+    </>
   ) : (
     <>
       <NavbarToggle />
@@ -49,7 +60,7 @@ export const UserProfile = async () => {
           <div className='pt-2 text-xl font-normal'>Assistants</div>
         </NavbarLink>
         <NavbarLink
-          href='https://github.com/Assistants-Hub/assistantshub.ai/blob/main/README.md'
+          href='https://docs.assistantshub.ai/'
           className='justify-end'
         >
           <div className='pt-2 text-xl font-normal'>Docs</div>

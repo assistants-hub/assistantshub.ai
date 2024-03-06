@@ -36,7 +36,7 @@ const style = {
     primaryColor: '#BFDCDD',
     secondaryColor: '#BFDCDD',
     primaryText: 'text-black',
-    secondaryText: 'text-gray-300',
+    secondaryText: 'text-gray-800',
   },
   4: {
     primaryColor: '#3E5C84',
