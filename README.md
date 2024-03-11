@@ -4,24 +4,15 @@
 
 Welcome to Assistants Hub, where you can **Build, Integrate, and Deploy AI Assistants in Minutes**. This project leverages the power of Next.js and OpenAI to provide a streamlined platform for creating sophisticated AI assistants. Our mission is to democratize AI development, making it accessible for developers, hobbyists, and businesses to innovate and implement AI solutions effortlessly.
 
+Here is a British Slang assistant in action
+
 ![British Slang](./docs/british-slang.gif)
-
-Here is another example of a Math Tutor assistant in action
-
-<iframe width="295" height="450"
-src="https://www.youtube.com/embed/ubfS-rw8OKw"
-title="YouTube video player"
-frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-allowfullscreen></iframe>
 
 ## Key Features
 
 - **Rapid Development**: Jumpstart your AI assistant project with our easy-to-follow setup and comprehensive documentation.
 - **Seamless Integration**: Connect your assistant with a wide array of APIs and services to enhance its functionality and intelligence.
 - **Community-Powered**: Tap into the collective knowledge of a vibrant community dedicated to pushing the boundaries of AI assistants.
-
-
 
 ![Landing](./docs/landing.png)
 
@@ -74,5 +65,9 @@ We extend our gratitude to:
 
 OpenAI, for their exceptional API that powers the intelligence of our assistants.
 The Next.js community, for providing the robust framework that makes this project possible.
+
+Here is another example of a Math Tutor assistant in action
+
+[![Math Tutor Demo](https://img.youtube.com/vi/ubfS-rw8OKw/0.jpg)](https://www.youtube.com/embed/ubfS-rw8OKw)
 
 Thank you for exploring Assistants Hub. We're eager to see the incredible AI assistants you'll build and deploy!
