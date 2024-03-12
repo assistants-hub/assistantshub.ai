@@ -4,10 +4,10 @@
 
 Welcome to Assistants Hub, where you can **Build, Integrate, and Deploy AI Assistants in Minutes**. This project leverages the power of Next.js and OpenAI to provide a streamlined platform for creating sophisticated AI assistants. Our mission is to democratize AI development, making it accessible for developers, hobbyists, and businesses to innovate and implement AI solutions effortlessly.
 
+![Landing](./docs/landing.png)
+
 ## Key Features
 
-<div style={{"display":"inline-block"}}>
-    <div style={{"float":"left","padding-right":"50px"}}>![British Slang](./docs/british-slang.gif)</div>
 - **Rapid Development**: Jumpstart your AI assistant project with our easy-to-follow setup and comprehensive documentation.
 - **Seamless Integration**: Connect your assistant with a wide array of APIs and services to enhance its functionality and intelligence.
 - **Community-Powered**: Tap into the collective knowledge of a vibrant community dedicated to pushing the boundaries of AI assistants.
@@ -16,15 +16,16 @@ Explore our [Guides](https://docs.assistantshub.ai/docs/category/guides) to get 
 
 Below are some exciting AI assistant demos generated with Assistants Hub you can play with:
 
-[Blimey! British Slang](https://docs.assistantshub.ai/docs/demos/british-slang-generator)
-[Math Whiz Kid](https://docs.assistantshub.ai/docs/demos/math-tutor)
-[Customer Support Agent](https://docs.assistantshub.ai/docs/demos/customer-support-agent)
-[Creative Recipe Suggestions](https://docs.assistantshub.ai/docs/demos/creative-recipe-suggestions)
+* [Blimey! British Slang](https://docs.assistantshub.ai/docs/demos/british-slang-generator)
+* [Math Whiz Kid](https://docs.assistantshub.ai/docs/demos/math-tutor)
+* [Customer Support Agent](https://docs.assistantshub.ai/docs/demos/customer-support-agent)
+* [Creative Recipe Suggestions](https://docs.assistantshub.ai/docs/demos/creative-recipe-suggestions)
+
+![British Slang](./docs/british-slang.gif)
 
 </div>
-<hr/>
 
-![Landing](./docs/landing.png)
+
 
 ## Getting Started
 
