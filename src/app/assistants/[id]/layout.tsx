@@ -24,16 +24,12 @@ export default function AssistantsLayout({
         </div>
       ) : (
         <div className='max-w-screen flex grid min-h-[calc(100vh-100px)] grid-cols-1 md:grid-cols-5'>
-          <div
-            className={
-              'items-center justify-center col-span-1'
-            }
-          >
+          <div className={'col-span-1 items-center justify-center'}>
             <SideNavigation assistant={assistant} />
           </div>
           <div
             className={
-              'items-center justify-center p-5 col-span-1 md:col-span-4'
+              'col-span-1 items-center justify-center p-5 md:col-span-4'
             }
           >
             {children}

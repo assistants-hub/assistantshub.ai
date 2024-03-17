@@ -72,8 +72,10 @@ export default function Conversations() {
                   className='bg-white dark:border-gray-700 dark:bg-gray-800'
                 >
                   <Table.Cell>
-                    <span className='font-semibold text-gray-700'>{thread.id}</span>
-                      <br />
+                    <span className='font-semibold text-gray-700'>
+                      {thread.id}
+                    </span>
+                    <br />
                     <span className='font-small text-gray-400'>
                       {formatRelativeUnixTime(thread.created_at)}
                     </span>
