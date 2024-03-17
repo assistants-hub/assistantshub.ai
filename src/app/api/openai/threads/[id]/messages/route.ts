@@ -16,12 +16,38 @@ export async function GET(req: NextRequest, res: NextResponse) {
     let after = req.nextUrl.searchParams.get('after');
     const openai = (await getOpenAIObjectForAssistant(req, prisma)) as OpenAI;
 
-    // @ts-ignore
-    let messagesResponse = await openai.beta.threads.messages.list(threadId, {
-      order: 'asc',
-      after: after,
-    });
-    return Response.json(messagesResponse, { status: 200 });
+    try {
+      // @ts-ignore
+      let messagesResponse = await openai.beta.threads.messages.list(threadId, {
+        order: 'asc',
+        after: after,
+      });
+
+      // If new messages are being pulled and presented then lets sync them up with the database
+      for (let i = 0; i < messagesResponse.data.length; i++) {
+        let message = messagesResponse.data[i];
+        await prisma.message.upsert({
+          where: {
+            id: message.id,
+          },
+          update: {
+            id: message.id,
+            threadId: threadId,
+            object: message as any,
+          },
+          create: {
+            id: message.id,
+            threadId: threadId,
+            object: message as any,
+          },
+        });
+      }
+
+      return Response.json(messagesResponse, { status: 200 });
+    } catch (err: any) {
+      console.log(err);
+      return Response.json({ message: err.message }, { status: err.status });
+    }
   } catch (err: any) {
     console.log(err);
     return Response.json({ message: err.message }, { status: err.status });
@@ -39,11 +65,33 @@ export async function POST(req: NextRequest, res: NextResponse) {
       content: body.message.content[0].text.value,
     };
 
-    let createMessageResponse = await openai.beta.threads.messages.create(
-      threadId,
-      message
-    );
-    return Response.json(createMessageResponse, { status: 201 });
+    try {
+      let createMessageResponse = await openai.beta.threads.messages.create(
+        threadId,
+        message
+      );
+
+      await prisma.message.upsert({
+        where: {
+          id: createMessageResponse.id,
+        },
+        update: {
+          id: createMessageResponse.id,
+          threadId: threadId,
+          object: createMessageResponse as any,
+        },
+        create: {
+          id: createMessageResponse.id,
+          threadId: threadId,
+          object: createMessageResponse as any,
+        },
+      });
+
+      return Response.json(createMessageResponse, { status: 201 });
+    } catch (err: any) {
+      console.log(err);
+      return Response.json({ message: err.message }, { status: err.status });
+    }
   } catch (err: any) {
     console.log(err);
     return Response.json({ message: err.message }, { status: err.status });

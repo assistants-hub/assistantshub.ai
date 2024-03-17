@@ -77,7 +77,6 @@ export default function ChatPopup(props: ChatProps) {
         props.assistant.id,
         fingerprint
       );
-      console.log(threadResponse);
       thread = threadResponse.id;
       setCurrentThread(threadResponse.id);
     }

@@ -30,4 +30,24 @@ model Assistant {
   account          Account? @relation(fields: [accountOwner, accountOwnerType], references: [owner, ownerType])
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
+  Thread           Thread[]
+}
+
+model Thread {
+  id          String     @id
+  object      Json?
+  assistantId String?
+  assistant   Assistant? @relation(fields: [assistantId], references: [id])
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  Message     Message[]
+}
+
+model Message {
+  id         String   @id
+  object     Json?
+  threadId   String?
+  thread     Thread?  @relation(fields: [threadId], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
