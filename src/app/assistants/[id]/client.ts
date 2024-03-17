@@ -1,6 +1,7 @@
 import useSWR from 'swr';
 import { useMemo } from 'react';
 import { Assistant } from '@/app/types/assistant';
+import { Thread } from '@/app/types/thread';
 import { fetcher } from '@/app/utils/fetcher';
 import { Message } from '@/app/types/message';
 
@@ -168,4 +169,32 @@ export async function getMessages(
   );
 
   return [response.status, await response.json()];
+}
+
+export function useGetThreads(assistantId: string | undefined) {
+  let { data, isLoading, error, isValidating, mutate } = useSWR(
+    '/api/openai/threads',
+    (url: string) => fetch(url, {
+      headers: {
+        'X-Assistant-Id': assistantId || '',
+      }
+    }).then((r) => r.json()),
+    {
+      revalidateIfStale: true,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+
+  return useMemo(
+    () => ({
+      threads: data as Thread[],
+      threadsLoading: isLoading,
+      threadsError: error,
+      threadsValidating: isValidating,
+      threadsEmpty: !isLoading && !data?.length,
+      reload: mutate,
+    }),
+    [data, error, isLoading, isValidating, mutate]
+  );
 }

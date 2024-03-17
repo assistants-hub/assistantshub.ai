@@ -1,7 +1,7 @@
 'use client';
 
 import { Badge, Card, Sidebar } from 'flowbite-react';
-import { HiColorSwatch, HiChartPie, HiCog, HiPuzzle } from 'react-icons/hi';
+import { HiColorSwatch, HiChatAlt2, HiCog } from 'react-icons/hi';
 import { AssistantComponentProps } from '@/app/assistants/[id]/AssistantComponentProps';
 import { Assistant } from '@/app/types/assistant';
 import Image from 'next/image';
@@ -51,6 +51,12 @@ export default function SideNavigation(props: AssistantComponentProps) {
             </Card>
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup>
+            <Sidebar.Item
+              href={getAssistantComponentUrl(props.assistant, 'conversations')}
+              icon={HiChatAlt2}
+            >
+              Conversations
+            </Sidebar.Item>
             <Sidebar.Item
               href={getAssistantComponentUrl(props.assistant, 'customize')}
               icon={HiColorSwatch}

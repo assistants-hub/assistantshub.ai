@@ -15,6 +15,7 @@
     "@prisma/client": "5.8.1",
     "@thumbmarkjs/thumbmarkjs": "^0.14.4",
     "@vercel/analytics": "^1.1.2",
+    "@vercel/edge": "^1.1.1",
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.2",
     "highlight.js": "^11.9.0",

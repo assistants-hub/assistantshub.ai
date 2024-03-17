@@ -38,8 +38,6 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
 
   const id = getId(req);
 
-  console.log(id);
-
   if (token) {
     let account = await prisma.account.findFirst({
       where: {
@@ -57,8 +55,28 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
         const body = await req.json();
         delete body.id;
 
+        // TODO: Check if assistant exists and if the user is the owner
+        let assistant = await prisma.assistant.findFirst({
+          where: {
+            id: id,
+          },
+          select: {
+            id: true,
+            object: true,
+            accountOwner: true,
+            accountOwnerType: true,
+          },
+        });
+
+        if (assistant.accountOwner !== token.sub || assistant.accountOwnerType !== 'personal') {
+          return Response.json(
+            { message: 'Unauthorized' },
+            { status: 401 }
+          );
+        }
+
+        // If the user is authorized, let us proceed
         const updateResponse = await openai.beta.assistants.update(id, body);
-        console.log(updateResponse);
 
         await prisma.assistant.upsert({
           where: {
@@ -113,6 +131,26 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
       });
 
       try {
+        // TODO: Check if assistant exists and if the user is the owner
+        let assistant = await prisma.assistant.findFirst({
+          where: {
+            id: id,
+          },
+          select: {
+            id: true,
+            object: true,
+            accountOwner: true,
+            accountOwnerType: true,
+          },
+        });
+
+        if (assistant.accountOwner !== token.sub || assistant.accountOwnerType !== 'personal') {
+          return Response.json(
+            { message: 'Unauthorized' },
+            { status: 401 }
+          );
+        }
+
         const deleteResponse = await openai.beta.assistants.del(id);
 
         await prisma.assistant.delete({
