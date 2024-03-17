@@ -18,8 +18,11 @@ export default function SideNavigation(props: AssistantComponentProps) {
   };
 
   return (
-    <div className='flex flex-wrap items-center justify-center self-center'>
-      <Sidebar aria-label='Sidebar' className='flex flex-auto'>
+    <div className='max-w-screen flex flex-wrap'>
+      <Sidebar
+        aria-label='Sidebar'
+        className='flex flex-auto items-center justify-center'
+      >
         <Sidebar.Items>
           <Sidebar.ItemGroup>
             <Card key={props.assistant.id}>

@@ -15,7 +15,7 @@ const nextConfig = {
     ];
   },
   images: {
-    domains: ['flagcdn.com']
+    domains: ['flagcdn.com'],
   },
 };
 
