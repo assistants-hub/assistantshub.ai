@@ -23,17 +23,17 @@ export default function AssistantsLayout({
           <Spinner />
         </div>
       ) : (
-        <div className='max-w-screen flex grid min-h-[calc(100vh-100px)] xs:grid-cols-1 md:grid-cols-5'>
+        <div className='max-w-screen flex grid min-h-[calc(100vh-100px)] grid-cols-1 md:grid-cols-5'>
           <div
             className={
-              'items-center justify-center xs:col-span-1 md:col-span-2 lg:col-span-1'
+              'items-center justify-center col-span-1'
             }
           >
             <SideNavigation assistant={assistant} />
           </div>
           <div
             className={
-              'items-center justify-center p-5 xs:col-span-1 md:col-span-4'
+              'items-center justify-center p-5 col-span-1 md:col-span-4'
             }
           >
             {children}

@@ -9,7 +9,7 @@ export default function Home() {
     <div className='h-[calc(100vh-115px)] justify-center bg-gray-50 '>
       <div className='grid sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-5'>
         <div className='flex px-4 py-24 text-left sm:col-span-1 md:col-span-2 lg:col-span-1 lg:py-56'>
-          <h1 className='mx-auto mb-4 font-normal leading-none tracking-tight md:text-4xl lg:text-4xl xl:text-6xl'>
+          <h1 className='mx-auto mb-4 font-normal leading-none tracking-tight text-5xl xl:text-6xl'>
             <Typewriter
               options={{
                 strings: ['Build', 'Deploy', 'Integrate'],
