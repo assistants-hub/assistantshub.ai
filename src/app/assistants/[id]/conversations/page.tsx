@@ -5,6 +5,42 @@ import { useGetAssistant, useGetThreads } from '@/app/assistants/[id]/client';
 import { Spinner, Table } from 'flowbite-react';
 import React from 'react';
 import { formatRelativeUnixTime } from '@/app/utils/date';
+import Image from 'next/image';
+
+function getLocation(metadata: any) {
+  let location = '';
+  if (metadata && metadata.city) {
+    location = metadata.city;
+  }
+  if (metadata && metadata.region) {
+    if (location) location += ', ';
+    location += metadata.region;
+  }
+  console.log(metadata);
+  let country = metadata && metadata.country ? metadata.country : '';
+
+  return (
+    <div className='items-between flex justify-center p-4'>
+      <div className='self-center'>
+        {country ? (
+          <Image
+            alt={`${country} flag`}
+            className='rounded-full'
+            src={`https://flagcdn.com/96x72/${country.toLowerCase()}.png`}
+            // src={`https://flagcdn.com/${country.toLowerCase()}.svg`}
+            width={32}
+            height={32}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
+      <div className='ml-4 mr-auto text-left'>
+        <h5 className='text-gray-700'>{location ? location : 'Unknown'}</h5>
+      </div>
+    </div>
+  );
+}
 
 export default function Conversations() {
   const params = useParams<{ id: string }>();
@@ -53,11 +89,7 @@ export default function Conversations() {
                       ? thread.metadata.fingerprint
                       : ''}
                   </Table.Cell>
-                  <Table.Cell>
-                    {thread.metadata && thread.metadata.city
-                      ? thread.metadata.city
-                      : ''}
-                  </Table.Cell>
+                  <Table.Cell>{getLocation(thread.metadata)}</Table.Cell>
                   <Table.Cell>
                     <a
                       href='#'
