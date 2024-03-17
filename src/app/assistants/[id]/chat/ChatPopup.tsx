@@ -15,6 +15,7 @@ import {
   getRun,
 } from '@/app/assistants/[id]/client';
 import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
+import { getFingerprint } from "@thumbmarkjs/thumbmarkjs";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -39,6 +40,13 @@ export default function ChatPopup(props: ChatProps) {
     },
   ]);
   const messagesRef = useRef<HTMLDivElement | null>(null);
+  const [fingerprint, setFingerprint] = useState('');
+
+  useEffect(() => {
+    getFingerprint().then((fingerprint) => {
+      setFingerprint(fingerprint);
+    }).catch((error) => {console.error(error)});
+  }, []);
 
   useEffect(() => {
     if (messagesRef?.current && 'scrollIntoView' in messagesRef.current) {
@@ -61,7 +69,8 @@ export default function ChatPopup(props: ChatProps) {
     // If thread doesn't exist create thread
     let thread = currentThread;
     if (!thread) {
-      let [status, threadResponse] = await createThread(props.assistant.id);
+      let [status, threadResponse] = await createThread(props.assistant.id, fingerprint);
+      console.log(threadResponse);
       thread = threadResponse.id;
       setCurrentThread(threadResponse.id);
     }

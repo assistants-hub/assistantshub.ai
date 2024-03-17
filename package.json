@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@prisma/client": "5.8.1",
+    "@thumbmarkjs/thumbmarkjs": "^0.14.4",
     "@vercel/analytics": "^1.1.2",
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.2",

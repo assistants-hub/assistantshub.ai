@@ -25,8 +25,6 @@ Below are some exciting AI assistant demos generated with Assistants Hub you can
 
 </div>
 
-
-
 ## Getting Started
 
 To get started with Assistants Hub, you'll need to have Node.js installed on your machine. Follow the steps below to set up your development environment.
