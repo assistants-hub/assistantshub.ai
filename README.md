@@ -16,10 +16,10 @@ Explore our [Guides](https://docs.assistantshub.ai/docs/category/guides) to get 
 
 Below are some exciting AI assistant demos generated with Assistants Hub you can play with:
 
-* [Blimey! British Slang](https://docs.assistantshub.ai/docs/demos/british-slang-generator)
-* [Math Whiz Kid](https://docs.assistantshub.ai/docs/demos/math-tutor)
-* [Customer Support Agent](https://docs.assistantshub.ai/docs/demos/customer-support-agent)
-* [Creative Recipe Suggestions](https://docs.assistantshub.ai/docs/demos/creative-recipe-suggestions)
+- [Blimey! British Slang](https://docs.assistantshub.ai/docs/demos/british-slang-generator)
+- [Math Whiz Kid](https://docs.assistantshub.ai/docs/demos/math-tutor)
+- [Customer Support Agent](https://docs.assistantshub.ai/docs/demos/customer-support-agent)
+- [Creative Recipe Suggestions](https://docs.assistantshub.ai/docs/demos/creative-recipe-suggestions)
 
 ![British Slang](./docs/british-slang.gif)
 
@@ -41,16 +41,19 @@ To get started with Assistants Hub, you'll need to have Node.js installed on you
    ```bash
    git clone https://github.com/assistants-hub/assistantshub.ai
    ```
+
 2. Navigate to the project directory
 
    ```bash
    cd assistantshub.ai
    ```
+
 3. Install the dependencies
 
    ```bash
     pnpm install
-    ```
+   ```
+
 4. Configure your environment: Rename .env.local.example to .env.local and fill in your OpenAI API key along with any other necessary settings.
 5. Start the development server
 
@@ -61,15 +64,19 @@ To get started with Assistants Hub, you'll need to have Node.js installed on you
 Visit http://localhost:3001 in your browser to see your AI assistant in action.
 
 ## Contributing
+
 Your contributions can help make Assistants Hub even better. If you're interested in contributing, please read our [CONTRIBUTING.md](./CONTRIBUTING.md) file to learn how you can get involved.
 
 ## Support
+
 Encountered a bug or need help? Open an issue in our GitHub repository, and we'll do our best to address it.
 
 ## License
+
 Assistants Hub is released under the [MIT license](./LICENSE), promoting open and collaborative development.
 
 ## Acknowledgements
+
 We extend our gratitude to:
 
 OpenAI, for their exceptional API that powers the intelligence of our assistants.

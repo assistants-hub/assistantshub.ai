@@ -6,21 +6,21 @@ First off, thank you for considering contributing to Assistants Hub! It's people
 
 - Make sure you have a [GitHub account](https://github.com/signup/free).
 - Submit a ticket for your issue or feature request, assuming one does not already exist.
-    - Clearly describe the issue, including steps to reproduce it.
-    - If it's a new feature, explain why you think it would be a good addition to Assistants Hub.
+  - Clearly describe the issue, including steps to reproduce it.
+  - If it's a new feature, explain why you think it would be a good addition to Assistants Hub.
 - Fork the repository on GitHub.
 
 ## Making Changes
 
 - Create a topic branch from where you want to base your work.
-    - This is usually the main branch.
-    - Only target release branches if you are certain your fix must be on that branch.
-    - To quickly create a topic branch: `git checkout -b my_fix_branch main`.
+  - This is usually the main branch.
+  - Only target release branches if you are certain your fix must be on that branch.
+  - To quickly create a topic branch: `git checkout -b my_fix_branch main`.
 - Make commits of logical and atomic units.
 - Check for unnecessary whitespace with `git diff --check` before committing.
 - Make sure your commit messages are in the proper format.
-    - Start the commit message with a short summary (50 characters or less).
-    - Provide a detailed description if necessary. Use markdown syntax in the description.
+  - Start the commit message with a short summary (50 characters or less).
+  - Provide a detailed description if necessary. Use markdown syntax in the description.
 - Make sure you have added the necessary tests for your changes.
 - Run all the tests to assure nothing else was accidentally broken.
 
@@ -35,10 +35,10 @@ First off, thank you for considering contributing to Assistants Hub! It's people
 
 - Use GitHub Issues to report bugs for Assistants Hub.
 - Write detailed information:
-    - Use a clear and descriptive title.
-    - Describe the exact steps to reproduce the bug.
-    - Provide specific examples to demonstrate the steps.
-    - Describe the behavior you observed and what you expected.
+  - Use a clear and descriptive title.
+  - Describe the exact steps to reproduce the bug.
+  - Provide specific examples to demonstrate the steps.
+  - Describe the behavior you observed and what you expected.
 
 ## Requesting Features
 

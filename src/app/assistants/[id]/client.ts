@@ -53,8 +53,10 @@ export async function deleteAssistant(id: string) {
   return [response.status, await response.json()];
 }
 
-export async function createThread(id: string | undefined,
-                                   fingerprint: string | undefined) {
+export async function createThread(
+  id: string | undefined,
+  fingerprint: string | undefined
+) {
   if (!id) {
     return [400, { error: 'Assistant ID is required' }];
   }
@@ -65,7 +67,7 @@ export async function createThread(id: string | undefined,
       accept: 'application.json',
       'Content-Type': 'application/json',
       'X-Assistant-Id': id || '',
-      'X-Fingerprint': fingerprint || ''
+      'X-Fingerprint': fingerprint || '',
     },
   });
 
