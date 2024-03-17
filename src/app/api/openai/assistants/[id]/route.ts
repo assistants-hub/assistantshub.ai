@@ -68,11 +68,12 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
           },
         });
 
-        if (assistant.accountOwner !== token.sub || assistant.accountOwnerType !== 'personal') {
-          return Response.json(
-            { message: 'Unauthorized' },
-            { status: 401 }
-          );
+        if (
+          !assistant ||
+          assistant.accountOwner !== token.sub ||
+          assistant.accountOwnerType !== 'personal'
+        ) {
+          return Response.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
         // If the user is authorized, let us proceed
@@ -144,11 +145,12 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
           },
         });
 
-        if (assistant.accountOwner !== token.sub || assistant.accountOwnerType !== 'personal') {
-          return Response.json(
-            { message: 'Unauthorized' },
-            { status: 401 }
-          );
+        if (
+          !assistant ||
+          assistant.accountOwner !== token.sub ||
+          assistant.accountOwnerType !== 'personal'
+        ) {
+          return Response.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
         const deleteResponse = await openai.beta.assistants.del(id);

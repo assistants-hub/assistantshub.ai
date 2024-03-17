@@ -20,11 +20,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
       },
       orderBy: {
         created_at: 'desc',
-      }
+      },
     });
     let threadsCollection = threads.map((thread) => {
       return thread.object;
-    })
+    });
     return Response.json(threadsCollection, { status: 200 });
   } catch (err: any) {
     console.log(err);
@@ -46,13 +46,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
       metadata['fingerprint'] = fingerprint;
     }
 
-    if(city) {
+    if (city) {
       metadata['city'] = city;
     }
-    if(country) {
+    if (country) {
       metadata['country'] = country;
     }
-    if(region) {
+    if (region) {
       metadata['region'] = region;
     }
 
