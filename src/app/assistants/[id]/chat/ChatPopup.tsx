@@ -20,7 +20,7 @@ import { getFingerprint } from '@thumbmarkjs/thumbmarkjs';
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default function ChatPopup(props: ChatProps) {
-  const [fullScreen, setFullScreen] = useState(true);
+  const [fullScreen, setFullScreen] = useState(false);
   const [typedMessage, setTypedMessage] = useState('');
   const [messageStatus, setMessageStatus] = useState('' as string);
   const [currentThread, setCurrentThread] = useState<string | null>(null);
