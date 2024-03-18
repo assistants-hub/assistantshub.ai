@@ -17,33 +17,50 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const openai = (await getOpenAIObjectForAssistant(req, prisma)) as OpenAI;
 
     try {
-      // @ts-ignore
-      let messagesResponse = await openai.beta.threads.messages.list(threadId, {
-        order: 'asc',
-        after: after,
-      });
+      if (after !== null) {
+        // @ts-ignore
+        let messagesResponse = await openai.beta.threads.messages.list(
+          threadId,
+          {
+            order: 'asc',
+            after: after,
+          }
+        );
 
-      // If new messages are being pulled and presented then lets sync them up with the database
-      for (let i = 0; i < messagesResponse.data.length; i++) {
-        let message = messagesResponse.data[i];
-        await prisma.message.upsert({
+        // If new messages are being pulled and presented then lets sync them up with the database
+        for (let i = 0; i < messagesResponse.data.length; i++) {
+          let message = messagesResponse.data[i];
+          await prisma.message.upsert({
+            where: {
+              id: message.id,
+            },
+            update: {
+              id: message.id,
+              threadId: threadId,
+              object: message as any,
+            },
+            create: {
+              id: message.id,
+              threadId: threadId,
+              object: message as any,
+            },
+          });
+        }
+
+        return Response.json(messagesResponse, { status: 200 });
+      } else {
+        console.log(threadId);
+        let messages = await prisma.message.findMany({
           where: {
-            id: message.id,
-          },
-          update: {
-            id: message.id,
             threadId: threadId,
-            object: message as any,
           },
-          create: {
-            id: message.id,
-            threadId: threadId,
-            object: message as any,
+          orderBy: {
+            created_at: 'asc',
           },
         });
-      }
 
-      return Response.json(messagesResponse, { status: 200 });
+        return Response.json({ data: messages }, { status: 200 });
+      }
     } catch (err: any) {
       console.log(err);
       return Response.json({ message: err.message }, { status: err.status });

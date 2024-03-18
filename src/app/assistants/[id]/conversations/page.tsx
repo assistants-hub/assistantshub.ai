@@ -2,46 +2,19 @@
 
 import { useParams } from 'next/navigation';
 import { useGetAssistant, useGetThreads } from '@/app/assistants/[id]/client';
-import { Spinner, Table } from 'flowbite-react';
-import React from 'react';
+import { Button, Spinner, Table } from 'flowbite-react';
+import React, { useState } from 'react';
 import { formatRelativeUnixTime } from '@/app/utils/date';
 import Image from 'next/image';
-
-function getLocation(metadata: any) {
-  let location = '';
-  if (metadata && metadata.city) {
-    location = metadata.city;
-  }
-  let country = metadata && metadata.country ? metadata.country : '';
-  if (country) {
-    if (location) location += ', ';
-    location += country;
-  }
-
-  return (
-    <div className='items-between flex justify-center p-4'>
-      {country ? (
-        <div className='self-center'>
-          <Image
-            alt={`${country} flag`}
-            className='rounded-full'
-            src={`https://flagcdn.com/96x72/${country.toLowerCase()}.png`}
-            // src={`https://flagcdn.com/${country.toLowerCase()}.svg`}
-            width={32}
-            height={32}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
-      <div className='ml-4 mr-auto text-left'>
-        <h5 className='text-gray-700'>{location ? location : 'Unknown'}</h5>
-      </div>
-    </div>
-  );
-}
+import { HiChatAlt2 } from 'react-icons/hi';
+import ChatConversation from '@/app/assistants/[id]/conversations/ChatConversation';
+import { Thread } from '@/app/types/thread';
+import UserLocation from '@/app/assistants/[id]/conversations/UserLocation';
 
 export default function Conversations() {
+  const [openModal, setOpenModal] = useState(false);
+  const [currentThread, setCurrentThread] = useState(null as Thread | null);
+
   const params = useParams<{ id: string }>();
   let { assistantLoading, assistant, assistantEmpty } = useGetAssistant(
     params.id
@@ -52,7 +25,7 @@ export default function Conversations() {
 
   return assistant.id ? (
     !threadsLoading ? (
-      <div className='max-w-screen flex flex-col gap-4'>
+      <div className='max-w-screen flex max-h-full flex-col gap-4'>
         <h3 className='pb-4 text-3xl font-bold dark:text-white'>
           Conversations
         </h3>
@@ -60,10 +33,10 @@ export default function Conversations() {
           <Table hoverable className='flex-auto self-center'>
             <Table.Head>
               <Table.HeadCell>Thread</Table.HeadCell>
+              <Table.HeadCell>Messages</Table.HeadCell>
               <Table.HeadCell>User</Table.HeadCell>
               <Table.HeadCell>Device</Table.HeadCell>
               <Table.HeadCell>Location</Table.HeadCell>
-              <Table.HeadCell>Actions</Table.HeadCell>
             </Table.Head>
             <Table.Body className='divide-y'>
               {threads.map((thread) => (
@@ -81,6 +54,24 @@ export default function Conversations() {
                     </span>
                   </Table.Cell>
                   <Table.Cell>
+                    <a
+                      href='#'
+                      className='font-medium text-cyan-600 hover:underline dark:text-cyan-500'
+                    >
+                      <Button
+                        type='submit'
+                        className='inline-flex cursor-pointer justify-center p-1 dark:hover:bg-gray-600'
+                        color={'gray'}
+                        onClick={() => {
+                          setOpenModal(true);
+                          setCurrentThread(thread);
+                        }}
+                      >
+                        <HiChatAlt2 size={'20'} />
+                      </Button>
+                    </a>
+                  </Table.Cell>
+                  <Table.Cell>
                     {thread.metadata && thread.metadata.user
                       ? thread.metadata.user
                       : 'Anonymous'}
@@ -90,20 +81,20 @@ export default function Conversations() {
                       ? thread.metadata.fingerprint
                       : ''}
                   </Table.Cell>
-                  <Table.Cell>{getLocation(thread.metadata)}</Table.Cell>
                   <Table.Cell>
-                    <a
-                      href='#'
-                      className='font-medium text-cyan-600 hover:underline dark:text-cyan-500'
-                    >
-                      View
-                    </a>
+                    <UserLocation metadata={thread.metadata} />
                   </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
         </div>
+        <ChatConversation
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          assistant={assistant}
+          thread={currentThread}
+        />
       </div>
     ) : (
       <div className='bg-grey flex min-h-[calc(100vh-100px)] items-center justify-center '>

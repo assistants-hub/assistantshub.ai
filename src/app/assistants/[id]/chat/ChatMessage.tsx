@@ -8,6 +8,7 @@ import Image from 'next/image';
 
 export interface ChatMessageProps extends ChatProps {
   message: Message;
+  username?: string;
 }
 
 export default function ChatMessage(props: ChatMessageProps) {
@@ -41,7 +42,7 @@ export default function ChatMessage(props: ChatMessageProps) {
       <div className='leading-1.5 flex w-full flex-col rounded-bl-xl rounded-tl-xl rounded-tr-xl border-gray-200 bg-gray-100 p-4 dark:bg-gray-700'>
         <div className='flex items-center space-x-2 rtl:space-x-reverse'>
           <span className='text-sm font-semibold text-gray-900 dark:text-white'>
-            You
+            {props.username ? props.username : 'You'}
           </span>
           <span className='text-xs font-normal text-gray-400 dark:text-gray-400'>
             {formatRelativeUnixTime(props.message.created_at)}

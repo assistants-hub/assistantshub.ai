@@ -199,3 +199,23 @@ export function useGetThreads(assistantId: string | undefined) {
     [data, error, isLoading, isValidating, mutate]
   );
 }
+
+export async function getMessagesForThread(
+  assistantId: string | null,
+  threadId: string | undefined
+) {
+  if (!threadId) {
+    return [400, { error: 'Thread ID is required' }];
+  }
+
+  let response = await fetch('/api/openai/threads/' + threadId + '/messages', {
+    method: 'GET',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+      'X-Assistant-Id': assistantId || '',
+    },
+  });
+
+  return [response.status, await response.json()];
+}
