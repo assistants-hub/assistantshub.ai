@@ -35,7 +35,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const { city, country, region } = geolocation(req);
-    console.log(city, country, region);
     const openai = (await getOpenAIObjectForAssistant(req, prisma)) as OpenAI;
 
     let assistantId = req.headers.get('X-Assistant-Id');
