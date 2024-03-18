@@ -16,8 +16,8 @@ export default function ChatHeader(props: ChatHeaderProps) {
           getStyleHash(props.assistant.id).primaryText
         }
       >
-        <div className='grid min-w-max grid-cols-2'>
-          <div className='col-span-1 text-2xl'>{props.assistant.name}</div>
+        <div className='grid grid-cols-2'>
+          <div className='col-span-1'><p className='max-w-[200px] text-2xl leading-relaxed'>{props.assistant.name}</p></div>
           <div className='col-span-1'>
             {!props.fullScreen ? (
               <HiChevronUp

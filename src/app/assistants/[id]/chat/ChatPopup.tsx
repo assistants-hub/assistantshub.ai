@@ -184,7 +184,7 @@ export default function ChatPopup(props: ChatProps) {
                 <div
                   className={
                     fullScreen
-                      ? 'max-h-[calc(100vh-24rem)] min-h-[calc(100vh-24rem)] self-center overflow-y-auto bg-white'
+                      ? 'max-h-[calc(100vh-30rem)] min-h-[calc(100vh-30rem)] self-center overflow-y-auto bg-white'
                       : 'max-h-80 flex-grow-0 overflow-y-auto bg-white'
                   }
                 >
