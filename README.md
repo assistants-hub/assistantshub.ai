@@ -1,5 +1,4 @@
 <div align="center">
-
 <img width="150px" src="./docs/assistants-hub-logo.png" />
 
 # Assistants Hub
@@ -22,7 +21,7 @@
   <a href="https://docs.assistantshub.ai/docs/intro">Tutorials</a> •
   <a href="https://assistantshub.ai">Assistants Hub</a> •
 </p>
-
+</div>
 -----
 
 Welcome to Assistants Hub, where you can **Build, Integrate, and Deploy AI Assistants in Minutes**. This project leverages the power of Next.js and OpenAI to provide a streamlined platform for creating sophisticated AI assistants. Our mission is to democratize AI development, making it accessible for developers, hobbyists, and businesses to innovate and implement AI solutions effortlessly.
