@@ -1,8 +1,33 @@
+<div align="center">
+
+<img width="150px" src="./docs/assistants-hub-logo.png" />
+
 # Assistants Hub
 
-![Vercel](https://vercelbadge.vercel.app/api/assistants-hub/assistantshub.ai)
+### The Open Source Assistants Management Portal
+
+<p>
+<img alt="Vercel Build Status" src="https://vercelbadge.vercel.app/api/assistants-hub/assistantshub.ai" />
+<img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/assistants-hub/assistantshub.ai" />
+<img alt="" src="https://img.shields.io/github/repo-size/assistants-hub/assistantshub.ai" />
+<img alt="GitHub Issues" src="https://img.shields.io/github/issues/assistants-hub/assistantshub.ai" />
+<img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/assistants-hub/assistantshub.ai" />
+<img alt="GitHub License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+</p>
+
+-----
+
+<p align="center">
+  <a href="https://docs.assistantshub.ai/docs/category/demos">Demo</a> •
+  <a href="https://docs.assistantshub.ai/docs/intro">Tutorials</a> •
+  <a href="https://assistantshub.ai">Assistants Hub</a> •
+</p>
+
+-----
 
 Welcome to Assistants Hub, where you can **Build, Integrate, and Deploy AI Assistants in Minutes**. This project leverages the power of Next.js and OpenAI to provide a streamlined platform for creating sophisticated AI assistants. Our mission is to democratize AI development, making it accessible for developers, hobbyists, and businesses to innovate and implement AI solutions effortlessly.
+
+-----
 
 ![Landing](./docs/landing.png)
 
