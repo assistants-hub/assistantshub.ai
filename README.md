@@ -79,7 +79,15 @@ To get started with Assistants Hub, you'll need to have Node.js installed on you
    ```
 
 4. Configure your environment: Rename .env.local.example to .env.local and fill in your OpenAI API key along with any other necessary settings.
-5. Start the development server
+
+5. Configure Postgres Database
+
+   - Install Postgres on your machine
+   - Create a new database
+   - Update the DATABASE_URL in the .env.local file with your database connection string
+   - Install `timescaledb` extension in your database
+
+6. Start the development server
 
    ```bash
    pnpm dev
@@ -98,6 +106,11 @@ Encountered a bug or need help? Open an issue in our GitHub repository, and we'l
 ## License
 
 Assistants Hub is released under the [MIT license](./LICENSE), promoting open and collaborative development.
+
+## References
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Configuring TimescaleDB with Prisma](https://gist.github.com/janpio/2a425f22673f2de54469772f16af8118)
 
 ## Acknowledgements
 
