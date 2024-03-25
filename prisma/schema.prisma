@@ -51,3 +51,15 @@ model Message {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
+
+model Metric {
+  id          String   @default(uuid())
+  time        DateTime @default(now())
+  assistantId String
+  name        String
+  value       Float
+  tags        Json?
+
+  @@unique([assistantId, name, time])
+  @@index(fields: [time], map: "Metric_time_idx") // This is necessary because Prisma overrode the default index name by timescaledb
+}

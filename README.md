@@ -14,7 +14,7 @@
 <img alt="GitHub License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
 </p>
 
------
+---
 
 <p align="center">
   <a href="https://docs.assistantshub.ai/docs/category/demos">Demo</a> •
@@ -26,7 +26,7 @@
 
 Welcome to Assistants Hub, where you can **Build, Integrate, and Deploy AI Assistants in Minutes**. This project leverages the power of Next.js and OpenAI to provide a streamlined platform for creating sophisticated AI assistants. Our mission is to democratize AI development, making it accessible for developers, hobbyists, and businesses to innovate and implement AI solutions effortlessly.
 
------
+---
 
 ![Landing](./docs/landing.png)
 

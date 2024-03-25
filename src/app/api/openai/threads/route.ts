@@ -76,6 +76,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
         },
       });
 
+      // add the metric event
+      await prisma.metric.create({
+        data: {
+          assistantId: assistantId ? assistantId : 'unknown',
+          name: 'THREAD_CREATED',
+          value: 1,
+          tags: createThreadResponse as any,
+        },
+      });
+
       return Response.json(createThreadResponse, { status: 201 });
     } catch (err: any) {
       console.log(err);
