@@ -15,6 +15,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     let threadId = getId(req);
     let after = req.nextUrl.searchParams.get('after');
     const openai = (await getOpenAIObjectForAssistant(req, prisma)) as OpenAI;
+    let assistantId = req.headers.get('X-Assistant-Id');
 
     try {
       if (after !== null) {
@@ -43,6 +44,17 @@ export async function GET(req: NextRequest, res: NextResponse) {
               id: message.id,
               threadId: threadId,
               object: message as any,
+            },
+          });
+
+          // add the metric event for Message creation
+          await prisma.metric.create({
+            data: {
+              assistantId: assistantId ? assistantId : 'unknown',
+              name: 'MESSAGE_CREATED',
+              value: 1,
+              time: new Date(message.created_at),
+              tags: message as any,
             },
           });
         }
@@ -76,6 +88,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const body = await req.json();
     let threadId = getId(req);
     const openai = (await getOpenAIObjectForAssistant(req, prisma)) as OpenAI;
+    let assistantId = req.headers.get('X-Assistant-Id');
 
     let message = {
       role: body.message.role,
@@ -101,6 +114,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
           id: createMessageResponse.id,
           threadId: threadId,
           object: createMessageResponse as any,
+        },
+      });
+
+      // add the metric event for Message creation
+      await prisma.metric.create({
+        data: {
+          assistantId: assistantId ? assistantId : 'unknown',
+          name: 'MESSAGE_CREATED',
+          value: 1,
+          tags: createMessageResponse as any,
         },
       });
 
