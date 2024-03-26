@@ -220,28 +220,51 @@ export async function getMessagesForThread(
   return [response.status, await response.json()];
 }
 
-export async function getThreadMetrics(assistantId: string | null) {
-  let response = await fetch('/api/metrics?metric=THREAD_CREATED&bucket=hour', {
-    method: 'GET',
-    headers: {
-      accept: 'application.json',
-      'Content-Type': 'application/json',
-      'X-Assistant-Id': assistantId || '',
-    },
-  });
+export interface MetricsRequest {
+  assistantId: string;
+  timeBucket: string;
+  startDateTime: string;
+  endDateTime: string;
+}
+
+export async function getThreadMetrics(request: MetricsRequest) {
+  let response = await fetch(
+    '/api/metrics?metric=THREAD_CREATED&timeBucket=' +
+      request.timeBucket +
+      '&startDateTime=' +
+      request.startDateTime +
+      '&endDateTime=' +
+      request.endDateTime,
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application.json',
+        'Content-Type': 'application/json',
+        'X-Assistant-Id': request.assistantId || '',
+      },
+    }
+  );
 
   return [response.status, await response.json()];
 }
 
-export async function getMessageMetrics(assistantId: string | null) {
-  let response = await fetch('/api/metrics?metric=MESSAGE_CREATED&bucket=day', {
-    method: 'GET',
-    headers: {
-      accept: 'application.json',
-      'Content-Type': 'application/json',
-      'X-Assistant-Id': assistantId || '',
-    },
-  });
+export async function getMessageMetrics(request: MetricsRequest) {
+  let response = await fetch(
+    '/api/metrics?metric=MESSAGE_CREATED&timeBucket=' +
+      request.timeBucket +
+      '&startDateTime=' +
+      request.startDateTime +
+      '&endDateTime=' +
+      request.endDateTime,
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application.json',
+        'Content-Type': 'application/json',
+        'X-Assistant-Id': request.assistantId || '',
+      },
+    }
+  );
 
   return [response.status, await response.json()];
 }

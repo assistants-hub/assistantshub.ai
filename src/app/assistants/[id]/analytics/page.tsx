@@ -10,7 +10,10 @@ import 'highlight.js/styles/github.css';
 import React, { useEffect, useState } from 'react';
 import { Card, Dropdown, Spinner } from 'flowbite-react';
 import Chart from 'react-apexcharts';
-import { formatResultsForTimespan } from '@/app/assistants/[id]/analytics/timespans';
+import {
+  formatResultsForTimespan,
+  getMetricsRequestForTimespan,
+} from '@/app/assistants/[id]/analytics/timespans';
 
 export default function Analytics() {
   const params = useParams<{ id: string }>();
@@ -34,6 +37,12 @@ export default function Analytics() {
       zoom: {
         enabled: false,
       },
+      toolbar: {
+        show: false,
+        tools: {
+          download: false,
+        },
+      },
     },
     dataLabels: {
       enabled: false,
@@ -51,7 +60,9 @@ export default function Analytics() {
     setThreadsLoading(true);
     setMessagesLoading(true);
     if (assistant.id) {
-      getThreadMetrics(assistant.id.toString()).then(([status, response]) => {
+      getThreadMetrics(
+        getMetricsRequestForTimespan(selectedTimePeriod, assistant.id)
+      ).then(([status, response]) => {
         setThreadsSeries([
           {
             name: 'Threads',
@@ -64,7 +75,9 @@ export default function Analytics() {
         setThreadsLoading(false);
       });
 
-      getMessageMetrics(assistant.id.toString()).then(([status, response]) => {
+      getMessageMetrics(
+        getMetricsRequestForTimespan(selectedTimePeriod, assistant.id)
+      ).then(([status, response]) => {
         setMessagesSeries([
           {
             name: 'Messages',
@@ -77,7 +90,7 @@ export default function Analytics() {
         setMessagesLoading(false);
       });
     }
-  }, [assistant.id]);
+  }, [assistant.id, selectedTimePeriod]);
 
   return assistant.id ? (
     <div className='max-w-screen flex flex-col gap-4'>

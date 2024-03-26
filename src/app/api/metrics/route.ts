@@ -9,21 +9,21 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   let assistantId = req.headers.get('X-Assistant-Id');
   let metricName = req.nextUrl.searchParams.get('metric');
-  let bucketBy = req.nextUrl.searchParams.get('bucket');
+  let timeBucket = req.nextUrl.searchParams.get('timeBucket');
+  let startDateTime = req.nextUrl.searchParams.get('startDateTime');
+  let endDateTime = req.nextUrl.searchParams.get('endDateTime');
 
   if (token) {
     //TODO: check if the assistant belongs to the token
     let results =
-      await prisma.$queryRaw`SELECT  time_bucket('1 hour', time) AS x,
+      await prisma.$queryRawUnsafe(`SELECT time_bucket('${timeBucket}', time) AS x,
                 sum(value) AS y
        FROM public."Metric"
-       WHERE name = ${metricName}
-        AND "assistantId" = ${assistantId} 
-        AND time BETWEEN ('2024-03-26T00:00:00.000Z')::timestamp 
-	          AND ('2024-03-26T22:54:28.039Z')::timestamp
-       GROUP BY x, "assistantId"`;
-
-    console.log(results);
+       WHERE name = '${metricName}'
+        AND "assistantId" = '${assistantId}'
+        AND time BETWEEN '${startDateTime}'::timestamp 
+	          AND '${endDateTime}'::timestamp
+       GROUP BY x, "assistantId"`);
 
     return Response.json(results, { status: 200 });
   } else {

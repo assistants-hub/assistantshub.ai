@@ -61,7 +61,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
         return Response.json(messagesResponse, { status: 200 });
       } else {
-        console.log(threadId);
         let messages = await prisma.message.findMany({
           where: {
             threadId: threadId,
