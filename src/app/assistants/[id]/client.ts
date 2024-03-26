@@ -219,3 +219,29 @@ export async function getMessagesForThread(
 
   return [response.status, await response.json()];
 }
+
+export async function getThreadMetrics(assistantId: string | null) {
+  let response = await fetch('/api/metrics?metric=THREAD_CREATED&bucket=hour', {
+    method: 'GET',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+      'X-Assistant-Id': assistantId || '',
+    },
+  });
+
+  return [response.status, await response.json()];
+}
+
+export async function getMessageMetrics(assistantId: string | null) {
+  let response = await fetch('/api/metrics?metric=MESSAGE_CREATED&bucket=day', {
+    method: 'GET',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+      'X-Assistant-Id': assistantId || '',
+    },
+  });
+
+  return [response.status, await response.json()];
+}
