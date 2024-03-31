@@ -5,7 +5,7 @@ import { UserProfile } from '@/components/user-profile';
 export function Header() {
   return (
     <Navbar fluid rounded>
-      <NavbarBrand href='https://assistants-hub.vercel.app'>
+      <NavbarBrand href='https://www.assistantshub.ai'>
         <Image
           src='/logo.png'
           alt='Assistants Hub Logo'

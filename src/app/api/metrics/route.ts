@@ -21,7 +21,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
        FROM public."Metric"
        WHERE name = '${metricName}'
         AND "assistantId" = '${assistantId}'
-        AND time BETWEEN '${startDateTime}'::timestamp 
+        AND time BETWEEN '${startDateTime}'::timestamp
 	          AND '${endDateTime}'::timestamp
        GROUP BY x, "assistantId"`);
 

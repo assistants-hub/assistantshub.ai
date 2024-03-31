@@ -17,7 +17,7 @@ import {
 
 export default function Analytics() {
   const params = useParams<{ id: string }>();
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState('Today');
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState('Last 7 days');
   const [threadsLoading, setThreadsLoading] = useState(true);
   const [threadsSeries, setThreadsSeries] = useState([
     { name: 'Threads', data: [] },
@@ -32,8 +32,6 @@ export default function Analytics() {
 
   const chartOptions: any = {
     chart: {
-      type: 'bar',
-      height: 350,
       zoom: {
         enabled: false,
       },
@@ -132,7 +130,7 @@ export default function Analytics() {
                 options={chartOptions}
                 series={threadsSeries}
                 type='bar'
-                height={300}
+                height={350}
               />
             )}
           </h5>
@@ -151,7 +149,7 @@ export default function Analytics() {
                 options={chartOptions}
                 series={messagesSeries}
                 type='bar'
-                height={300}
+                height={350}
               />
             )}
           </h5>
