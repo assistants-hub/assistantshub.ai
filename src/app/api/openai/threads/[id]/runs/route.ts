@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { getOpenAIObjectForAssistant } from '@/app/api/utils';
+import { Stream } from 'openai/streaming';
 
 const prisma = new PrismaClient();
 
@@ -16,13 +17,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
     let assistantId = req.headers.get('X-Assistant-Id');
     const openai = (await getOpenAIObjectForAssistant(req, prisma)) as OpenAI;
 
-    let request = {
-      assistant_id: assistantId,
-    };
+    const runResponse: Stream<any> = await openai.beta.threads.runs.create(
+      threadId,
+      { assistant_id: assistantId ? assistantId : '', stream: true }
+    );
 
-    // @ts-ignore
-    let runResponse = await openai.beta.threads.runs.create(threadId, request);
-    return Response.json(runResponse, { status: 201 });
+    return new Response(runResponse.toReadableStream());
   } catch (err: any) {
     console.log(err);
     return Response.json({ message: err.message }, { status: err.status });

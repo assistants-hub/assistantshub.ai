@@ -16,13 +16,16 @@ import {
 } from '@/app/assistants/[id]/client';
 import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
 import { getFingerprint } from '@thumbmarkjs/thumbmarkjs';
+import ChatMessageStreaming from '@/app/assistants/[id]/chat/ChatMessageStreaming';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default function ChatPopup(props: ChatProps) {
+  const bottomRef = useRef(null);
   const [fullScreen, setFullScreen] = useState(false);
   const [typedMessage, setTypedMessage] = useState('');
   const [messageStatus, setMessageStatus] = useState('' as string);
+  const [streamText, setStreamText] = useState<string>('');
   const [currentThread, setCurrentThread] = useState<string | null>(null);
   const [currentMessage, setCurrentMessage] = useState<Message | null>(null);
   const [messages, setMessages] = useState<Message[]>([
@@ -54,6 +57,13 @@ export default function ChatPopup(props: ChatProps) {
   }, []);
 
   useEffect(() => {
+    // @ts-ignore
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    // eslint-disable-next-line
+  }, [streamText]);
+
+  useEffect(() => {
+    setStreamText('');
     if (messagesRef?.current && 'scrollIntoView' in messagesRef.current) {
       messagesRef.current.scrollIntoView({ block: 'end', behavior: 'smooth' });
     }
@@ -61,9 +71,7 @@ export default function ChatPopup(props: ChatProps) {
 
   useEffect(() => {
     if (messageStatus === 'in_progress') {
-      sendMessageAndPoll().then(() => {
-        setMessageStatus('completed');
-      });
+      sendMessageAndPoll().then((r) => {});
     }
   }, [currentMessage]);
 
@@ -91,30 +99,44 @@ export default function ChatPopup(props: ChatProps) {
     let currentMessageId = messageResponse.id;
 
     // Run the thread
-    let [runStatus, runResponse] = await createRun(props.assistant.id, thread);
+    let runResponse = await createRun(props.assistant.id, thread);
 
-    do {
-      await sleep(1000);
-      // @ts-ignore
-      [runStatus, runResponse] = await getRun(
-        props.assistant.id,
-        runResponse.thread_id,
-        runResponse.id
-      );
-    } while (
-      runResponse.status === 'in_progress' ||
-      runResponse.status === 'queued' ||
-      runResponse.status === 'cancelling'
-    );
+    if (runResponse) {
+      let reader = runResponse.getReader();
+      let textDecoder = new TextDecoder();
 
-    let [threadedMessageStatus, threadMessages] = await getMessages(
-      props.assistant.id,
-      runResponse.thread_id,
-      currentMessageId
-    );
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
 
-    let newMessages: Message[] = threadMessages.data;
-    setMessages([...messages, ...newMessages]);
+        if (value) {
+          const sseString = textDecoder.decode(value);
+          // Remove new lines, split by newline, join by comma to handle multiple JSON events in one string
+          const sseCollection = sseString.trim().split('\n').join(',');
+          const ssEvents = JSON.parse(`[${sseCollection}]`);
+
+          for (const sse of ssEvents) {
+            if (sse.event === 'thread.message.delta') {
+              setMessageStatus('completed');
+              setStreamText(streamText + sse.data.delta.content[0].text.value);
+            }
+
+            if (sse.event === 'thread.run.completed') {
+              const [threadedMessageStatus, threadMessages] = await getMessages(
+                props.assistant.id,
+                thread || '',
+                currentMessageId
+              );
+
+              const newMessages: Message[] = threadMessages.data;
+              setMessages([...messages, ...newMessages]);
+            }
+          }
+        }
+      }
+    }
   };
 
   const handleSendMessage = async () => {
@@ -201,6 +223,17 @@ export default function ChatPopup(props: ChatProps) {
                         />
                       );
                     })}
+                    {streamText ? (
+                      <>
+                        <ChatMessageStreaming
+                          assistant={props.assistant}
+                          message={streamText}
+                        ></ChatMessageStreaming>
+                        <div ref={bottomRef} />
+                      </>
+                    ) : (
+                      <></>
+                    )}
                     {messageStatus === 'in_progress' ? (
                       <ChatTyping assistant={props.assistant} />
                     ) : (

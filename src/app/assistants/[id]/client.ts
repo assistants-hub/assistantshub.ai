@@ -80,11 +80,11 @@ export async function createRun(
   threadId: string | null
 ) {
   if (!id) {
-    return [400, { error: 'Assistant ID is required' }];
+    throw new Error('Assistant ID is required');
   }
 
   if (!threadId) {
-    return [400, { error: 'Thread ID is required' }];
+    throw new Error('Thread ID is required');
   }
 
   let response = await fetch('/api/openai/threads/' + threadId + '/runs', {
@@ -96,7 +96,7 @@ export async function createRun(
     },
   });
 
-  return [response.status, await response.json()];
+  return response.body;
 }
 
 export async function getRun(
