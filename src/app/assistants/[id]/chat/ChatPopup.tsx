@@ -17,6 +17,12 @@ import {
 import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
 import { getFingerprint } from '@thumbmarkjs/thumbmarkjs';
 import ChatMessageStreaming from '@/app/assistants/[id]/chat/ChatMessageStreaming';
+import {
+  AssistantStream,
+  AssistantStreamEvents,
+} from 'openai/lib/AssistantStream';
+import { Stream } from 'openai/streaming';
+import { streamAsyncIterator } from '@/app/utils/streamAsyncIterator';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -101,39 +107,32 @@ export default function ChatPopup(props: ChatProps) {
     // Run the thread
     let runResponse = await createRun(props.assistant.id, thread);
 
-    if (runResponse) {
-      let reader = runResponse.getReader();
-      let textDecoder = new TextDecoder();
+    let textDecoder = new TextDecoder();
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          break;
-        }
+    for await (const event of streamAsyncIterator(runResponse)) {
+      console.log(event);
+      if (event) {
+        const sseString = textDecoder.decode(event);
+        // Remove new lines, split by newline, join by comma to handle multiple JSON events in one string
+        const sseCollection = sseString.trim().split('\n').join(',');
+        console.log(sseCollection);
+        const ssEvents = JSON.parse(`[${sseCollection}]`);
 
-        if (value) {
-          const sseString = textDecoder.decode(value);
-          // Remove new lines, split by newline, join by comma to handle multiple JSON events in one string
-          const sseCollection = sseString.trim().split('\n').join(',');
-          console.log(sseCollection);
-          const ssEvents = JSON.parse(`[${sseCollection}]`);
+        for (const sse of ssEvents) {
+          if (sse.event === 'thread.message.delta') {
+            setMessageStatus('completed');
+            setStreamText(streamText + sse.data.delta.content[0].text.value);
+          }
 
-          for (const sse of ssEvents) {
-            if (sse.event === 'thread.message.delta') {
-              setMessageStatus('completed');
-              setStreamText(streamText + sse.data.delta.content[0].text.value);
-            }
+          if (sse.event === 'thread.run.completed') {
+            const [threadedMessageStatus, threadMessages] = await getMessages(
+              props.assistant.id,
+              thread || '',
+              currentMessageId
+            );
 
-            if (sse.event === 'thread.run.completed') {
-              const [threadedMessageStatus, threadMessages] = await getMessages(
-                props.assistant.id,
-                thread || '',
-                currentMessageId
-              );
-
-              const newMessages: Message[] = threadMessages.data;
-              setMessages([...messages, ...newMessages]);
-            }
+            const newMessages: Message[] = threadMessages.data;
+            setMessages([...messages, ...newMessages]);
           }
         }
       }
