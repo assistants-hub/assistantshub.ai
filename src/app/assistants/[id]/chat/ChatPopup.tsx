@@ -115,6 +115,7 @@ export default function ChatPopup(props: ChatProps) {
           const sseString = textDecoder.decode(value);
           // Remove new lines, split by newline, join by comma to handle multiple JSON events in one string
           const sseCollection = sseString.trim().split('\n').join(',');
+          console.log(sseCollection);
           const ssEvents = JSON.parse(`[${sseCollection}]`);
 
           for (const sse of ssEvents) {
