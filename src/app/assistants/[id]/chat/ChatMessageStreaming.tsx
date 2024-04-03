@@ -9,16 +9,6 @@ export interface ChatMessageStreamingProps extends ChatProps {
 }
 
 export default function ChatMessageStreaming(props: ChatMessageStreamingProps) {
-  const [streamMessage, setStreamMessage] = React.useState<string>('');
-
-  useEffect(() => {
-    if (props.message === '') {
-      setStreamMessage('');
-    } else {
-      setStreamMessage(streamMessage + props.message);
-    }
-  }, [props.message]);
-
   return (
     <div className='flex items-end gap-1 justify-self-start'>
       <Image
@@ -37,7 +27,7 @@ export default function ChatMessageStreaming(props: ChatMessageStreamingProps) {
           </span>
         </div>
         <div className='text-sm font-normal text-gray-900 dark:text-white'>
-          <Markdown>{streamMessage}</Markdown>
+          <Markdown>{props.message}</Markdown>
         </div>
       </div>
     </div>
