@@ -116,24 +116,28 @@ export default function ChatPopup(props: ChatProps) {
         // Remove new lines, split by newline, join by comma to handle multiple JSON events in one string
         const sseCollection = sseString.trim().split('\n').join(',');
         console.log(sseCollection);
-        const ssEvents = JSON.parse(`[${sseCollection}]`);
+        try {
+          const ssEvents = JSON.parse(`[${sseCollection}]`);
 
-        for (const sse of ssEvents) {
-          if (sse.event === 'thread.message.delta') {
-            setMessageStatus('completed');
-            setStreamText(streamText + sse.data.delta.content[0].text.value);
+          for (const sse of ssEvents) {
+            if (sse.event === 'thread.message.delta') {
+              setMessageStatus('completed');
+              setStreamText(streamText + sse.data.delta.content[0].text.value);
+            }
+
+            if (sse.event === 'thread.run.completed') {
+              const [threadedMessageStatus, threadMessages] = await getMessages(
+                props.assistant.id,
+                thread || '',
+                currentMessageId
+              );
+
+              const newMessages: Message[] = threadMessages.data;
+              setMessages([...messages, ...newMessages]);
+            }
           }
-
-          if (sse.event === 'thread.run.completed') {
-            const [threadedMessageStatus, threadMessages] = await getMessages(
-              props.assistant.id,
-              thread || '',
-              currentMessageId
-            );
-
-            const newMessages: Message[] = threadMessages.data;
-            setMessages([...messages, ...newMessages]);
-          }
+        } catch (error) {
+          console.error(error);
         }
       }
     }
