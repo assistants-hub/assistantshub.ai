@@ -5,6 +5,7 @@ import { HiMinus, HiX } from 'react-icons/hi';
 export interface ChatHeaderProps extends ChatProps {
   minimize: boolean;
   setMinimize: (minimize: boolean) => void;
+  close: () => void;
 }
 
 export default function ChatHeader(props: ChatHeaderProps) {
@@ -28,9 +29,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
                 <HiX
                   size={'20'}
                   className='float-right cursor-pointer justify-end'
-                  onClick={() => {
-                    props.setMinimize(true);
-                  }}
+                  onClick={() => props.close()}
                 />
                 &nbsp;
                 <HiMinus

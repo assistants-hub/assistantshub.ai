@@ -18,16 +18,25 @@ import { getFingerprint } from '@thumbmarkjs/thumbmarkjs';
 import { streamAsyncIterator } from '@/app/utils/streamAsyncIterator';
 import parseEventsFromChunk from '@/app/utils/parseEventsFromChunk';
 import ChatMessageStreaming from '@/app/assistants/[id]/chat/ChatMessageStreaming';
+import {
+  getItemWithExpiry,
+  removeItem,
+  setItemWithExpiry,
+} from '@/app/utils/store';
+import ChatDisMissalAlert from '@/app/assistants/[id]/chat/ChatDismissalAlert';
+
+const SESSION_STORAGE_THREAD_KEY = 'ai.assistantshub.thread';
 
 export interface ChatPopupProps extends ChatProps {
-  minimize: boolean;
-  setMinimize: (minimize: boolean) => void;
+  hide: boolean;
+  setHide: (minimize: boolean) => void;
 }
 
 export default function ChatPopup(props: ChatPopupProps) {
   const bottomRef = useRef(null);
   const [typedMessage, setTypedMessage] = useState('');
   const [messageStatus, setMessageStatus] = useState('' as string);
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [streamText, setStreamText] = useState<string>('');
   const [currentThread, setCurrentThread] = useState<string | null>(null);
   const [currentMessage, setCurrentMessage] = useState<Message | null>(null);
@@ -57,6 +66,19 @@ export default function ChatPopup(props: ChatPopupProps) {
       .catch((error) => {
         console.error(error);
       });
+
+    // Check to see if there is a thread in the session storage
+    let threadId = getItemWithExpiry<string>(SESSION_STORAGE_THREAD_KEY);
+    if (threadId) {
+      setCurrentThread(threadId);
+      getMessages(props.assistant.id, threadId || '', '').then(
+        ([threadedMessageStatus, threadMessages]) => {
+          const newMessages: Message[] = threadMessages.data;
+          setStreamText('');
+          setMessages([...messages, ...newMessages]);
+        }
+      ); // eslint-disable-line
+    }
   }, []);
 
   useEffect(() => {
@@ -84,6 +106,11 @@ export default function ChatPopup(props: ChatPopupProps) {
       );
       thread = threadResponse.id;
       setCurrentThread(threadResponse.id);
+      setItemWithExpiry(
+        SESSION_STORAGE_THREAD_KEY,
+        threadResponse.id,
+        24 * 60 * 60 * 1000
+      );
     }
 
     // Send message to thread
@@ -159,6 +186,13 @@ export default function ChatPopup(props: ChatPopupProps) {
     setMessageStatus('in_progress' as string);
   };
 
+  const closeChatPopup = (confirmation: boolean) => {
+    if (confirmation) {
+      removeItem(SESSION_STORAGE_THREAD_KEY);
+      props.setHide(true);
+    }
+  };
+
   return (
     <>
       <div
@@ -179,8 +213,11 @@ export default function ChatPopup(props: ChatPopupProps) {
         >
           <ChatHeader
             assistant={props.assistant}
-            minimize={props.minimize}
-            setMinimize={props.setMinimize}
+            minimize={props.hide}
+            setMinimize={props.setHide}
+            close={() => {
+              setOpenConfirmationModal(true);
+            }}
           />
           <div
             className={
@@ -223,7 +260,7 @@ export default function ChatPopup(props: ChatPopupProps) {
                     ) : (
                       <></>
                     )}
-                    {messageStatus === 'in_progress' ? (
+                    {messageStatus === 'in_progress' && !streamText ? (
                       <ChatTyping assistant={props.assistant} />
                     ) : (
                       <></>
@@ -245,6 +282,11 @@ export default function ChatPopup(props: ChatPopupProps) {
               ) : (
                 <></>
               )}
+              <ChatDisMissalAlert
+                openConfirmationModal={openConfirmationModal}
+                setOpenConfirmationModal={setOpenConfirmationModal}
+                handleDismissal={closeChatPopup}
+              />
               <div className='flex items-center justify-center rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-700'>
                 <TextInput
                   className='mx-4 block w-full rounded-lg border bg-white text-sm text-gray-900 dark:text-white dark:placeholder-gray-400'

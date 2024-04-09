@@ -73,8 +73,8 @@ export default function ChatAgent(props: ChatAgentProps) {
           ) : (
             <ChatPopup
               assistant={assistant}
-              minimize={!showPopup}
-              setMinimize={hidePopup}
+              hide={!showPopup}
+              setHide={hidePopup}
             />
           )}
         </div>

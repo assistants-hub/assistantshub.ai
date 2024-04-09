@@ -14,11 +14,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
   try {
     let threadId = getId(req);
     let after = req.nextUrl.searchParams.get('after');
+    if (after) {
+      after = after.trim();
+    }
     const openai = (await getOpenAIObjectForAssistant(req, prisma)) as OpenAI;
     let assistantId = req.headers.get('X-Assistant-Id');
 
     try {
-      if (after !== null) {
+      if (after) {
         // @ts-ignore
         let messagesResponse = await openai.beta.threads.messages.list(
           threadId,
@@ -28,6 +31,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
           }
         );
 
+        // TODO: This is flaky to depend on the order of the messages and expecting UI to pull
         // If new messages are being pulled and presented then lets sync them up with the database
         for (let i = 0; i < messagesResponse.data.length; i++) {
           let message = messagesResponse.data[i];
@@ -57,6 +61,20 @@ export async function GET(req: NextRequest, res: NextResponse) {
               tags: message as any,
             },
           });
+
+          /*console.log(JSON.stringify(messagesResponse));
+
+          if (messagesResponse.data) {
+            messagesResponse.data.map(async (message: any) => {
+              console.log('message.run_id', message.run_id);
+              let getRunResponse = await openai.beta.threads.runs.retrieve(
+                threadId,
+                message.run_id
+              );
+
+              console.log(JSON.stringify(getRunResponse.usage));
+            });
+          }*/
         }
 
         return Response.json(messagesResponse, { status: 200 });
@@ -65,12 +83,18 @@ export async function GET(req: NextRequest, res: NextResponse) {
           where: {
             threadId: threadId,
           },
+          select: {
+            object: true,
+          },
           orderBy: {
             created_at: 'asc',
           },
         });
 
-        return Response.json({ data: messages }, { status: 200 });
+        return Response.json(
+          { data: messages.map((item) => item.object) },
+          { status: 200 }
+        );
       }
     } catch (err: any) {
       console.log(err);

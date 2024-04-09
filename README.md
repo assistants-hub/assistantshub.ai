@@ -45,7 +45,7 @@ Below are some exciting AI assistant demos generated with Assistants Hub you can
 - [Customer Support Agent](https://docs.assistantshub.ai/docs/demos/customer-support-agent)
 - [Creative Recipe Suggestions](https://docs.assistantshub.ai/docs/demos/creative-recipe-suggestions)
 
-![British Slang](./docs/british-slang.gif)
+![British Slang](./docs/math-tutor.gif)
 
 </div>
 
