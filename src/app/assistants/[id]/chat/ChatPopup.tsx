@@ -4,7 +4,7 @@ import { ChatProps } from '@/app/assistants/[id]/chat/ChatProps';
 import ChatHeader from '@/app/assistants/[id]/chat/ChatHeader';
 import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
 import { getStyleHash } from '@/app/utils/hash';
-import { Button, Textarea } from 'flowbite-react';
+import { Button, Textarea, TextInput } from 'flowbite-react';
 import React, { useState, useRef, useEffect } from 'react';
 import { Message } from '@/app/types/message';
 import {
@@ -12,20 +12,20 @@ import {
   createRun,
   createThread,
   getMessages,
-  getRun,
 } from '@/app/assistants/[id]/client';
 import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
 import { getFingerprint } from '@thumbmarkjs/thumbmarkjs';
 import { streamAsyncIterator } from '@/app/utils/streamAsyncIterator';
 import parseEventsFromChunk from '@/app/utils/parseEventsFromChunk';
-import Image from 'next/image';
 import ChatMessageStreaming from '@/app/assistants/[id]/chat/ChatMessageStreaming';
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+export interface ChatPopupProps extends ChatProps {
+  minimize: boolean;
+  setMinimize: (minimize: boolean) => void;
+}
 
-export default function ChatPopup(props: ChatProps) {
+export default function ChatPopup(props: ChatPopupProps) {
   const bottomRef = useRef(null);
-  const [fullScreen, setFullScreen] = useState(false);
   const [typedMessage, setTypedMessage] = useState('');
   const [messageStatus, setMessageStatus] = useState('' as string);
   const [streamText, setStreamText] = useState<string>('');
@@ -163,9 +163,7 @@ export default function ChatPopup(props: ChatProps) {
     <>
       <div
         className={
-          fullScreen
-            ? 'relative flex min-h-[calc(100vh-28rem)] min-w-[calc(100vw-5rem)] flex-auto rounded-lg bg-white dark:bg-gray-800'
-            : 'relative flex max-h-full w-full flex-auto rounded-lg bg-white'
+          'relative flex max-h-full w-full flex-auto rounded-lg bg-white'
         }
       >
         <div
@@ -176,21 +174,17 @@ export default function ChatPopup(props: ChatProps) {
         ></div>
         <div
           className={
-            fullScreen
-              ? 'flex min-w-[calc(100vw-5rem)] flex-col space-y-4 p-4'
-              : 'flex min-w-[calc(100vw-5rem)] flex-col space-y-4 p-4 md:min-w-max'
+            'flex min-w-[calc(100vw-5rem)] flex-col space-y-4 p-4 md:min-w-max'
           }
         >
           <ChatHeader
             assistant={props.assistant}
-            fullScreen={fullScreen}
-            setFullScreen={setFullScreen}
+            minimize={props.minimize}
+            setMinimize={props.setMinimize}
           />
           <div
             className={
-              fullScreen
-                ? 'max-w-8xl relative z-10 items-center justify-center self-center'
-                : 'relative z-10 max-w-lg items-center justify-center self-center'
+              'relative z-10 max-w-md items-center justify-center self-center'
             }
           >
             <div
@@ -202,13 +196,11 @@ export default function ChatPopup(props: ChatProps) {
               <div className='flex flex-col space-y-2 rounded-b rounded-t-none border border-t-0'>
                 <div
                   className={
-                    fullScreen
-                      ? 'max-h-[calc(100vh-30rem)] min-h-[calc(100vh-30rem)] self-center overflow-y-auto bg-white'
-                      : 'max-h-80 flex-grow-0 overflow-y-auto bg-white'
+                    'max-h-[calc(100vh-50vh)] min-h-[calc(100vh-50vh)] overflow-y-auto bg-white'
                   }
                 >
                   <div
-                    className='flex max-w-4xl flex-col gap-3 self-center overflow-y-auto px-6 py-4'
+                    className='flex max-w-2xl flex-col gap-3 self-center overflow-y-auto px-6 py-4'
                     ref={messagesRef}
                   >
                     {messages.map((message: Message, index) => {
@@ -254,7 +246,7 @@ export default function ChatPopup(props: ChatProps) {
                 <></>
               )}
               <div className='flex items-center justify-center rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-700'>
-                <Textarea
+                <TextInput
                   className='mx-4 block w-full rounded-lg border bg-white text-sm text-gray-900 dark:text-white dark:placeholder-gray-400'
                   placeholder='Your message...'
                   readOnly={false}
@@ -269,20 +261,14 @@ export default function ChatPopup(props: ChatProps) {
                   onChange={(event) => {
                     setTypedMessage(event.target.value);
                   }}
-                ></Textarea>
+                ></TextInput>
+                {/* // @ts-ignore */}
                 <Button
-                  type='submit'
-                  className='inline-flex cursor-pointer justify-center p-1 dark:hover:bg-gray-600'
+                  as='span'
+                  className='inline-flex cursor-pointer justify-center border-transparent bg-transparent'
                   style={{
                     color: getStyleHash(props.assistant.id).primaryColor,
                   }}
-                  disabled={
-                    !typedMessage ||
-                    !typedMessage.trim() ||
-                    typedMessage.length <= 0 ||
-                    messageStatus === 'in_progress'
-                  }
-                  color={'gray'}
                   onClick={handleSendMessage}
                 >
                   <svg

@@ -1,10 +1,11 @@
 'use client';
 
 import ChatPopup from '@/app/assistants/[id]/chat/ChatPopup';
-import { Avatar, Dropdown, Spinner } from 'flowbite-react';
+import { Avatar, Dropdown, Spinner, Button } from 'flowbite-react';
 import { getImageHash } from '@/app/utils/hash';
 import { useGetAssistant } from '@/app/assistants/[id]/client';
 import React, { useEffect } from 'react';
+import Link from 'next/link';
 
 export interface ChatAgentProps {
   assistant_id: string;
@@ -12,6 +13,7 @@ export interface ChatAgentProps {
 
 export default function ChatAgent(props: ChatAgentProps) {
   const dropDownDiv = React.useRef<HTMLDivElement | null>(null);
+  const [showPopup, setShowPopup] = React.useState(false);
 
   let { assistantLoading, assistant, assistantEmpty, reload } = useGetAssistant(
     props.assistant_id
@@ -21,8 +23,18 @@ export default function ChatAgent(props: ChatAgentProps) {
     // TODO: This is a hack to open the dropdown on page load
     // @ts-lint:disable-next-line no-unresolved-method-or-function
     // @ts-ignore
-    dropDownDiv.current?.firstChild?.click();
+    //dropDownDiv.current?.firstChild?.click();
   }, [dropDownDiv]);
+
+  const handleChatAgentClick = () => {
+    if (!showPopup) {
+      setShowPopup(true);
+    }
+  };
+
+  const hidePopup = () => {
+    setShowPopup(false);
+  };
 
   const getAssistantAvatar = () => {
     if (assistant) {
@@ -44,24 +56,27 @@ export default function ChatAgent(props: ChatAgentProps) {
 
   return (
     <div className='stack items-center justify-center'>
-      <div data-dial-init className='group fixed bottom-10 right-10'>
-        <div className='flex flex-row-reverse pt-5' ref={dropDownDiv}>
-          <Dropdown
-            label={
-              assistantLoading ? (
+      <div data-dial-init className='group fixed bottom-1 right-1'>
+        <div className='flex flex-row-reverse' ref={dropDownDiv}>
+          {!showPopup ? (
+            <Button
+              as='span'
+              className='border-transparent bg-transparent'
+              onClick={() => handleChatAgentClick()}
+            >
+              {assistantLoading ? (
                 <Spinner color='info' aria-label='Loading assistant..' />
               ) : (
                 getAssistantAvatar()
-              )
-            }
-            placement={'top-end'}
-            arrowIcon={false}
-            inline={true}
-            dismissOnClick={false}
-            className='border-transparent bg-transparent'
-          >
-            {!assistantLoading ? <ChatPopup assistant={assistant} /> : <></>}
-          </Dropdown>
+              )}
+            </Button>
+          ) : (
+            <ChatPopup
+              assistant={assistant}
+              minimize={!showPopup}
+              setMinimize={hidePopup}
+            />
+          )}
         </div>
       </div>
     </div>
