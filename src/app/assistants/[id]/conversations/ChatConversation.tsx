@@ -27,7 +27,7 @@ export default function ChatConversation(props: ChatMessageProps) {
       ).then(([status, response]) => {
         let collection = [];
         for (let i = 0; i < response.data.length; i++) {
-          collection.push(response.data[i].object);
+          collection.push(response.data[i]);
         }
         setLoading(false);
         setMessages(collection);
