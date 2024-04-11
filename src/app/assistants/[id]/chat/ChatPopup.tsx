@@ -25,8 +25,6 @@ import {
 } from '@/app/utils/store';
 import ChatDisMissalAlert from '@/app/assistants/[id]/chat/ChatDismissalAlert';
 
-const SESSION_STORAGE_THREAD_KEY = 'ai.assistantshub.thread';
-
 export interface ChatPopupProps extends ChatProps {
   hide: boolean;
   setHide: (minimize: boolean) => void;
@@ -68,7 +66,7 @@ export default function ChatPopup(props: ChatPopupProps) {
       });
 
     // Check to see if there is a thread in the session storage
-    let threadId = getItemWithExpiry<string>(SESSION_STORAGE_THREAD_KEY);
+    let threadId = getItemWithExpiry<string>(getAssistantThreadStorageKey());
     if (threadId) {
       setCurrentThread(threadId);
       getMessages(props.assistant.id, threadId || '', '').then(
@@ -93,6 +91,11 @@ export default function ChatPopup(props: ChatPopupProps) {
     }
   }, [currentMessage]);
 
+  useEffect(() => {
+    // @ts-ignore
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [streamText]);
+
   const sendMessageAndPoll = async () => {
     if (!currentMessage) {
       return;
@@ -107,7 +110,7 @@ export default function ChatPopup(props: ChatPopupProps) {
       thread = threadResponse.id;
       setCurrentThread(threadResponse.id);
       setItemWithExpiry(
-        SESSION_STORAGE_THREAD_KEY,
+        getAssistantThreadStorageKey(),
         threadResponse.id,
         24 * 60 * 60 * 1000
       );
@@ -158,11 +161,6 @@ export default function ChatPopup(props: ChatPopupProps) {
     }
   };
 
-  useEffect(() => {
-    // @ts-ignore
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  }, [streamText]);
-
   const handleSendMessage = async () => {
     if (!typedMessage || !typedMessage.trim() || typedMessage.length <= 0) {
       return;
@@ -186,9 +184,13 @@ export default function ChatPopup(props: ChatPopupProps) {
     setMessageStatus('in_progress' as string);
   };
 
+  const getAssistantThreadStorageKey = () => {
+    return `ai.assistantshub.assistant.${props.assistant.id}.thread`;
+  };
+
   const closeChatPopup = (confirmation: boolean) => {
     if (confirmation) {
-      removeItem(SESSION_STORAGE_THREAD_KEY);
+      removeItem(getAssistantThreadStorageKey());
       props.setHide(true);
     }
   };
