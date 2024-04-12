@@ -2,12 +2,13 @@ import React, { useRef, useState } from 'react';
 import ReactCrop, { Crop, centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-import { Button, FileInput, Label, Modal } from 'flowbite-react';
+import { Avatar, Button, FileInput, Label, Modal } from 'flowbite-react';
 import { Assistant } from '@/app/types/assistant';
 
 import { type PutBlobResult } from '@vercel/blob';
 import { upload } from '@vercel/blob/client';
 import { toast } from 'react-hot-toast';
+import { getImageHash } from '@/app/utils/hash';
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -136,16 +137,31 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
 
   return (
     <div className='space-y-6 p-6'>
-      <div id='fileUpload' className='max-w-md'>
-        <div className='mb-2 block'>
-          <Label htmlFor='file' value='Agent Avatar' />
+      <div id='fileUpload' className='grid max-w-2xl grid-cols-3'>
+        <div className={'col-span-2'}>
+          <div className='mb-2 block'>
+            <Label htmlFor='file' value='Agent Avatar' />
+          </div>
+          <FileInput
+            id='file'
+            accept='image/*'
+            onChange={onSelectFile}
+            helperText='This is the avatar image that appears in conversations and external users. Use 512x512 pixel images for best fit and quality. '
+          />
         </div>
-        <FileInput
-          id='file'
-          accept='image/*'
-          onChange={onSelectFile}
-          helperText='Use 512x512 pixel images for best fit and quality. '
-        />
+        {blob && (
+          <div className={'col-span-1 flex justify-end'}>
+            <Avatar
+              img={blob.url}
+              alt='avatar'
+              size='lg'
+              status='online'
+              statusPosition='top-right'
+              color='success'
+              rounded
+            />
+          </div>
+        )}
       </div>
       <Modal show={openModal} size='md' onClose={() => setOpenModal(false)}>
         <Modal.Header>Resize & Crop</Modal.Header>
