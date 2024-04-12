@@ -21,6 +21,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     select: {
       id: true,
       object: true,
+      avatar: true,
     },
   });
 
@@ -30,6 +31,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
       { status: 404 }
     );
   }
+
+  // Inject customization properties into the assistant object
+  if(assistant.object && assistant.avatar) {
+    // @ts-ignore
+    assistant.object.avatar = assistant.avatar;
+  }
+
   return Response.json(assistant.object, { status: 200 });
 }
 

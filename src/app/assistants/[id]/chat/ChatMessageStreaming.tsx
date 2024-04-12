@@ -14,7 +14,11 @@ export default function ChatMessageStreaming(props: ChatMessageStreamingProps) {
       <Image
         className='h-8 w-8 rounded-full'
         src={
-          '/images/people/avatar/' + getImageHash(props.assistant.id) + '.jpg'
+          props.assistant.avatar
+            ? props.assistant.avatar
+            : '/images/people/avatar/' +
+              getImageHash(props.assistant.id) +
+              '.jpg'
         }
         width={32}
         height={32}

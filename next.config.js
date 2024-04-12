@@ -15,7 +15,14 @@ const nextConfig = {
     ];
   },
   images: {
-    domains: ['flagcdn.com'],
+    domains: ['flagcdn.com', 'vercel-storage.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+        port: '',
+      },
+    ],
   },
 };
 

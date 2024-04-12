@@ -149,19 +149,28 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
             helperText='This is the avatar image that appears in conversations and external users. Use 512x512 pixel images for best fit and quality. '
           />
         </div>
-        {blob && (
-          <div className={'col-span-1 flex justify-end'}>
-            <Avatar
-              img={blob.url}
-              alt='avatar'
-              size='lg'
-              status='online'
-              statusPosition='top-right'
-              color='success'
-              rounded
-            />
-          </div>
-        )}
+        {(blob && blob.url) ||
+          (props.assistant.avatar && (
+            <div className={'col-span-1 flex justify-end'}>
+              <Avatar
+                img={
+                  blob && blob.url
+                    ? blob.url
+                    : props.assistant.avatar
+                      ? props.assistant.avatar
+                      : '/images/people/avatar/' +
+                        getImageHash(props.assistant.id) +
+                        '.jpg'
+                }
+                alt='avatar'
+                size='lg'
+                status='online'
+                statusPosition='top-right'
+                color='success'
+                rounded
+              />
+            </div>
+          ))}
       </div>
       <Modal show={openModal} size='md' onClose={() => setOpenModal(false)}>
         <Modal.Header>Resize & Crop</Modal.Header>

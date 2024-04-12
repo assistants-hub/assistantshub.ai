@@ -41,7 +41,11 @@ export default function ChatAgent(props: ChatAgentProps) {
       return (
         <Avatar
           img={
-            '/images/people/avatar/' + getImageHash(props.assistant_id) + '.jpg'
+            assistant.avatar
+              ? assistant.avatar
+              : '/images/people/avatar/' +
+                getImageHash(props.assistant_id) +
+                '.jpg'
           }
           alt='avatar'
           size='lg'
