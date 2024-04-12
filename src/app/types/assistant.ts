@@ -13,4 +13,5 @@ export interface Assistant {
   file_ids?: string[];
   metadata?: Record<string, string>;
   avatar?: string;
+  profile?: string;
 }

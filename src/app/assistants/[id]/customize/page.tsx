@@ -7,7 +7,8 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import React, { useEffect } from 'react';
 import { Table } from 'flowbite-react';
-import ImageCropUpload from '@/app/assistants/[id]/customize/ImageCropUpload';
+import AvatarCropUpload from '@/app/assistants/[id]/customize/AvatarCropUpload';
+import ProfileCropUpload from '@/app/assistants/[id]/customize/ProfileCropUpload';
 
 export default function Customize() {
   const params = useParams<{ id: string }>();
@@ -20,15 +21,20 @@ export default function Customize() {
   });
 
   return assistant.id ? (
-    <div className='flex flex-col gap-4'>
+    <div className='max-w-screen flex flex-col gap-4'>
       <ChatAgent assistant_id={assistant.id} />
       <h3 className='pb-4 text-3xl font-bold dark:text-white'>Customize</h3>
       <div>
-        <Table className='flex-auto'>
+        <Table className='max-w-3xl flex-auto'>
           <Table.Body className='divide-y'>
             <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
               <Table.Cell>
-                <ImageCropUpload assistant={assistant} />
+                <AvatarCropUpload assistant={assistant} />
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+              <Table.Cell>
+                <ProfileCropUpload assistant={assistant} />
               </Table.Cell>
             </Table.Row>
           </Table.Body>

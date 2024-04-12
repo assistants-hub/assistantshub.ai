@@ -74,9 +74,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
       select: {
         id: true,
         object: true,
+        profile: true,
       },
     });
     let assistantsCollection = assistants.map((assistant) => {
+      if (assistant.object) {
+        // @ts-ignore
+        assistant.object.profile = assistant.profile;
+      }
       return assistant.object;
     });
     return Response.json(assistantsCollection, { status: 200 });

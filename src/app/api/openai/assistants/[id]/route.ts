@@ -22,6 +22,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       id: true,
       object: true,
       avatar: true,
+      profile: true,
     },
   });
 
@@ -33,9 +34,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
   }
 
   // Inject customization properties into the assistant object
-  if(assistant.object && assistant.avatar) {
+  if (assistant.object) {
     // @ts-ignore
     assistant.object.avatar = assistant.avatar;
+    // @ts-ignore
+    assistant.object.profile = assistant.profile;
   }
 
   return Response.json(assistant.object, { status: 200 });

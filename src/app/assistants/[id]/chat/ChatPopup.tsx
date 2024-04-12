@@ -203,7 +203,7 @@ export default function ChatPopup(props: ChatPopupProps) {
         }
       >
         <div
-          className={'absolute z-0 h-48 w-full rounded-t-lg'}
+          className={'absolute h-48 w-full rounded-t-lg'}
           style={{
             backgroundColor: getStyleHash(props.assistant.id).primaryColor,
           }}

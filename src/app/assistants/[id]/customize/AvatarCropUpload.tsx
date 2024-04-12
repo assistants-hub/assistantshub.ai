@@ -30,7 +30,7 @@ function centerAspectCrop(
   );
 }
 
-const ImageCropUpload = (props: { assistant: Assistant }) => {
+const AvatarCropUpload = (props: { assistant: Assistant }) => {
   const [src, setSrc] = useState<string | null>(null);
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
@@ -140,7 +140,7 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
       <div id='fileUpload' className='grid max-w-2xl grid-cols-3'>
         <div className={'col-span-2'}>
           <div className='mb-2 block'>
-            <Label htmlFor='file' value='Agent Avatar' />
+            <Label htmlFor='file' value='Assistant Avatar' />
           </div>
           <FileInput
             id='file'
@@ -151,7 +151,7 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
         </div>
         {(blob && blob.url) ||
           (props.assistant.avatar && (
-            <div className={'col-span-1 flex justify-end'}>
+            <div className={'col-span-1 flex justify-center'}>
               <Avatar
                 img={
                   blob && blob.url
@@ -220,4 +220,4 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
   );
 };
 
-export default ImageCropUpload;
+export default AvatarCropUpload;

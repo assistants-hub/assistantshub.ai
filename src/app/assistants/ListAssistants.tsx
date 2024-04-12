@@ -44,7 +44,11 @@ export default function ListAssistants() {
                     width={296}
                     height={296}
                     src={
-                      '/images/people/' + getImageHash(assistant.id) + '.jpg'
+                      assistant.profile
+                        ? assistant.profile
+                        : '/images/people/' +
+                          getImageHash(assistant.id) +
+                          '.jpg'
                     }
                     alt='Assistant'
                     className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'

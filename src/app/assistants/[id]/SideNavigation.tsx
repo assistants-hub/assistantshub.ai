@@ -37,9 +37,11 @@ export default function SideNavigation(props: AssistantComponentProps) {
                   width={296}
                   height={296}
                   src={
-                    '/images/people/' +
-                    getImageHash(props.assistant.id) +
-                    '.jpg'
+                    props.assistant.profile
+                      ? props.assistant.profile
+                      : '/images/people/' +
+                        getImageHash(props.assistant.id) +
+                        '.jpg'
                   }
                   alt='Assistant'
                   className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'
