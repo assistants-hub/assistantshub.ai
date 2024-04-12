@@ -11,9 +11,15 @@ dependencies:
   '@thumbmarkjs/thumbmarkjs':
     specifier: ^0.14.4
     version: 0.14.4
+  '@types/react-image-crop':
+    specifier: ^8.1.6
+    version: 8.1.6
   '@vercel/analytics':
     specifier: ^1.1.2
     version: 1.1.2
+  '@vercel/blob':
+    specifier: ^0.22.3
+    version: 0.22.3
   '@vercel/edge':
     specifier: ^1.1.1
     version: 1.1.1
@@ -59,6 +65,9 @@ dependencies:
   react-icons:
     specifier: ^4.12.0
     version: 4.12.0(react@18.2.0)
+  react-image-crop:
+    specifier: ^11.0.5
+    version: 11.0.5(react@18.2.0)
   swr:
     specifier: ^2.2.4
     version: 2.2.4(react@18.2.0)
@@ -697,6 +706,14 @@ packages:
       {
         integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==,
       }
+    dev: false
+
+  /@fastify/busboy@2.1.1:
+    resolution:
+      {
+        integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==,
+      }
+    engines: { node: '>=14' }
     dev: false
 
   /@floating-ui/core@1.5.3:
@@ -1655,6 +1672,15 @@ packages:
       '@types/react': 18.2.47
     dev: true
 
+  /@types/react-image-crop@8.1.6:
+    resolution:
+      {
+        integrity: sha512-mH3qs5sk2lq0JitgAOyyFeQQ8Zlz+yCIhn4CNznmoRyH4PIRMpZUWi+hGqLyUeKTSMAg+daS3txHMR3oBAkkRg==,
+      }
+    dependencies:
+      '@types/react': 18.2.47
+    dev: false
+
   /@types/react@18.2.47:
     resolution:
       {
@@ -1784,6 +1810,19 @@ packages:
       }
     dependencies:
       server-only: 0.0.1
+    dev: false
+
+  /@vercel/blob@0.22.3:
+    resolution:
+      {
+        integrity: sha512-l0t2KhbOO/I8ZNOl9zypYf1NE0837aO4/CPQNGR/RAxtj8FpdYKjhyUADUXj2gERLQmnhun+teaVs/G7vZJ/TQ==,
+      }
+    engines: { node: '>=16.14' }
+    dependencies:
+      async-retry: 1.3.3
+      bytes: 3.1.2
+      is-buffer: 2.0.5
+      undici: 5.28.4
     dev: false
 
   /@vercel/edge@1.1.1:
@@ -2082,6 +2121,15 @@ packages:
     hasBin: true
     dev: false
 
+  /async-retry@1.3.3:
+    resolution:
+      {
+        integrity: sha512-wfr/jstw9xNi/0teMHrRW7dsz3Lt5ARhYNZ2ewpadnhaIp5mbALhOAP+EAdsC7t4Z6wqsDVv9+W6gm1Dk9mEyw==,
+      }
+    dependencies:
+      retry: 0.13.1
+    dev: false
+
   /asynciterator.prototype@1.0.0:
     resolution:
       {
@@ -2262,6 +2310,14 @@ packages:
     engines: { node: '>=10.16.0' }
     dependencies:
       streamsearch: 1.1.0
+    dev: false
+
+  /bytes@3.1.2:
+    resolution:
+      {
+        integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==,
+      }
+    engines: { node: '>= 0.8' }
     dev: false
 
   /call-bind@1.0.5:
@@ -7147,6 +7203,17 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-image-crop@11.0.5(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-A/Y/kspOzki1zDL/bSgwWIY1X3CQ9F1QwpdnncWLBVAktnKfAZDIQnWmjXzuzEjZHDMsBlArytIcPBVi6DNklg==,
+      }
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-indiana-drag-scroll@2.2.0(react-dom@18.2.0)(react@18.2.0):
     resolution:
       {
@@ -7455,6 +7522,14 @@ packages:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
+
+  /retry@0.13.1:
+    resolution:
+      {
+        integrity: sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg==,
+      }
+    engines: { node: '>= 4' }
+    dev: false
 
   /reusify@1.0.4:
     resolution:
@@ -8459,6 +8534,16 @@ packages:
       {
         integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==,
       }
+
+  /undici@5.28.4:
+    resolution:
+      {
+        integrity: sha512-72RFADWFqKmUb2hmmvNODKL3p9hcB6Gt2DOQMis1SEBaV6a4MH8soBvzg+95CYhCKPFedut2JY9bMfrDl9D23g==,
+      }
+    engines: { node: '>=14.0' }
+    dependencies:
+      '@fastify/busboy': 2.1.1
+    dev: false
 
   /unified@10.1.2:
     resolution:

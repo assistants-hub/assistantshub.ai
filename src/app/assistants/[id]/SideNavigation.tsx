@@ -1,7 +1,13 @@
 'use client';
 
-import { Badge, Card, Sidebar } from 'flowbite-react';
-import { HiColorSwatch, HiChatAlt2, HiCog, HiChartBar } from 'react-icons/hi';
+import { Avatar, Badge, Card, Sidebar } from 'flowbite-react';
+import {
+  HiColorSwatch,
+  HiChatAlt2,
+  HiCog,
+  HiChartBar,
+  HiPuzzle,
+} from 'react-icons/hi';
 import { AssistantComponentProps } from '@/app/assistants/[id]/AssistantComponentProps';
 import { Assistant } from '@/app/types/assistant';
 import Image from 'next/image';
@@ -18,7 +24,7 @@ export default function SideNavigation(props: AssistantComponentProps) {
   };
 
   return (
-    <div className='max-w-screen flex flex-wrap'>
+    <div className='flex flex-wrap'>
       <Sidebar
         aria-label='Sidebar'
         className='flex flex-auto items-center justify-center'
@@ -26,19 +32,19 @@ export default function SideNavigation(props: AssistantComponentProps) {
         <Sidebar.Items>
           <Sidebar.ItemGroup>
             <Card key={props.assistant.id}>
-              <div className='flex flex-col items-center pb-10'>
-                <Image
-                  width={296}
-                  height={296}
-                  src={
-                    '/images/people/' +
+              <div className='flex flex-col items-center'>
+                <Avatar
+                  img={
+                    '/images/people/avatar/' +
                     getImageHash(props.assistant.id) +
                     '.jpg'
                   }
-                  alt='Assistant'
-                  className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'
-                  style={{ width: '100%', height: 'auto' }}
+                  alt='avatar'
+                  size='2xl'
+                  bordered
+                  className={'m-3'}
                 />
+                <br />
                 <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
                   {props.assistant.name}
                 </h5>
@@ -71,6 +77,12 @@ export default function SideNavigation(props: AssistantComponentProps) {
               icon={HiColorSwatch}
             >
               Customize
+            </Sidebar.Item>
+            <Sidebar.Item
+              href={getAssistantComponentUrl(props.assistant, 'integrate')}
+              icon={HiPuzzle}
+            >
+              Integrate
             </Sidebar.Item>
             <Sidebar.Item
               href={getAssistantComponentUrl(props.assistant, 'settings')}

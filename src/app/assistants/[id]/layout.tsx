@@ -19,19 +19,15 @@ export default function AssistantsLayout({
   return (
     <div className='p10'>
       {assistantLoading ? (
-        <div className='bg-grey flex min-h-[calc(100vh-100px)] items-center justify-center '>
+        <div className='bg-grey flex min-h-[calc(100vh-100px)] items-center justify-center'>
           <Spinner />
         </div>
       ) : (
-        <div className='max-w-screen flex grid min-h-[calc(100vh-100px)] grid-cols-1 md:grid-cols-5'>
-          <div className={'col-span-1 items-center justify-center'}>
+        <div className='grid min-h-[calc(100vh-100px)] grid-cols-1 justify-center lg:grid-cols-12'>
+          <div className={'col-span-2 m-2 items-center justify-center'}>
             <SideNavigation assistant={assistant} />
           </div>
-          <div
-            className={
-              'col-span-1 items-center justify-center p-5 md:col-span-4'
-            }
-          >
+          <div className={'col-span-10 m-4 items-center justify-center'}>
             {children}
           </div>
         </div>

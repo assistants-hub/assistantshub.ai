@@ -91,9 +91,9 @@ export default function Analytics() {
   }, [assistant.id, selectedTimePeriod]);
 
   return assistant.id ? (
-    <div className='max-w-screen flex flex-col gap-4'>
+    <div className='flex flex-col gap-4'>
       <h3 className='pb-4 text-3xl font-bold dark:text-white'>Analytics</h3>
-      <div className='max-w-screen flex flex-row-reverse'>
+      <div className='flex flex-row-reverse'>
         <Dropdown label={selectedTimePeriod} outline={true} color={'gray'}>
           <Dropdown.Item onClick={() => userSelectedTimePeriod('Yesterday')}>
             Yesterday
@@ -117,8 +117,8 @@ export default function Analytics() {
           </Dropdown.Item>
         </Dropdown>
       </div>
-      <div className='max-w-screen'>
-        <Card className='max-w-screen min-w-0'>
+      <div>
+        <Card className='min-w-0'>
           <h5 className='text-xl tracking-tight text-gray-900 dark:text-white'>
             Threads
             {threadsLoading ? (
@@ -136,8 +136,8 @@ export default function Analytics() {
           </h5>
         </Card>
       </div>
-      <div className='max-w-screen'>
-        <Card className='max-w-screen min-w-0'>
+      <div>
+        <Card className='min-w-0'>
           <h5 className='text-xl tracking-tight text-gray-900 dark:text-white'>
             Messages
             {messagesLoading ? (
