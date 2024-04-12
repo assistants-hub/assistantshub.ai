@@ -1,27 +1,22 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useGetAssistant, useGetThreads } from '@/app/assistants/[id]/client';
+import { useGetThreads } from '@/app/assistants/[id]/client';
 import { Button, Spinner, Table } from 'flowbite-react';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { formatRelativeUnixTime } from '@/app/utils/date';
-import Image from 'next/image';
 import { HiChatAlt2 } from 'react-icons/hi';
 import ChatConversation from '@/app/assistants/[id]/conversations/ChatConversation';
 import { Thread } from '@/app/types/thread';
 import UserLocation from '@/app/assistants/[id]/conversations/UserLocation';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export default function Conversations() {
   const [openModal, setOpenModal] = useState(false);
   const [currentThread, setCurrentThread] = useState(null as Thread | null);
 
-  const params = useParams<{ id: string }>();
-  let { assistantLoading, assistant, assistantEmpty } = useGetAssistant(
-    params.id
-  );
+  const { assistant } = useContext(AssistantContext);
 
-  let useGetThreads1 = useGetThreads(params.id);
-  let { threadsLoading, threads, threadsEmpty } = useGetThreads1;
+  let { threadsLoading, threads, threadsEmpty } = useGetThreads(assistant.id);
 
   return assistant.id ? (
     !threadsLoading ? (

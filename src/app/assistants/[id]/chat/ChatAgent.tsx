@@ -15,9 +15,10 @@ export default function ChatAgent(props: ChatAgentProps) {
   const dropDownDiv = React.useRef<HTMLDivElement | null>(null);
   const [showPopup, setShowPopup] = React.useState(false);
 
-  let { assistantLoading, assistant, assistantEmpty, reload } = useGetAssistant(
-    props.assistant_id
-  );
+  let { assistantLoading, assistantResponse, assistantEmpty, reload } =
+    useGetAssistant(props.assistant_id);
+
+  const assistant = assistantResponse;
 
   useEffect(() => {
     // TODO: This is a hack to open the dropdown on page load

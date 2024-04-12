@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import ReactCrop, { Crop, centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -9,7 +9,9 @@ import { type PutBlobResult } from '@vercel/blob';
 import { upload } from '@vercel/blob/client';
 import { toast } from 'react-hot-toast';
 import { getImageHash } from '@/app/utils/hash';
-//import Image from 'next/image';
+import NextImage from 'next/image';
+import { useGetAssistant } from '@/app/assistants/[id]/client';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -31,8 +33,9 @@ function centerAspectCrop(
   );
 }
 
-const ProfileCropUpload = (props: { assistant: Assistant }) => {
+const ProfileCropUpload = () => {
   const [src, setSrc] = useState<string | null>(null);
+  const { assistant, setAssistant } = useContext(AssistantContext);
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
     width: 50,
@@ -113,7 +116,7 @@ const ProfileCropUpload = (props: { assistant: Assistant }) => {
           return;
         }
         // @ts-ignore
-        blob.name = props.assistant.id + '.jpeg';
+        blob.name = assistant.id + '.jpeg';
         if (croppedImageUrl)
           // @ts-ignore
           window.URL.revokeObjectURL(croppedImageUrl);
@@ -127,12 +130,13 @@ const ProfileCropUpload = (props: { assistant: Assistant }) => {
   const uploadCroppedImage = async () => {
     setUploading(true);
     const croppedImage = await getCroppedImg();
-    const newBlob = await upload(props.assistant.id + '.jpeg', croppedImage, {
+    const newBlob = await upload(assistant.id + '.jpeg', croppedImage, {
       access: 'public',
-      handleUploadUrl: `/api/openai/assistants/${props.assistant.id}/profile`,
+      handleUploadUrl: `/api/openai/assistants/${assistant.id}/profile`,
     });
 
     setBlob(newBlob);
+    setAssistant({ ...assistant, profile: newBlob.url });
     setUploading(false);
   };
 
@@ -150,27 +154,22 @@ const ProfileCropUpload = (props: { assistant: Assistant }) => {
             helperText='This is the profile image that appears in dashboard and other marketing material. Use 1500x1200 pixel images for best fit and quality. '
           />
         </div>
-        {(blob && blob.url) ||
-          (props.assistant.avatar && (
-            <div className={'col-span-1 ml-10 flex justify-end'}>
-              <img
-                width={296}
-                height={296}
-                src={
-                  blob && blob.url
-                    ? blob.url
-                    : props.assistant.profile
-                      ? props.assistant.profile
-                      : '/images/people/' +
-                        getImageHash(props.assistant.id) +
-                        '.jpg'
-                }
-                alt='Assistant'
-                className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </div>
-          ))}
+        {assistant.profile && (
+          <div className={'col-span-1 ml-10 flex justify-end'}>
+            <NextImage
+              width={296}
+              height={296}
+              src={
+                assistant.profile
+                  ? assistant.profile
+                  : '/images/people/' + getImageHash(assistant.id) + '.jpg'
+              }
+              alt='Assistant'
+              className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </div>
+        )}
       </div>
       <Modal show={openModal} size='md' onClose={() => setOpenModal(false)}>
         <Modal.Header>Resize & Crop</Modal.Header>

@@ -16,7 +16,7 @@ export function useGetAssistant(id: string) {
 
   return useMemo(
     () => ({
-      assistant: data as Assistant,
+      assistantResponse: data as Assistant,
       assistantLoading: isLoading,
       assistantError: error,
       assistantValidating: isValidating,

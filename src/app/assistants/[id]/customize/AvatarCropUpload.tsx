@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import ReactCrop, { Crop, centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -9,6 +9,7 @@ import { type PutBlobResult } from '@vercel/blob';
 import { upload } from '@vercel/blob/client';
 import { toast } from 'react-hot-toast';
 import { getImageHash } from '@/app/utils/hash';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 function centerAspectCrop(
   mediaWidth: number,
@@ -30,7 +31,9 @@ function centerAspectCrop(
   );
 }
 
-const AvatarCropUpload = (props: { assistant: Assistant }) => {
+const AvatarCropUpload = () => {
+  const { assistant, setAssistant } = useContext(AssistantContext);
+
   const [src, setSrc] = useState<string | null>(null);
   const [crop, setCrop] = useState<Crop>({
     unit: '%',
@@ -112,7 +115,7 @@ const AvatarCropUpload = (props: { assistant: Assistant }) => {
           return;
         }
         // @ts-ignore
-        blob.name = props.assistant.id + '.jpeg';
+        blob.name = assistant.id + '.jpeg';
         if (croppedImageUrl)
           // @ts-ignore
           window.URL.revokeObjectURL(croppedImageUrl);
@@ -126,12 +129,13 @@ const AvatarCropUpload = (props: { assistant: Assistant }) => {
   const uploadCroppedImage = async () => {
     setUploading(true);
     const croppedImage = await getCroppedImg();
-    const newBlob = await upload(props.assistant.id + '.jpeg', croppedImage, {
+    const newBlob = await upload(assistant.id + '.jpeg', croppedImage, {
       access: 'public',
-      handleUploadUrl: `/api/openai/assistants/${props.assistant.id}/avatar`,
+      handleUploadUrl: `/api/openai/assistants/${assistant.id}/avatar`,
     });
 
     setBlob(newBlob);
+    setAssistant({ ...assistant, avatar: newBlob.url });
     setUploading(false);
   };
 
@@ -149,28 +153,25 @@ const AvatarCropUpload = (props: { assistant: Assistant }) => {
             helperText='This is the avatar image that appears in conversations and external users. Use 512x512 pixel images for best fit and quality. '
           />
         </div>
-        {(blob && blob.url) ||
-          (props.assistant.avatar && (
-            <div className={'col-span-1 flex justify-center'}>
-              <Avatar
-                img={
-                  blob && blob.url
-                    ? blob.url
-                    : props.assistant.avatar
-                      ? props.assistant.avatar
-                      : '/images/people/avatar/' +
-                        getImageHash(props.assistant.id) +
-                        '.jpg'
-                }
-                alt='avatar'
-                size='lg'
-                status='online'
-                statusPosition='top-right'
-                color='success'
-                rounded
-              />
-            </div>
-          ))}
+        {assistant.avatar && (
+          <div className={'col-span-1 flex justify-center'}>
+            <Avatar
+              img={
+                assistant.avatar
+                  ? assistant.avatar
+                  : '/images/people/avatar/' +
+                    getImageHash(assistant.id) +
+                    '.jpg'
+              }
+              alt='avatar'
+              size='lg'
+              status='online'
+              statusPosition='top-right'
+              color='success'
+              rounded
+            />
+          </div>
+        )}
       </div>
       <Modal show={openModal} size='md' onClose={() => setOpenModal(false)}>
         <Modal.Header>Resize & Crop</Modal.Header>

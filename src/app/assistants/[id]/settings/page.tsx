@@ -1,30 +1,17 @@
 'use client';
 
-import {
-  Button,
-  Label,
-  Modal,
-  Select,
-  Spinner,
-  Table,
-  Textarea,
-  TextInput,
-  ToggleSwitch,
-} from 'flowbite-react';
-import React, { useState } from 'react';
+import { Button, Modal, Table } from 'flowbite-react';
+import React, { useContext, useState } from 'react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { useParams } from 'next/navigation';
-import { deleteAssistant, useGetAssistant } from '@/app/assistants/[id]/client';
+import { deleteAssistant } from '@/app/assistants/[id]/client';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import EditAssistant from '@/app/assistants/[id]/settings/EditAssistant';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export default function Settings() {
   const [openModal, setOpenModal] = useState(false);
-  const params = useParams<{ id: string }>();
-  let { assistantLoading, assistant, assistantEmpty, reload } = useGetAssistant(
-    params.id
-  );
+  const { assistant } = useContext(AssistantContext);
 
   const { push } = useRouter();
 

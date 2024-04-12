@@ -1,22 +1,20 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import {
   getMessageMetrics,
   getThreadMetrics,
-  useGetAssistant,
 } from '@/app/assistants/[id]/client';
 import 'highlight.js/styles/github.css';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Card, Dropdown, Spinner } from 'flowbite-react';
 import Chart from 'react-apexcharts';
 import {
   formatResultsForTimespan,
   getMetricsRequestForTimespan,
 } from '@/app/assistants/[id]/analytics/timespans';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export default function Analytics() {
-  const params = useParams<{ id: string }>();
   const [selectedTimePeriod, setSelectedTimePeriod] = useState('Last 7 days');
   const [threadsLoading, setThreadsLoading] = useState(true);
   const [threadsSeries, setThreadsSeries] = useState([
@@ -26,9 +24,8 @@ export default function Analytics() {
   const [messagesSeries, setMessagesSeries] = useState([
     { name: 'Messages', data: [] },
   ]);
-  let { assistantLoading, assistant, assistantEmpty, reload } = useGetAssistant(
-    params.id
-  );
+
+  const { assistant } = useContext(AssistantContext);
 
   const chartOptions: any = {
     chart: {

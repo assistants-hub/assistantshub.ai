@@ -8,13 +8,15 @@ import {
   HiChartBar,
   HiPuzzle,
 } from 'react-icons/hi';
-import { AssistantComponentProps } from '@/app/assistants/[id]/AssistantComponentProps';
 import { Assistant } from '@/app/types/assistant';
 import Image from 'next/image';
 import { getImageHash } from '@/app/utils/hash';
-import React from 'react';
+import React, { useContext } from 'react';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
-export default function SideNavigation(props: AssistantComponentProps) {
+export default function SideNavigation() {
+  const { assistant } = useContext(AssistantContext);
+
   const getAssistantComponentUrl = (
     assistant: Assistant,
     component: string
@@ -31,17 +33,15 @@ export default function SideNavigation(props: AssistantComponentProps) {
       >
         <Sidebar.Items>
           <Sidebar.ItemGroup>
-            <Card key={props.assistant.id}>
+            <Card key={assistant.id}>
               <div className='flex flex-col items-center'>
                 <Image
                   width={296}
                   height={296}
                   src={
-                    props.assistant.profile
-                      ? props.assistant.profile
-                      : '/images/people/' +
-                        getImageHash(props.assistant.id) +
-                        '.jpg'
+                    assistant.profile
+                      ? assistant.profile
+                      : '/images/people/' + getImageHash(assistant.id) + '.jpg'
                   }
                   alt='Assistant'
                   className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'
@@ -49,46 +49,46 @@ export default function SideNavigation(props: AssistantComponentProps) {
                 />
                 <br />
                 <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
-                  {props.assistant.name}
+                  {assistant.name}
                 </h5>
                 <span className='text-sm text-gray-500 dark:text-gray-400'>
                   <div className='flex self-center'>
-                    <Badge color='info'>{props.assistant.model}</Badge>
+                    <Badge color='info'>{assistant.model}</Badge>
                   </div>
                 </span>
                 <span className='pt-4 text-sm text-gray-500 dark:text-gray-400'>
-                  {props.assistant.description}
+                  {assistant.description}
                 </span>
               </div>
             </Card>
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup>
             <Sidebar.Item
-              href={getAssistantComponentUrl(props.assistant, 'analytics')}
+              href={getAssistantComponentUrl(assistant, 'analytics')}
               icon={HiChartBar}
             >
               Analytics
             </Sidebar.Item>
             <Sidebar.Item
-              href={getAssistantComponentUrl(props.assistant, 'conversations')}
+              href={getAssistantComponentUrl(assistant, 'conversations')}
               icon={HiChatAlt2}
             >
               Conversations
             </Sidebar.Item>
             <Sidebar.Item
-              href={getAssistantComponentUrl(props.assistant, 'customize')}
+              href={getAssistantComponentUrl(assistant, 'customize')}
               icon={HiColorSwatch}
             >
               Customize
             </Sidebar.Item>
             <Sidebar.Item
-              href={getAssistantComponentUrl(props.assistant, 'integrate')}
+              href={getAssistantComponentUrl(assistant, 'integrate')}
               icon={HiPuzzle}
             >
               Integrate
             </Sidebar.Item>
             <Sidebar.Item
-              href={getAssistantComponentUrl(props.assistant, 'settings')}
+              href={getAssistantComponentUrl(assistant, 'settings')}
               icon={HiCog}
             >
               Settings

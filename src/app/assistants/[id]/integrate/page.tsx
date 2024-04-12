@@ -1,18 +1,15 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useGetAssistant } from '@/app/assistants/[id]/client';
 import ChatAgent from '@/app/assistants/[id]/chat/ChatAgent';
 import Markdown from 'marked-react';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
+import ChatAgentContextWrapper from '@/app/assistants/[id]/chat/ChatAgentContextWrapper';
 
 export default function Customize() {
-  const params = useParams<{ id: string }>();
-  let { assistantLoading, assistant, assistantEmpty, reload } = useGetAssistant(
-    params.id
-  );
+  const { assistant } = useContext(AssistantContext);
 
   useEffect(() => {
     hljs.highlightAll();
@@ -20,7 +17,7 @@ export default function Customize() {
 
   return assistant.id ? (
     <div className='max-w-screen flex flex-col gap-4'>
-      <ChatAgent assistant_id={assistant.id} />
+      <ChatAgentContextWrapper />
       <h3 className='pb-4 text-3xl font-bold dark:text-white'>Integrate</h3>
       <div className='max-w-screen items-center justify-center'>
         <p className='self-center pb-2 text-sm font-normal text-gray-500 dark:text-gray-400 lg:text-lg'>
