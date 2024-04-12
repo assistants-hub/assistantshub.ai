@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Button, Card } from 'flowbite-react';
+import { Badge, Button, Card } from 'flowbite-react';
 import { useGetAssistants } from '@/app/assistants/client';
 import Image from 'next/image';
 import { HiPlus } from 'react-icons/hi';
@@ -40,18 +40,16 @@ export default function ListAssistants() {
             return (
               <Card className='max-w-sm' key={assistant.id}>
                 <div className='flex flex-col items-center pb-10'>
-                  <Avatar
-                    img={
-                      '/images/people/avatar/' +
-                      getImageHash(assistant.id) +
-                      '.jpg'
+                  <Image
+                    width={296}
+                    height={296}
+                    src={
+                      '/images/people/' + getImageHash(assistant.id) + '.jpg'
                     }
-                    alt='avatar'
-                    size='2xl'
-                    bordered
-                    className={'m-10'}
+                    alt='Assistant'
+                    className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'
+                    style={{ width: '100%', height: 'auto' }}
                   />
-                  <br />
                   <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
                     {assistant.name}
                   </h5>

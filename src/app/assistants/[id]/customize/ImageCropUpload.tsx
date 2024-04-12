@@ -18,7 +18,7 @@ function centerAspectCrop(
     makeAspectCrop(
       {
         unit: '%',
-        width: 90,
+        width: 100,
       },
       aspect,
       mediaWidth,
@@ -31,13 +31,17 @@ function centerAspectCrop(
 
 const ImageCropUpload = (props: { assistant: Assistant }) => {
   const [src, setSrc] = useState<string | null>(null);
-  const [crop, setCrop] = useState<Crop>({ aspect: 1 } as any);
+  const [crop, setCrop] = useState<Crop>({
+    unit: '%',
+    width: 50,
+    height: 50,
+    x: 25,
+    y: 25,
+  } as any);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
   const [openModal, setOpenModal] = useState(false);
-  const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
-  const [aspect, setAspect] = useState<number | undefined>(16 / 16);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -55,18 +59,16 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
 
   const onImageLoaded = (e: React.SyntheticEvent<HTMLImageElement>) => {
     // You can perform some operations with the loaded image if necessary
-    if (aspect) {
-      const { width, height } = e.currentTarget;
-      setCrop(centerAspectCrop(width, height, aspect));
-    }
+    const { width, height } = e.currentTarget;
+    setCrop(centerAspectCrop(width, height, 1));
   };
 
-  const onCropChange = (crop: Crop) => {
-    setCrop(crop);
+  const onCropChange = (crop: Crop, percentageCrop: Crop) => {
+    setCrop(percentageCrop);
   };
 
-  const onCropComplete = (crop: Crop) => {
-    // You can make final adjustments to the crop here if necessary
+  const onCropComplete = (crop: Crop, percentageCrop: Crop) => {
+    setCrop(percentageCrop);
   };
 
   const getCroppedImg = async (): Promise<Blob> => {
@@ -74,10 +76,16 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
     const image = new Image();
     image.src = src;
     const canvas = document.createElement('canvas');
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
+
+    // percentage
+    crop.x = (crop.x! * image.width) / 100;
+    crop.y = (crop.y! * image.height) / 100;
+    crop.width = (crop.width! * image.width) / 100;
+    crop.height = (crop.height! * image.height) / 100;
+
     canvas.width = crop.width || 0;
     canvas.height = crop.height || 0;
+
     const ctx = canvas.getContext('2d');
 
     if (!ctx) throw new Error('Could not get canvas context');
@@ -86,10 +94,10 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
 
     ctx.drawImage(
       image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
+      crop.x,
+      crop.y,
+      crop.width,
+      crop.height,
       0,
       0,
       crop.width,
@@ -119,7 +127,7 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
     const croppedImage = await getCroppedImg();
     const newBlob = await upload(props.assistant.id + '.jpeg', croppedImage, {
       access: 'public',
-      handleUploadUrl: `/api/assistants/${props.assistant.id}/avatar`,
+      handleUploadUrl: `/api/openai/assistants/${props.assistant.id}/avatar`,
     });
 
     setBlob(newBlob);
@@ -143,12 +151,15 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
         <Modal.Header>Resize & Crop</Modal.Header>
         <Modal.Body>
           {src && (
-            // @ts-ignore
-            <ReactCrop src={src}
+            <ReactCrop
+              // @ts-ignore
+              src={src}
               crop={crop}
-              aspect={1}
               minWidth={512}
+              minHeight={512}
+              maxWidth={512}
               maxHeight={512}
+              ruleOfThirds
               onComplete={onCropComplete}
               onChange={onCropChange}
             >
@@ -156,7 +167,7 @@ const ImageCropUpload = (props: { assistant: Assistant }) => {
                 ref={imgRef}
                 alt='Crop me'
                 src={src}
-                style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                style={{ transform: `rotate(${rotate}deg)` }}
                 onLoad={onImageLoaded}
               />
             </ReactCrop>

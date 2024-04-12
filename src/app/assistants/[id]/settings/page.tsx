@@ -63,8 +63,8 @@ export default function Settings() {
               </td>
             </Table.Row>
             <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-              <td className='flex gap-4'>
-                <Table.Cell className='font-medium text-gray-900 dark:text-white'>
+              <Table.Cell className='flex flex-row p-5 font-medium text-gray-900 dark:text-white'>
+                <div>
                   <h2 className='p2 text-lg text-gray-800'>
                     Delete this assistant
                   </h2>
@@ -72,17 +72,16 @@ export default function Settings() {
                     Once you delete this assistant, there is no going back.
                     Please be certain.
                   </h3>
-                </Table.Cell>
-                <Table.Cell>
-                  <Button
-                    outline
-                    gradientDuoTone='pinkToOrange'
-                    onClick={() => setOpenModal(true)}
-                  >
-                    Delete
-                  </Button>
-                </Table.Cell>
-              </td>
+                </div>
+                <Button
+                  className='ml-auto'
+                  outline
+                  gradientDuoTone='pinkToOrange'
+                  onClick={() => setOpenModal(true)}
+                >
+                  Delete
+                </Button>
+              </Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

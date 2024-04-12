@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
 
+  console.log('coming here', body);
+
   try {
     const jsonResponse = await handleUpload({
       body,
@@ -43,9 +45,8 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     return NextResponse.json(jsonResponse);
   } catch (error) {
-    return NextResponse.json(
-      { message: (error as Error).message },
-      { status: 400 } as any
-    );
+    return NextResponse.json({ message: (error as Error).message }, {
+      status: 400,
+    } as any);
   }
 }

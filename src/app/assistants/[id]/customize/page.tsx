@@ -27,7 +27,9 @@ export default function Customize() {
         <Table className='flex-auto'>
           <Table.Body className='divide-y'>
             <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-              <ImageCropUpload assistant={assistant} />
+              <Table.Cell>
+                <ImageCropUpload assistant={assistant} />
+              </Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

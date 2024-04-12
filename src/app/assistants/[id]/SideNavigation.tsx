@@ -33,16 +33,17 @@ export default function SideNavigation(props: AssistantComponentProps) {
           <Sidebar.ItemGroup>
             <Card key={props.assistant.id}>
               <div className='flex flex-col items-center'>
-                <Avatar
-                  img={
-                    '/images/people/avatar/' +
+                <Image
+                  width={296}
+                  height={296}
+                  src={
+                    '/images/people/' +
                     getImageHash(props.assistant.id) +
                     '.jpg'
                   }
-                  alt='avatar'
-                  size='2xl'
-                  bordered
-                  className={'m-3'}
+                  alt='Assistant'
+                  className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'
+                  style={{ width: '100%', height: 'auto' }}
                 />
                 <br />
                 <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
