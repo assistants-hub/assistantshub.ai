@@ -1,16 +1,18 @@
 import { ChatProps } from '@/app/assistants/[id]/chat/ChatProps';
 import { getImageHash } from '@/app/utils/hash';
 import Image from 'next/image';
+import { useContext } from 'react';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export default function ChatTyping(props: ChatProps) {
+  const { assistant } = useContext(AssistantContext);
+
   return (
     <>
       <div className='flex items-end gap-1 justify-self-start'>
         <Image
           className='h-8 w-8 rounded-full'
-          src={
-            '/images/people/avatar/' + getImageHash(props.assistant.id) + '.jpg'
-          }
+          src={'/images/people/avatar/' + getImageHash(assistant.id) + '.jpg'}
           width={32}
           height={32}
           alt='Assistant'

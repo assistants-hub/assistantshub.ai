@@ -20,7 +20,6 @@ export default function AssistantsLayout({
   const [assistant, setAssistant] = useState<Assistant>(assistantResponse);
 
   useEffect(() => {
-    console.log(assistantResponse);
     if (assistantResponse) {
       setAssistant(assistantResponse);
       setLoading(false);

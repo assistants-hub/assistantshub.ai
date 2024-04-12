@@ -66,7 +66,6 @@ export default function ChatConversation(props: ChatMessageProps) {
                     return (
                       <ChatMessage
                         key={index}
-                        assistant={props.assistant}
                         message={message}
                         username={'Anonymous'}
                       />

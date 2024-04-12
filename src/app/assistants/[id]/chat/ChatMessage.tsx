@@ -5,6 +5,8 @@ import { formatRelativeUnixTime } from '@/app/utils/date';
 import { Message } from '@/app/types/message';
 import Markdown from 'marked-react';
 import Image from 'next/image';
+import { useContext } from 'react';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export interface ChatMessageProps extends ChatProps {
   message: Message;
@@ -12,16 +14,16 @@ export interface ChatMessageProps extends ChatProps {
 }
 
 export default function ChatMessage(props: ChatMessageProps) {
+  const { assistant } = useContext(AssistantContext);
+
   return !props.message.role || props.message.role === 'assistant' ? (
     <div className='flex items-end gap-1 justify-self-start'>
       <Image
         className='h-8 w-8 rounded-full'
         src={
-          props.assistant.avatar
-            ? props.assistant.avatar
-            : '/images/people/avatar/' +
-              getImageHash(props.assistant.id) +
-              '.jpg'
+          assistant.avatar
+            ? assistant.avatar
+            : '/images/people/avatar/' + getImageHash(assistant.id) + '.jpg'
         }
         width={32}
         height={32}
@@ -30,7 +32,7 @@ export default function ChatMessage(props: ChatMessageProps) {
       <div className='leading-1.5 flex w-full flex-col rounded-br-xl rounded-tl-xl rounded-tr-xl border-gray-200 bg-gray-100 p-4 dark:bg-gray-700'>
         <div className='flex items-center space-x-1 rtl:space-x-reverse'>
           <span className='text-sm font-semibold text-gray-900 dark:text-white'>
-            {props.assistant.name}
+            {assistant.name}
           </span>
           <span className='text-xs font-normal text-gray-400 dark:text-gray-400'>
             {formatRelativeUnixTime(props.message.created_at)}

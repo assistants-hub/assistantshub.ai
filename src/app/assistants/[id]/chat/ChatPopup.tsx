@@ -5,7 +5,7 @@ import ChatHeader from '@/app/assistants/[id]/chat/ChatHeader';
 import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
 import { getStyleHash } from '@/app/utils/hash';
 import { Button, Textarea, TextInput } from 'flowbite-react';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Message } from '@/app/types/message';
 import {
   createMessage,
@@ -24,6 +24,7 @@ import {
   setItemWithExpiry,
 } from '@/app/utils/store';
 import ChatDisMissalAlert from '@/app/assistants/[id]/chat/ChatDismissalAlert';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export interface ChatPopupProps extends ChatProps {
   hide: boolean;
@@ -31,6 +32,7 @@ export interface ChatPopupProps extends ChatProps {
 }
 
 export default function ChatPopup(props: ChatPopupProps) {
+  const { assistant } = useContext(AssistantContext);
   const bottomRef = useRef(null);
   const [typedMessage, setTypedMessage] = useState('');
   const [messageStatus, setMessageStatus] = useState('' as string);
@@ -69,7 +71,7 @@ export default function ChatPopup(props: ChatPopupProps) {
     let threadId = getItemWithExpiry<string>(getAssistantThreadStorageKey());
     if (threadId) {
       setCurrentThread(threadId);
-      getMessages(props.assistant.id, threadId || '', '').then(
+      getMessages(assistant.id, threadId || '', '').then(
         ([threadedMessageStatus, threadMessages]) => {
           const newMessages: Message[] = threadMessages.data;
           setStreamText('');
@@ -104,7 +106,7 @@ export default function ChatPopup(props: ChatPopupProps) {
     let thread = currentThread;
     if (!thread) {
       let [status, threadResponse] = await createThread(
-        props.assistant.id,
+        assistant.id,
         fingerprint
       );
       thread = threadResponse.id;
@@ -118,14 +120,14 @@ export default function ChatPopup(props: ChatPopupProps) {
 
     // Send message to thread
     let [messageStatus, messageResponse] = await createMessage(
-      props.assistant.id,
+      assistant.id,
       thread,
       currentMessage
     );
     let currentMessageId = messageResponse.id;
 
     // Run the thread
-    let runResponse = await createRun(props.assistant.id, thread);
+    let runResponse = await createRun(assistant.id, thread);
 
     let textDecoder = new TextDecoder();
 
@@ -147,7 +149,7 @@ export default function ChatPopup(props: ChatPopupProps) {
           if (event.event === 'thread.run.completed') {
             setMessageStatus('completed');
             const [threadedMessageStatus, threadMessages] = await getMessages(
-              props.assistant.id,
+              assistant.id,
               thread || '',
               currentMessageId
             );
@@ -185,7 +187,7 @@ export default function ChatPopup(props: ChatPopupProps) {
   };
 
   const getAssistantThreadStorageKey = () => {
-    return `ai.assistantshub.assistant.${props.assistant.id}.thread`;
+    return `ai.assistantshub.assistant.${assistant.id}.thread`;
   };
 
   const closeChatPopup = (confirmation: boolean) => {
@@ -205,7 +207,7 @@ export default function ChatPopup(props: ChatPopupProps) {
         <div
           className={'absolute h-48 w-full rounded-t-lg'}
           style={{
-            backgroundColor: getStyleHash(props.assistant.id).primaryColor,
+            backgroundColor: getStyleHash(assistant.id).primaryColor,
           }}
         ></div>
         <div
@@ -214,7 +216,6 @@ export default function ChatPopup(props: ChatPopupProps) {
           }
         >
           <ChatHeader
-            assistant={props.assistant}
             minimize={props.hide}
             setMinimize={props.setHide}
             close={() => {
@@ -229,7 +230,7 @@ export default function ChatPopup(props: ChatPopupProps) {
             <div
               className='rounded border-0 border-t-4 text-sm shadow-md'
               style={{
-                borderColor: getStyleHash(props.assistant.id).secondaryColor,
+                borderColor: getStyleHash(assistant.id).secondaryColor,
               }}
             >
               <div className='flex flex-col space-y-2 rounded-b rounded-t-none border border-t-0'>
@@ -246,7 +247,6 @@ export default function ChatPopup(props: ChatPopupProps) {
                       return (
                         <ChatMessage
                           key={index}
-                          assistant={props.assistant}
                           message={message}
                         />
                       );
@@ -254,7 +254,6 @@ export default function ChatPopup(props: ChatPopupProps) {
                     {streamText ? (
                       <>
                         <ChatMessageStreaming
-                          assistant={props.assistant}
                           message={streamText}
                         ></ChatMessageStreaming>
                         <div ref={bottomRef} />
@@ -263,7 +262,7 @@ export default function ChatPopup(props: ChatPopupProps) {
                       <></>
                     )}
                     {messageStatus === 'in_progress' && !streamText ? (
-                      <ChatTyping assistant={props.assistant} />
+                      <ChatTyping />
                     ) : (
                       <></>
                     )}
@@ -274,12 +273,12 @@ export default function ChatPopup(props: ChatPopupProps) {
             <div
               className='z-101 rounded border-0 border-t-4 shadow-md'
               style={{
-                borderColor: getStyleHash(props.assistant.id).secondaryColor,
+                borderColor: getStyleHash(assistant.id).secondaryColor,
               }}
             >
               {messageStatus === 'in_progress' ? (
                 <span className='text-xs font-normal text-gray-500 dark:text-white'>
-                  {props.assistant.name} is typing...
+                  {assistant.name} is typing...
                 </span>
               ) : (
                 <></>
@@ -311,7 +310,7 @@ export default function ChatPopup(props: ChatPopupProps) {
                   as='span'
                   className='inline-flex cursor-pointer justify-center border-transparent bg-transparent'
                   style={{
-                    color: getStyleHash(props.assistant.id).primaryColor,
+                    color: getStyleHash(assistant.id).primaryColor,
                   }}
                   onClick={handleSendMessage}
                 >
