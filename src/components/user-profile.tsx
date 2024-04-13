@@ -7,7 +7,7 @@ import {
   DropdownHeader,
   NavbarLink,
   NavbarCollapse,
-  NavbarToggle,
+  NavbarToggle, DarkThemeToggle, DropdownItem,
 } from 'flowbite-react';
 import { headers } from 'next/headers';
 
@@ -45,8 +45,8 @@ export const UserProfile = async () => {
             }
           >
             <DropdownHeader>
-              <span className='block text-sm'>{session?.user?.name}</span>
-              <span className='block truncate text-sm font-medium'>
+              <span className="block text-sm">{session?.user?.name}</span>
+              <span className="block truncate text-sm font-medium">
                 {session?.user?.email}
               </span>
             </DropdownHeader>
@@ -67,6 +67,9 @@ export const UserProfile = async () => {
         </NavbarLink>
         <NavbarLink href='mailto:santthosh@gmail.com' className='justify-end'>
           <div className='pt-2 text-xl font-normal'>Help</div>
+        </NavbarLink>
+        <NavbarLink className='justify-end'>
+          <DarkThemeToggle />
         </NavbarLink>
       </NavbarCollapse>
     </>

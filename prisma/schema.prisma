@@ -30,6 +30,7 @@ model Assistant {
   account          Account? @relation(fields: [accountOwner, accountOwnerType], references: [owner, ownerType])
   avatar           String?
   profile          String?
+  theme            Json?
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
   Thread           Thread[]

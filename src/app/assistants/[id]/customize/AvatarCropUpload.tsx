@@ -3,7 +3,6 @@ import ReactCrop, { Crop, centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
 import { Avatar, Button, FileInput, Label, Modal } from 'flowbite-react';
-import { Assistant } from '@/app/types/assistant';
 
 import { type PutBlobResult } from '@vercel/blob';
 import { upload } from '@vercel/blob/client';

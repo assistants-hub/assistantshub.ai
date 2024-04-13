@@ -1,8 +1,11 @@
 import { ChatProps } from '@/app/assistants/[id]/chat/ChatProps';
-import { getStyleHash } from '@/app/utils/hash';
 import { HiMinus, HiX } from 'react-icons/hi';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
+import {
+  getPrimaryTextColor,
+  getSecondaryTextColor,
+} from '@/app/utils/assistant';
 
 export interface ChatHeaderProps extends ChatProps {
   minimize: boolean;
@@ -13,11 +16,15 @@ export interface ChatHeaderProps extends ChatProps {
 export default function ChatHeader(props: ChatHeaderProps) {
   const { assistant } = useContext(AssistantContext);
 
+  useEffect(() => {}, [assistant]);
+
   return (
     <>
       <div
         className={
-          'z-10 ml-2 flex flex-col ' + getStyleHash(assistant.id).primaryText
+          'z-10 ml-2 flex flex-col text-[' +
+          getPrimaryTextColor(assistant) +
+          ']'
         }
       >
         <div className='grid grid-cols-2'>
@@ -49,7 +56,9 @@ export default function ChatHeader(props: ChatHeaderProps) {
           </div>
         </div>
         <div
-          className={'w-60 text-xs ' + getStyleHash(assistant.id).secondaryText}
+          className={
+            'w-60 text-xs text-[' + getSecondaryTextColor(assistant) + ']'
+          }
         >
           {assistant.description}
         </div>

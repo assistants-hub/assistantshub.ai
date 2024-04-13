@@ -3,14 +3,14 @@
 import { Button, Modal } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
-export interface ChatDisMissalAlertProps {
+export interface ResetToDefaultsAlertProps {
   openConfirmationModal: boolean;
   setOpenConfirmationModal: (minimize: boolean) => void;
-  handleDismissal: (minimize: boolean) => void;
+  handleConfirmation: (minimize: boolean) => void;
 }
-export default function ChatDisMissalAlert(props: ChatDisMissalAlertProps) {
+export default function ResetToDefaultsAlert(props: ResetToDefaultsAlertProps) {
   const handleConfirmation = (confirmed: boolean) => {
-    props.handleDismissal(confirmed);
+    props.handleConfirmation(confirmed);
     props.setOpenConfirmationModal(false);
   };
 
@@ -26,15 +26,14 @@ export default function ChatDisMissalAlert(props: ChatDisMissalAlertProps) {
           <div className='pt-10 text-center'>
             <HiOutlineExclamationCircle className='mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200' />
             <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
-              This will delete the conversation and all its messages. Are you
-              sure you want to continue?
+              Resetting will restore default settings and remove all customizations. Do you want to proceed?
             </h3>
             <div className='flex justify-center gap-4'>
               <Button color='failure' onClick={() => handleConfirmation(true)}>
-                {'Yes'}
+                {'Confirm'}
               </Button>
               <Button color='gray' onClick={() => handleConfirmation(false)}>
-                {'No'}
+                {'Cancel'}
               </Button>
             </div>
           </div>

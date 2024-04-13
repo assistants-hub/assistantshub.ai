@@ -3,7 +3,6 @@
 import { ChatProps } from '@/app/assistants/[id]/chat/ChatProps';
 import ChatHeader from '@/app/assistants/[id]/chat/ChatHeader';
 import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
-import { getStyleHash } from '@/app/utils/hash';
 import { Button, Textarea, TextInput } from 'flowbite-react';
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Message } from '@/app/types/message';
@@ -25,6 +24,7 @@ import {
 } from '@/app/utils/store';
 import ChatDisMissalAlert from '@/app/assistants/[id]/chat/ChatDismissalAlert';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
+import { getPrimaryColor, getSecondaryColor } from '@/app/utils/assistant';
 
 export interface ChatPopupProps extends ChatProps {
   hide: boolean;
@@ -207,7 +207,7 @@ export default function ChatPopup(props: ChatPopupProps) {
         <div
           className={'absolute h-48 w-full rounded-t-lg'}
           style={{
-            backgroundColor: getStyleHash(assistant.id).primaryColor,
+            backgroundColor: getPrimaryColor(assistant),
           }}
         ></div>
         <div
@@ -230,7 +230,7 @@ export default function ChatPopup(props: ChatPopupProps) {
             <div
               className='rounded border-0 border-t-4 text-sm shadow-md'
               style={{
-                borderColor: getStyleHash(assistant.id).secondaryColor,
+                borderColor: getSecondaryColor(assistant),
               }}
             >
               <div className='flex flex-col space-y-2 rounded-b rounded-t-none border border-t-0'>
@@ -244,12 +244,7 @@ export default function ChatPopup(props: ChatPopupProps) {
                     ref={messagesRef}
                   >
                     {messages.map((message: Message, index) => {
-                      return (
-                        <ChatMessage
-                          key={index}
-                          message={message}
-                        />
-                      );
+                      return <ChatMessage key={index} message={message} />;
                     })}
                     {streamText ? (
                       <>
@@ -273,7 +268,7 @@ export default function ChatPopup(props: ChatPopupProps) {
             <div
               className='z-101 rounded border-0 border-t-4 shadow-md'
               style={{
-                borderColor: getStyleHash(assistant.id).secondaryColor,
+                borderColor: getSecondaryColor(assistant),
               }}
             >
               {messageStatus === 'in_progress' ? (
@@ -310,7 +305,7 @@ export default function ChatPopup(props: ChatPopupProps) {
                   as='span'
                   className='inline-flex cursor-pointer justify-center border-transparent bg-transparent'
                   style={{
-                    color: getStyleHash(assistant.id).primaryColor,
+                    color: getPrimaryColor(assistant),
                   }}
                   onClick={handleSendMessage}
                 >

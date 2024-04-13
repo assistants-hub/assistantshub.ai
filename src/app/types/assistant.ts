@@ -2,6 +2,13 @@ export interface Tool {
   type: string;
 }
 
+export interface AssistantTheme {
+  primaryColor: string;
+  secondaryColor: string;
+  primaryTextColor: string;
+  secondaryTextColor: string;
+}
+
 export interface Assistant {
   id?: string;
   created_at?: number;
@@ -14,4 +21,5 @@ export interface Assistant {
   metadata?: Record<string, string>;
   avatar?: string;
   profile?: string;
+  theme?: AssistantTheme;
 }
