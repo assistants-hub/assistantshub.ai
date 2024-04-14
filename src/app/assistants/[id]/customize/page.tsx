@@ -64,7 +64,7 @@ export default function Customize() {
               ...assistant,
               avatar: null,
               profile: null,
-              theme: {},
+              theme: null,
             });
           }}
         ></ResetToDefaultsAlert>

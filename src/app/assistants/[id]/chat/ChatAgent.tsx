@@ -3,7 +3,7 @@
 import ChatPopup from '@/app/assistants/[id]/chat/ChatPopup';
 import { Avatar, Dropdown, Spinner, Button } from 'flowbite-react';
 import { getImageHash } from '@/app/utils/hash';
-import { useGetAssistant } from '@/app/assistants/[id]/client';
+import { updateAssistant, useGetAssistant } from '@/app/assistants/[id]/client';
 import React, { useEffect, useState } from 'react';
 import { Assistant } from '@/app/types/assistant';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
@@ -68,10 +68,17 @@ export default function ChatAgent(props: ChatAgentProps) {
     }
   };
 
+  const changeAssistant = async (assistant: Assistant) => {
+    setAssistant(assistant);
+    // We don't allow changes from the end-user so this is a no-op
+  };
+
   return (
     <div className='stack items-center justify-center'>
       <div data-dial-init className='group fixed bottom-1 right-1'>
-        <AssistantContext.Provider value={{ assistant, setAssistant }}>
+        <AssistantContext.Provider
+          value={{ assistant, setAssistant: changeAssistant }}
+        >
           <div className='flex flex-row-reverse' ref={dropDownDiv}>
             {!showPopup ? (
               <Button

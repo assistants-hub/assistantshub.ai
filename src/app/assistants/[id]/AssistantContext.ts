@@ -4,12 +4,15 @@ import { Assistant } from '@/app/types/assistant';
 
 interface AssistantContextType {
   assistant: Assistant;
-  setAssistant: Dispatch<SetStateAction<Assistant>>;
+  setAssistant: (assistant: Assistant) => Promise<void>; // Adjust this to match the actual function signature
 }
 
-const AssistantContext = React.createContext<AssistantContextType>({
-  assistant: {} as Assistant,
-  setAssistant: () => {}, // Provide a default empty function
-});
+// Provide an initial dummy function and default assistant value to satisfy TypeScript
+const defaultAssistant: Assistant = {} as Assistant;
+const defaultSetAssistant = async (assistant: Assistant) => {};
 
+export const AssistantContext = React.createContext<AssistantContextType>({
+  assistant: defaultAssistant,
+  setAssistant: defaultSetAssistant,
+});
 export default AssistantContext;

@@ -3,10 +3,10 @@ export interface Tool {
 }
 
 export interface AssistantTheme {
-  primaryColor: string;
-  secondaryColor: string;
-  primaryTextColor: string;
-  secondaryTextColor: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  primaryTextColor?: string;
+  secondaryTextColor?: string;
 }
 
 export interface Assistant {
@@ -19,7 +19,7 @@ export interface Assistant {
   model: string;
   file_ids?: string[];
   metadata?: Record<string, string>;
-  avatar?: string;
-  profile?: string;
-  theme?: AssistantTheme;
+  avatar?: string | null;
+  profile?: string | null;
+  theme?: AssistantTheme | null;
 }
