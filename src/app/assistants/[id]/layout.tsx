@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useGetAssistant } from '@/app/assistants/[id]/client';
+import { updateAssistant, useGetAssistant } from '@/app/assistants/[id]/client';
 import { Spinner } from 'flowbite-react';
 import SideNavigation from '@/app/assistants/[id]/SideNavigation';
 import { Assistant } from '@/app/types/assistant';
@@ -26,6 +26,12 @@ export default function AssistantsLayout({
     }
   }, [assistantResponse]);
 
+  const changeAssistant = async (assistant: Assistant) => {
+    setAssistant(assistant);
+    console.log('changeAssistant', assistant);
+    await updateAssistant(assistant);
+  };
+
   return (
     <div className='p10'>
       {loading ? (
@@ -34,7 +40,9 @@ export default function AssistantsLayout({
         </div>
       ) : (
         <div className='grid min-h-[calc(100vh-100px)] grid-cols-1 justify-center lg:grid-cols-12'>
-          <AssistantContext.Provider value={{ assistant, setAssistant }}>
+          <AssistantContext.Provider
+            value={{ assistant, setAssistant: changeAssistant }}
+          >
             <div className={'col-span-2 m-2 items-center justify-center'}>
               <SideNavigation />
             </div>

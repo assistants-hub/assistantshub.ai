@@ -40,6 +40,9 @@ export async function updateAssistant(assistant: Assistant) {
       name: assistant.name,
       description: assistant.description,
       instructions: assistant.instructions,
+      avatar: assistant.avatar,
+      profile: assistant.profile,
+      theme: assistant.theme,
     }),
   });
 

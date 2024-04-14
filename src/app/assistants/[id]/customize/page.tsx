@@ -9,7 +9,6 @@ import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import ChatPopup from '@/app/assistants/[id]/chat/ChatPopup';
 import ThemeSelections from '@/app/assistants/[id]/customize/ThemeSelections';
 import ResetToDefaultsAlert from '@/app/assistants/[id]/customize/ResetToDefaultsAlert';
-import { DarkThemeToggle, Flowbite } from "flowbite-react";
 
 export default function Customize() {
   const { assistant, setAssistant } = useContext(AssistantContext);
@@ -40,9 +39,14 @@ export default function Customize() {
               <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                 <Table.Cell>
                   <div className='space-y-6 p-6'>
-                    <Button className='bg-gray-50' outline color={'red'} onClick={() => {
-                      setOpenModal(true);
-                    }}>
+                    <Button
+                      className='bg-gray-50'
+                      outline
+                      color={'red'}
+                      onClick={() => {
+                        setOpenModal(true);
+                      }}
+                    >
                       Reset to defaults
                     </Button>
                   </div>
@@ -51,17 +55,19 @@ export default function Customize() {
             </Table.Body>
           </Table>
         </div>
-        <ResetToDefaultsAlert openConfirmationModal={openModal} setOpenConfirmationModal={setOpenModal} handleConfirmation={() => {
-          // @ts-ignore
-          setAssistant((prevAssistant) => {
-            return {
-              ...prevAssistant,
+        <ResetToDefaultsAlert
+          openConfirmationModal={openModal}
+          setOpenConfirmationModal={setOpenModal}
+          handleConfirmation={() => {
+            // @ts-ignore
+            setAssistant({
+              ...assistant,
               avatar: null,
               profile: null,
               theme: {},
-            };
-          });
-        }}></ResetToDefaultsAlert>
+            });
+          }}
+        ></ResetToDefaultsAlert>
         <div className='group col-span-1 m-auto flex flex-row-reverse items-center justify-center'>
           <ChatPopup hide={false} setHide={() => {}} />
         </div>

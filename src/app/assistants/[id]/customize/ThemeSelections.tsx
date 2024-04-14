@@ -19,14 +19,12 @@ const ThemeSelections = () => {
           initialColor={getPrimaryColor(assistant)}
           onColorChange={(color) => {
             // @ts-ignore
-            setAssistant((prevAssistant) => {
-              return {
-                ...prevAssistant,
-                theme: {
-                  ...prevAssistant.theme,
-                  primaryColor: color,
-                },
-              };
+            setAssistant({
+              ...assistant,
+              theme: {
+                ...assistant.theme,
+                primaryColor: color,
+              },
             });
           }}
         />
@@ -35,14 +33,12 @@ const ThemeSelections = () => {
           initialColor={getSecondaryColor(assistant)}
           onColorChange={(color) => {
             // @ts-ignore
-            setAssistant((prevAssistant) => {
-              return {
-                ...prevAssistant,
-                theme: {
-                  ...prevAssistant.theme,
-                  secondaryColor: color,
-                },
-              };
+            setAssistant({
+              ...assistant,
+              theme: {
+                ...assistant.theme,
+                secondaryColor: color,
+              },
             });
           }}
         />
@@ -53,14 +49,12 @@ const ThemeSelections = () => {
           initialColor={getPrimaryTextColor(assistant)}
           onColorChange={(color) => {
             // @ts-ignore
-            setAssistant((prevAssistant) => {
-              return {
-                ...prevAssistant,
-                theme: {
-                  ...prevAssistant.theme,
-                  primaryTextColor: color,
-                },
-              };
+            setAssistant({
+              ...assistant,
+              theme: {
+                ...assistant.theme,
+                primaryTextColor: color,
+              },
             });
           }}
         />
@@ -69,14 +63,12 @@ const ThemeSelections = () => {
           initialColor={getSecondaryTextColor(assistant)}
           onColorChange={(color) => {
             // @ts-ignore
-            setAssistant((prevAssistant) => {
-              return {
-                ...prevAssistant,
-                theme: {
-                  ...prevAssistant.theme,
-                  secondaryTextColor: color,
-                },
-              };
+            setAssistant({
+              ...assistant,
+              theme: {
+                ...assistant.theme,
+                secondaryTextColor: color,
+              },
             });
           }}
         />

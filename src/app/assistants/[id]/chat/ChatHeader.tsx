@@ -22,9 +22,8 @@ export default function ChatHeader(props: ChatHeaderProps) {
     <>
       <div
         className={
-          'z-10 ml-2 flex flex-col text-[' +
-          getPrimaryTextColor(assistant) +
-          ']'
+          'z-10 ml-2 flex flex-col ' +
+          `text-[${getPrimaryTextColor(assistant)}]`
         }
       >
         <div className='grid grid-cols-2'>
@@ -57,7 +56,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
         </div>
         <div
           className={
-            'w-60 text-xs text-[' + getSecondaryTextColor(assistant) + ']'
+            'w-60 text-xs ' + `text-[${getSecondaryTextColor(assistant)}]`
           }
         >
           {assistant.description}

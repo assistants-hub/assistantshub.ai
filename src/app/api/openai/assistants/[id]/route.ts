@@ -87,6 +87,16 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
           return Response.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
+        // remove the items that don't belong to the body
+        let avatar = body.avatar;
+        delete body.avatar;
+
+        let profile = body.profile;
+        delete body.profile;
+
+        let theme = body.theme;
+        delete body.theme;
+
         // If the user is authorized, let us proceed
         const updateResponse = await openai.beta.assistants.update(id, body);
 
@@ -99,12 +109,18 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
             accountOwner: token.sub,
             accountOwnerType: 'personal',
             object: updateResponse as any,
+            avatar: avatar,
+            profile: profile,
+            theme: theme,
           },
           create: {
             id: updateResponse.id,
             accountOwner: token.sub,
             accountOwnerType: 'personal',
             object: updateResponse as any,
+            avatar: avatar,
+            profile: profile,
+            theme: theme,
           },
         });
 
