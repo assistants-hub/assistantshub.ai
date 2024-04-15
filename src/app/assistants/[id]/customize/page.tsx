@@ -20,7 +20,7 @@ export default function Customize() {
     <div className='max-w-screen flex flex-col gap-4'>
       <h3 className='pb-4 text-3xl font-bold dark:text-white'>Customize</h3>
       <div className='grid md:grid-cols-2'>
-        <div className='col-span-1'>
+        <div className='col-span-1 max-h-[100vh] overflow-y-auto'>
           <Table className='max-w-3xl flex-auto'>
             <Table.Body className='divide-y'>
               <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
@@ -80,7 +80,7 @@ export default function Customize() {
             });
           }}
         ></ResetToDefaultsAlert>
-        <div className='group col-span-1 m-auto flex flex-row-reverse items-center justify-center'>
+        <div className='group col-span-1 m-auto flex items-center justify-start'>
           <ChatPopup hide={false} setHide={() => {}} />
         </div>
       </div>
