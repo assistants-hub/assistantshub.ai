@@ -23,6 +23,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       object: true,
       avatar: true,
       profile: true,
+      theme: true,
     },
   });
 
@@ -39,6 +40,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
     assistant.object.avatar = assistant.avatar;
     // @ts-ignore
     assistant.object.profile = assistant.profile;
+    // @ts-ignore
+    assistant.object.theme = assistant.theme;
   }
 
   return Response.json(assistant.object, { status: 200 });
@@ -96,6 +99,8 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
 
         let theme = body.theme;
         delete body.theme;
+
+        console.log(theme);
 
         // If the user is authorized, let us proceed
         const updateResponse = await openai.beta.assistants.update(id, body);

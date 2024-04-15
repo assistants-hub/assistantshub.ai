@@ -23,11 +23,12 @@ export default function ChatAgent(props: ChatAgentProps) {
   const [assistant, setAssistant] = useState<Assistant>(assistantResponse);
 
   useEffect(() => {
+    console.log('assistantResponse', assistantResponse);
     if (assistantResponse) {
       setAssistant(assistantResponse);
       setLoading(false);
     }
-  }, [assistantResponse]);
+  }, [assistantLoading]);
 
   useEffect(() => {
     // TODO: This is a hack to open the dropdown on page load
@@ -76,27 +77,27 @@ export default function ChatAgent(props: ChatAgentProps) {
   return (
     <div className='stack items-center justify-center'>
       <div data-dial-init className='group fixed bottom-1 right-1'>
-        <AssistantContext.Provider
-          value={{ assistant, setAssistant: changeAssistant }}
-        >
-          <div className='flex flex-row-reverse' ref={dropDownDiv}>
-            {!showPopup ? (
-              <Button
-                as='span'
-                className='border-transparent bg-transparent'
-                onClick={() => handleChatAgentClick()}
-              >
-                {loading ? (
-                  <Spinner color='info' aria-label='Loading assistant..' />
-                ) : (
-                  getAssistantAvatar()
-                )}
-              </Button>
-            ) : (
+        <div className='flex flex-row-reverse' ref={dropDownDiv}>
+          {!showPopup ? (
+            <Button
+              as='span'
+              className='border-transparent bg-transparent'
+              onClick={() => handleChatAgentClick()}
+            >
+              {loading ? (
+                <Spinner color='info' aria-label='Loading assistant..' />
+              ) : (
+                getAssistantAvatar()
+              )}
+            </Button>
+          ) : (
+            <AssistantContext.Provider
+              value={{ assistant, setAssistant: changeAssistant }}
+            >
               <ChatPopup hide={!showPopup} setHide={hidePopup} />
-            )}
-          </div>
-        </AssistantContext.Provider>
+            </AssistantContext.Provider>
+          )}
+        </div>
       </div>
     </div>
   );

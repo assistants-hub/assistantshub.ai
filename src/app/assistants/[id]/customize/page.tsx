@@ -9,6 +9,8 @@ import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import ChatPopup from '@/app/assistants/[id]/chat/ChatPopup';
 import ThemeSelections from '@/app/assistants/[id]/customize/ThemeSelections';
 import ResetToDefaultsAlert from '@/app/assistants/[id]/customize/ResetToDefaultsAlert';
+import { EditInitialPrompt } from '@/app/assistants/[id]/customize/EditInitialPrompt';
+import { EditMessageLabel } from '@/app/assistants/[id]/customize/EditMessageLabel';
 
 export default function Customize() {
   const { assistant, setAssistant } = useContext(AssistantContext);
@@ -34,6 +36,16 @@ export default function Customize() {
               <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                 <Table.Cell>
                   <ThemeSelections />
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+                <Table.Cell>
+                  <EditInitialPrompt />
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+                <Table.Cell>
+                  <EditMessageLabel />
                 </Table.Cell>
               </Table.Row>
               <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>

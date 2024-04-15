@@ -36,3 +36,20 @@ export function getSecondaryTextColor(assistant: Assistant) {
     .secondaryTextColor.replace('text-[', '')
     .replace(']', '');
 }
+
+export function getInitialPrompt(assistant: Assistant) {
+  console.log(assistant.theme);
+  if (assistant.theme && assistant.theme.initialPrompt) {
+    return assistant.theme.initialPrompt;
+  }
+
+  return 'Hello, I am your assistant. How can I help you?';
+}
+
+export function getInputMessageLabel(assistant: Assistant) {
+  if (assistant.theme && assistant.theme.messageLabel) {
+    return assistant.theme.messageLabel;
+  }
+
+  return 'Your message...';
+}

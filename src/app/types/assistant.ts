@@ -7,6 +7,8 @@ export interface AssistantTheme {
   secondaryColor?: string;
   primaryTextColor?: string;
   secondaryTextColor?: string;
+  initialPrompt?: string;
+  messageLabel?: string;
 }
 
 export interface Assistant {
