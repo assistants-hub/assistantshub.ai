@@ -12,9 +12,11 @@ import {
   DropdownItem,
 } from 'flowbite-react';
 import { headers } from 'next/headers';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export const UserProfile = async () => {
-  const session = await getServerSession();
+  // @ts-ignore
+  const session = await getServerSession(authOptions);
   // const pathname = headers().get('next-url'); - see https://github.com/vercel/next.js/issues/43704#issuecomment-1462971600
 
   return !session ? (

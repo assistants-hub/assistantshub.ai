@@ -12,6 +12,7 @@
     "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.0.0",
     "@prisma/client": "5.8.1",
     "@thumbmarkjs/thumbmarkjs": "^0.14.4",
     "@types/react-image-crop": "^8.1.6",
