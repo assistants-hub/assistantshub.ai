@@ -5,7 +5,6 @@ import { Spinner } from 'flowbite-react';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import CreateAssistant from '@/app/assistants/CreateAssistant';
-import CreateCredentials from '@/app/assistants/CreateCredentials';
 import {
   setCredentials,
   useGetAssistants,
