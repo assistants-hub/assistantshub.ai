@@ -9,16 +9,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
 
   if (token) {
-    let account = await prisma.account.findFirst({
+    let organization = await prisma.organization.findFirst({
       where: {
         owner: token.sub,
         ownerType: 'personal',
       },
     });
 
-    if (account) {
+    if (organization) {
       const openai = new OpenAI({
-        apiKey: account.openAIApiKey,
+        apiKey: organization.openAIApiKey,
       });
 
       const body = await req.json();

@@ -12,11 +12,11 @@ export default function ChatTyping(props: ChatProps) {
       <div className='flex items-end gap-1 justify-self-start'>
         <Image
           className='h-8 w-8 rounded-full'
-          src={assistant.avatar
-            ? assistant.avatar
-            : '/images/people/avatar/' +
-            getImageHash(assistant.id) +
-            '.jpg'}
+          src={
+            assistant.avatar
+              ? assistant.avatar
+              : '/images/people/avatar/' + getImageHash(assistant.id) + '.jpg'
+          }
           width={32}
           height={32}
           alt='Assistant'

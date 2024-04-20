@@ -9,16 +9,18 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
   if (token) {
     // Signed in
-    let account = await prisma.account.findFirst({
+    let organization = await prisma.organization.findFirst({
       where: {
         owner: token.sub,
       },
     });
 
-    if (!account) {
+    if (!organization) {
       return Response.json([]);
     } else {
-      return Response.json([{ hasCredentials: account.openAIApiKey !== null }]);
+      return Response.json([
+        { hasCredentials: organization.openAIApiKey !== null },
+      ]);
     }
   } else {
     // Not Signed in
@@ -49,7 +51,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       }
 
       // Signed in
-      await prisma.account.upsert({
+      await prisma.organization.upsert({
         where: {
           owner_ownerType: {
             owner: token.sub,

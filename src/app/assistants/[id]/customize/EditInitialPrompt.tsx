@@ -26,8 +26,10 @@ export const EditInitialPrompt: React.FC = () => {
             <Label value='Initial Prompt from Assistant' />
           </div>
           <div className='grid max-w-4xl'>
-            { /* @ts-ignore */ }
-            <DebouncedInput value={getInitialPrompt(assistant)} onDebounceTextChange={onDebounceTextChange} />
+            {/* @ts-ignore */}
+            <DebouncedInput value={getInitialPrompt(assistant)}
+              onDebounceTextChange={onDebounceTextChange}
+            />
           </div>
         </div>
       </div>

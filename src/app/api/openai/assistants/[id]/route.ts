@@ -53,16 +53,16 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
   const id = getId(req);
 
   if (token) {
-    let account = await prisma.account.findFirst({
+    let organization = await prisma.organization.findFirst({
       where: {
         owner: token.sub,
         ownerType: 'personal',
       },
     });
 
-    if (account) {
+    if (organization) {
       const openai = new OpenAI({
-        apiKey: account.openAIApiKey,
+        apiKey: organization.openAIApiKey,
       });
 
       try {
@@ -151,16 +151,16 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
   const id = getId(req);
 
   if (token) {
-    let account = await prisma.account.findFirst({
+    let organization = await prisma.organization.findFirst({
       where: {
         owner: token.sub,
         ownerType: 'personal',
       },
     });
 
-    if (account) {
+    if (organization) {
       const openai = new OpenAI({
-        apiKey: account.openAIApiKey,
+        apiKey: organization.openAIApiKey,
       });
 
       try {

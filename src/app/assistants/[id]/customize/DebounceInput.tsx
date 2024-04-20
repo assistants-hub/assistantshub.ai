@@ -18,7 +18,9 @@ export const DebouncedInput: React.FC = (props: DebouncedInputProps) => {
     // This function will run after debouncedText changes and the 300ms delay passes
     if (debouncedText && debouncedText !== props.value) {
       setLoading(true);
-      props.onDebounceTextChange ? props.onDebounceTextChange(debouncedText) : null;
+      props.onDebounceTextChange
+        ? props.onDebounceTextChange(debouncedText)
+        : null;
       setLoading(false);
     }
   }, [debouncedText]); // Only re-run if debouncedText changes
