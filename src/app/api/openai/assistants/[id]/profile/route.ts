@@ -52,15 +52,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 select: {
                   id: true,
                   object: true,
-                  accountOwner: true,
-                  accountOwnerType: true,
+                  organizationOwner: true,
+                  organizationOwnerType: true,
                 },
               });
 
               if (
                 !assistant ||
-                assistant.accountOwner !== token.sub ||
-                assistant.accountOwnerType !== 'personal'
+                assistant.organizationOwner !== token.sub ||
+                assistant.organizationOwnerType !== 'personal'
               ) {
                 throw new Error('Unauthenticated');
               }

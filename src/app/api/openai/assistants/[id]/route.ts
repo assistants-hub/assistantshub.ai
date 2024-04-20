@@ -77,15 +77,15 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
           select: {
             id: true,
             object: true,
-            accountOwner: true,
-            accountOwnerType: true,
+            organizationOwner: true,
+            organizationOwnerType: true,
           },
         });
 
         if (
           !assistant ||
-          assistant.accountOwner !== token.sub ||
-          assistant.accountOwnerType !== 'personal'
+          assistant.organizationOwner !== token.sub ||
+          assistant.organizationOwnerType !== 'personal'
         ) {
           return Response.json({ message: 'Unauthorized' }, { status: 401 });
         }
@@ -111,8 +111,8 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
           },
           update: {
             id: updateResponse.id,
-            accountOwner: token.sub,
-            accountOwnerType: 'personal',
+            organizationOwner: token.sub,
+            organizationOwnerType: 'personal',
             object: updateResponse as any,
             avatar: avatar,
             profile: profile,
@@ -120,8 +120,8 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
           },
           create: {
             id: updateResponse.id,
-            accountOwner: token.sub,
-            accountOwnerType: 'personal',
+            organizationOwner: token.sub,
+            organizationOwnerType: 'personal',
             object: updateResponse as any,
             avatar: avatar,
             profile: profile,
@@ -172,15 +172,15 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
           select: {
             id: true,
             object: true,
-            accountOwner: true,
-            accountOwnerType: true,
+            organizationOwner: true,
+            organizationOwnerType: true,
           },
         });
 
         if (
           !assistant ||
-          assistant.accountOwner !== token.sub ||
-          assistant.accountOwnerType !== 'personal'
+          assistant.organizationOwner !== token.sub ||
+          assistant.organizationOwnerType !== 'personal'
         ) {
           return Response.json({ message: 'Unauthorized' }, { status: 401 });
         }

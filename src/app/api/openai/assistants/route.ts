@@ -33,14 +33,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
           },
           update: {
             id: createResponse.id,
-            accountOwner: token.sub,
-            accountOwnerType: 'personal',
+            organizationOwner: token.sub,
+            organizationOwnerType: 'personal',
             object: createResponse as any,
           },
           create: {
             id: createResponse.id,
-            accountOwner: token.sub,
-            accountOwnerType: 'personal',
+            organizationOwner: token.sub,
+            organizationOwnerType: 'personal',
             object: createResponse as any,
           },
         });
@@ -68,8 +68,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
   if (token) {
     let assistants = await prisma.assistant.findMany({
       where: {
-        accountOwner: token.sub,
-        accountOwnerType: 'personal',
+        organizationOwner: token.sub,
+        organizationOwnerType: 'personal',
       },
       select: {
         id: true,

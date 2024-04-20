@@ -23,17 +23,17 @@ model Organization {
 }
 
 model Assistant {
-  id               String        @id
-  object           Json?
-  accountOwner     String?
-  accountOwnerType String?
-  account          Organization? @relation(fields: [accountOwner, accountOwnerType], references: [owner, ownerType])
-  avatar           String?
-  profile          String?
-  theme            Json?
-  created_at       DateTime      @default(now())
-  updated_at       DateTime      @updatedAt
-  Thread           Thread[]
+  id                    String        @id
+  object                Json?
+  organizationOwner     String?
+  organizationOwnerType String?
+  organization          Organization? @relation(fields: [organizationOwner, organizationOwnerType], references: [owner, ownerType])
+  avatar                String?
+  profile               String?
+  theme                 Json?
+  created_at            DateTime      @default(now())
+  updated_at            DateTime      @updatedAt
+  Thread                Thread[]
 }
 
 model Thread {

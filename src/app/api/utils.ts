@@ -14,7 +14,7 @@ export const getOpenAIObjectForAssistant = async (
       id: assistantId ? assistantId : undefined,
     },
     include: {
-      account: true,
+      organization: true,
     },
   });
 
@@ -23,6 +23,6 @@ export const getOpenAIObjectForAssistant = async (
   }
 
   return new OpenAI({
-    apiKey: assistant?.account?.openAIApiKey,
+    apiKey: assistant?.organization?.openAIApiKey,
   });
 };
