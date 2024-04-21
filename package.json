@@ -5,12 +5,11 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "build:local": "prisma generate && prisma migrate dev && next build",
-    "build": "prisma generate && prisma migrate deploy && next build",
+    "build": "prisma generate && prisma migrate deploy && next build && prisma db seed",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore .",
-    "postinstall": "prisma generate && prisma db seed"
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
