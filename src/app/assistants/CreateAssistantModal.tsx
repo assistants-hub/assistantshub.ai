@@ -31,20 +31,13 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
 
   const [creatingAssistant, setCreatingAssistant] = useState(false);
 
-  const getOpenAIModels = () => {
-    return models.filter((model) => {
-      // @ts-ignore
-      return model.owned_by === 'openai';
-    });
-  };
-
   const handleCreateAssistant = async () => {
     setCreatingAssistant(true);
 
     let selectedModel = model;
     if (!selectedModel) {
       // If no selection was made, pick the first one on the list
-      selectedModel = getOpenAIModels()[0].id;
+      selectedModel = models[0].id;
       setModel(selectedModel);
     }
 
@@ -143,8 +136,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
                   setModel(e.target.value);
                 }}
               >
-                {getOpenAIModels().map((model, index) => {
-                  // @ts-ignore
+                {models && models.map((model, index) => {
                   return (
                     <option key={index} value={model.id}>
                       {model.id}

@@ -7,7 +7,7 @@ import { fetcher } from '@/app/utils/fetcher';
 
 export function useGetModels() {
   const { data, isLoading, error, isValidating } = useSWR(
-    '/api/openai/models',
+    '/api/models',
     fetcher,
     {
       revalidateIfStale: false,
@@ -18,11 +18,11 @@ export function useGetModels() {
 
   return useMemo(
     () => ({
-      models: data?.data as Model[],
+      models: data as Model[],
       modelsLoading: isLoading,
       modelsError: error,
       modelsValidating: isValidating,
-      modelsEmpty: !isLoading && !data?.models?.length,
+      modelsEmpty: !isLoading && !data?.length,
     }),
     [data, error, isLoading, isValidating]
   );

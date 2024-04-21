@@ -9,25 +9,12 @@ const prisma = new PrismaClient();
 export async function GET(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
   if (token) {
-    let organization = await prisma.organization.findFirst({
-      where: {
-        owner: token.sub,
-        ownerType: 'personal',
-      },
+    let models = await prisma.model.findMany({
+      include: {
+        provider: true
+      }
     });
-
-    if (organization) {
-      const openai = new OpenAI({
-        apiKey: organization.openAIApiKey,
-      });
-      const models = await openai.models.list();
-      return Response.json(models);
-    } else {
-      return Response.json(
-        { message: 'OpenAI API Key does not exist' },
-        { status: 400 }
-      );
-    }
+    return Response.json(models);
   } else {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });

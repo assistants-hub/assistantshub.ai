@@ -8,7 +8,7 @@ import {
   ToggleSwitch,
 } from 'flowbite-react';
 import React, { useState } from 'react';
-import { createAssistant, useGetModels } from '@/app/assistants/client';
+import { useGetModels } from '@/app/assistants/client';
 import { Assistant } from '@/app/types/assistant';
 import { toast } from 'react-hot-toast';
 import { updateAssistant } from '@/app/assistants/[id]/client';
@@ -32,20 +32,13 @@ export default function EditAssistant(props: EditAssistantProps) {
 
   const [editingAssistant, setEditingAssistant] = useState(false);
 
-  const getOpenAIModels = () => {
-    return models.filter((model) => {
-      // @ts-ignore
-      return model.owned_by === 'openai';
-    });
-  };
-
   const handleEditAssistant = async () => {
     setEditingAssistant(true);
 
     let selectedModel = model;
     if (!selectedModel) {
       // If no selection was made, pick the first one on the list
-      selectedModel = getOpenAIModels()[0].id;
+      selectedModel = models[0].id;
       setModel(selectedModel);
     }
 
@@ -140,8 +133,7 @@ export default function EditAssistant(props: EditAssistantProps) {
                 setModel(e.target.value);
               }}
             >
-              {getOpenAIModels().map((model, index) => {
-                // @ts-ignore
+              {models.map((model, index) => {
                 return (
                   <option key={index} value={model.id}>
                     {model.id}
