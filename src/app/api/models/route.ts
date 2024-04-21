@@ -9,12 +9,14 @@ const prisma = new PrismaClient();
 export async function GET(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
   if (token) {
+    let providers = await prisma.model.findMany();
+
     let models = await prisma.model.findMany({
       include: {
         provider: true
       }
     });
-    return Response.json(models);
+    return Response.json({ models: models, providers: providers });
   } else {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });

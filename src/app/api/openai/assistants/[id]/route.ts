@@ -100,8 +100,6 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
         let theme = body.theme;
         delete body.theme;
 
-        console.log(theme);
-
         // If the user is authorized, let us proceed
         const updateResponse = await openai.beta.assistants.update(id, body);
 

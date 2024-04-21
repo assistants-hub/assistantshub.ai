@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { useMemo } from 'react';
-import { Model } from '@/app/types/model';
+import { Model, ModelProvider } from '@/app/types/model';
 import { Credential } from '@/app/types/credential';
 import { Assistant } from '@/app/types/assistant';
 import { fetcher } from '@/app/utils/fetcher';
@@ -18,11 +18,11 @@ export function useGetModels() {
 
   return useMemo(
     () => ({
-      models: data as Model[],
+      models: data as { models: Model[], providers: ModelProvider[]} ,
       modelsLoading: isLoading,
       modelsError: error,
       modelsValidating: isValidating,
-      modelsEmpty: !isLoading && !data?.length,
+      modelsEmpty: !isLoading,
     }),
     [data, error, isLoading, isValidating]
   );

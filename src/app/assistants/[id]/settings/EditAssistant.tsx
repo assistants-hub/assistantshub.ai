@@ -38,7 +38,7 @@ export default function EditAssistant(props: EditAssistantProps) {
     let selectedModel = model;
     if (!selectedModel) {
       // If no selection was made, pick the first one on the list
-      selectedModel = models[0].id;
+      selectedModel = models.models[0].id;
       setModel(selectedModel);
     }
 
@@ -133,7 +133,7 @@ export default function EditAssistant(props: EditAssistantProps) {
                 setModel(e.target.value);
               }}
             >
-              {models.map((model, index) => {
+              {models.models.map((model, index) => {
                 return (
                   <option key={index} value={model.id}>
                     {model.id}

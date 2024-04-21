@@ -1,6 +1,12 @@
+export interface ModelProvider {
+  id: string;
+  name: string
+}
+
 export interface Model {
   id: string;
-  object: string;
-  created: number;
-  owned_by: string;
+  name: string;
+  description: string;
+  url: string;
+  provider: ModelProvider;
 }
