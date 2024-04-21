@@ -10,6 +10,21 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL")
 }
 
+model ModelProvider {
+  id    String  @id
+  name  String
+  Model Model[]
+}
+
+model Model {
+  id          String        @id
+  name        String
+  url         String?
+  description String?
+  providerId  String
+  provider    ModelProvider @relation(fields: [providerId], references: [id])
+}
+
 model Organization {
   owner           String
   ownerType       String      @default("personal")

@@ -9,7 +9,11 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore ."
+    "format:fix": "prettier --write --ignore-path .gitignore .",
+    "postinstall": "prisma generate && prisma db seed"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.0.0",
@@ -36,6 +40,7 @@
     "react-image-crop": "^11.0.5",
     "swr": "^2.2.4",
     "tailwind-merge": "^2.2.0",
+    "ts-node": "^10.9.2",
     "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
