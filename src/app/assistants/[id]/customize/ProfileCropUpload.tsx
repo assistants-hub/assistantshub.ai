@@ -132,7 +132,7 @@ const ProfileCropUpload = () => {
     const croppedImage = await getCroppedImg();
     const newBlob = await upload(assistant.id + '.jpeg', croppedImage, {
       access: 'public',
-      handleUploadUrl: `/api/openai/assistants/${assistant.id}/profile`,
+      handleUploadUrl: `/api/assistants/${assistant.id}/profile`,
     });
 
     setBlob(newBlob);

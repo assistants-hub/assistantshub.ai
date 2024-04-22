@@ -1,7 +1,6 @@
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import OpenAI from 'openai';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -39,10 +38,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           });
 
           if (organization) {
-            const openai = new OpenAI({
-              apiKey: organization.openAIApiKey,
-            });
-
             try {
               // Check if assistant exists and if the user is the owner
               let assistant = await prisma.assistant.findFirst({
@@ -96,7 +91,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
               id: id,
             },
             data: {
-              avatar: blob.url,
+              profile: blob.url,
             },
           });
         } catch (error) {
