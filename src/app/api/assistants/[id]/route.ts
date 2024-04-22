@@ -48,7 +48,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
     // @ts-ignore
     assistant.object.modelId = assistant.modelId
       ? assistant.modelId
-      : assistant.model;
+      // @ts-ignore
+      : assistant.object.model;
     // @ts-ignore
     assistant.object.modelProviderId = assistant.modelProviderId;
   }
