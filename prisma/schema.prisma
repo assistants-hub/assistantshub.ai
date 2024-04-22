@@ -11,9 +11,10 @@ datasource db {
 }
 
 model ModelProvider {
-  id    String  @id
-  name  String
-  Model Model[]
+  id        String      @id
+  name      String
+  Model     Model[]
+  Assistant Assistant[]
 }
 
 model Model {
@@ -23,6 +24,7 @@ model Model {
   description String?
   providerId  String
   provider    ModelProvider @relation(fields: [providerId], references: [id])
+  Assistant   Assistant[]
 }
 
 model Organization {
@@ -38,18 +40,20 @@ model Organization {
 }
 
 model Assistant {
-  id                    String        @id
-  model                 String?       @default("gpt-4-turbo")
-  modelProvider         String?       @default("openai")
+  id                    String         @id
+  modelId               String?        @default("gpt-4-turbo")
+  model                 Model?         @relation(fields: [modelId], references: [id])
+  modelProviderId       String?        @default("openai")
+  modelProvider         ModelProvider? @relation(fields: [modelProviderId], references: [id])
   object                Json?
   organizationOwner     String?
   organizationOwnerType String?
-  organization          Organization? @relation(fields: [organizationOwner, organizationOwnerType], references: [owner, ownerType])
+  organization          Organization?  @relation(fields: [organizationOwner, organizationOwnerType], references: [owner, ownerType])
   avatar                String?
   profile               String?
   theme                 Json?
-  created_at            DateTime      @default(now())
-  updated_at            DateTime      @updatedAt
+  created_at            DateTime       @default(now())
+  updated_at            DateTime       @updatedAt
   Thread                Thread[]
 }
 
