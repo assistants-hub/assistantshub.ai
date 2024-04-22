@@ -28,7 +28,7 @@ export function useGetAssistant(id: string) {
 }
 
 export async function updateAssistant(assistant: Assistant) {
-  let response = await fetch('/api/openai/assistants/' + assistant.id, {
+  let response = await fetch('/api/assistants/' + assistant.id, {
     method: 'PATCH',
     headers: {
       accept: 'application.json',

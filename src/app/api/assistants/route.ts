@@ -19,12 +19,15 @@ export async function GET(req: NextRequest, res: NextResponse) {
         id: true,
         object: true,
         profile: true,
+        modelId: true,
       },
     });
     let assistantsCollection = assistants.map((assistant) => {
       if (assistant.object) {
         // @ts-ignore
         assistant.object.profile = assistant.profile;
+        // @ts-ignore
+        assistant.object.modelId = assistant.modelId;
       }
       return assistant.object;
     });

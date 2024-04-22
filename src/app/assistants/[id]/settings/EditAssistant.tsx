@@ -131,6 +131,7 @@ export default function EditAssistant(props: EditAssistantProps) {
             <Select
               id='modelProvider'
               required
+              disabled={true}
               value={modelProvider}
               onChange={(e) => {
                 setModelProvider(e.target.value);
