@@ -84,7 +84,7 @@ export async function createAssistant(assistant: Assistant) {
 
 export function useGetAssistants() {
   let { data, isLoading, error, isValidating, mutate } = useSWR(
-    '/api/openai/assistants',
+    '/api/assistants',
     fetcher,
     {
       revalidateIfStale: true,

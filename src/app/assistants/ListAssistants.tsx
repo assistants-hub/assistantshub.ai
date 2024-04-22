@@ -19,7 +19,7 @@ export default function ListAssistants() {
 
   useEffect(() => {
     if (assistantCreated) {
-      reload('/api/openai/assistants');
+      reload('/api/assistants');
     }
   }, [assistantCreated, reload]);
 

@@ -6,7 +6,7 @@ import { fetcher } from '@/app/utils/fetcher';
 import { Message } from '@/app/types/message';
 
 export function useGetAssistant(id: string) {
-  let key = '/api/openai/assistants/' + id;
+  let key = '/api/assistants/' + id;
 
   let { data, isLoading, error, isValidating, mutate } = useSWR(key, fetcher, {
     revalidateIfStale: true,
