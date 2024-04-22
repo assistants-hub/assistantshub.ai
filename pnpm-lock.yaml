@@ -83,6 +83,9 @@ dependencies:
   typewriter-effect:
     specifier: ^2.21.0
     version: 2.21.0(react-dom@18.2.0)(react@18.2.0)
+  ulidx:
+    specifier: ^2.3.0
+    version: 2.3.0
 
 devDependencies:
   '@types/node':
@@ -5121,6 +5124,13 @@ packages:
       language-subtag-registry: 0.3.22
     dev: true
 
+  /layerr@2.1.0:
+    resolution:
+      {
+        integrity: sha512-xDD9suWxfBYeXgqffRVH/Wqh+mqZrQcqPRn0I0ijl7iJQ7vu8gMGPt1Qop59pEW/jaIDNUN7+PX1Qk40+vuflg==,
+      }
+    dev: false
+
   /lazy-cache@2.0.2:
     resolution:
       {
@@ -8718,6 +8728,16 @@ packages:
       raf: 3.4.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /ulidx@2.3.0:
+    resolution:
+      {
+        integrity: sha512-36piWNqcdp9hKlQewyeehCaALy4lyx3FodsCxHuV6i0YdexSkjDOubwxEVr2yi4kh62L/0MgyrxqG4K+qtovnw==,
+      }
+    engines: { node: '>=16' }
+    dependencies:
+      layerr: 2.1.0
     dev: false
 
   /unbox-primitive@1.0.2:

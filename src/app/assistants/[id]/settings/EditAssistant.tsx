@@ -21,9 +21,9 @@ export default function EditAssistant(props: EditAssistantProps) {
   const [codeInterpreterTool, setCodeInterpreterTool] = useState(false);
   const [name, setName] = useState(props.assistant.name);
   const [description, setDescription] = useState(props.assistant.description);
-  const [model, setModel] = useState(props.assistant.model);
+  const [model, setModel] = useState(props.assistant.modelId);
   const [modelProvider, setModelProvider] = useState(
-    props.assistant.modelProvider ? props.assistant.modelProvider : 'openai'
+    props.assistant.modelProviderId ? props.assistant.modelProviderId : 'openai'
   ); // Default to OpenAI
   const [instructions, setInstructions] = useState(
     props.assistant.instructions
@@ -41,7 +41,9 @@ export default function EditAssistant(props: EditAssistantProps) {
     let selectedModel = model;
     if (!selectedModel) {
       // If no selection was made, pick the first one on the list
-      selectedModel = models.models[0].id;
+      selectedModel = models.models.filter((model) => {
+        return model.provider.id === modelProvider;
+      })[0].id;
       setModel(selectedModel);
     }
 
@@ -50,7 +52,8 @@ export default function EditAssistant(props: EditAssistantProps) {
       name: name,
       description: description,
       instructions: instructions,
-      model: selectedModel,
+      modelId: selectedModel,
+      modelProviderId: modelProvider,
       //TODO: Add tools to assistant type
     };
 

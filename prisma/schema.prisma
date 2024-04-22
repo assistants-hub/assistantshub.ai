@@ -41,9 +41,9 @@ model Organization {
 
 model Assistant {
   id                    String         @id
-  modelId               String?        @default("gpt-4-turbo")
+  modelId               String?
   model                 Model?         @relation(fields: [modelId], references: [id])
-  modelProviderId       String?        @default("openai")
+  modelProviderId       String?
   modelProvider         ModelProvider? @relation(fields: [modelProviderId], references: [id])
   object                Json?
   organizationOwner     String?

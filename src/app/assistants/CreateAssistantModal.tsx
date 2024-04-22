@@ -38,7 +38,9 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
     let selectedModel = model;
     if (!selectedModel) {
       // If no selection was made, pick the first one on the list
-      selectedModel = models.models[0].id;
+      selectedModel = models.models.filter((model) => {
+        return model.provider.id === modelProvider;
+      })[0].id;
       setModel(selectedModel);
     }
 
@@ -46,7 +48,8 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
       name: name,
       description: description,
       instructions: instructions,
-      model: selectedModel,
+      modelId: selectedModel,
+      modelProviderId: modelProvider,
       //TODO: Add tools to assistant type
     };
 

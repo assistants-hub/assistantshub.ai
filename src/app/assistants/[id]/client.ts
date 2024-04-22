@@ -36,7 +36,8 @@ export async function updateAssistant(assistant: Assistant) {
     },
     body: JSON.stringify({
       id: assistant.id,
-      model: assistant.model,
+      modelId: assistant.modelId,
+      modelProviderId: assistant.modelProviderId,
       name: assistant.name,
       description: assistant.description,
       instructions: assistant.instructions,
@@ -50,7 +51,7 @@ export async function updateAssistant(assistant: Assistant) {
 }
 
 export async function deleteAssistant(id: string) {
-  let response = await fetch('/api/openai/assistants/' + id, {
+  let response = await fetch('/api/assistants/' + id, {
     method: 'DELETE',
   });
 

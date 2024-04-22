@@ -53,7 +53,7 @@ export default function SideNavigation() {
                 </h5>
                 <span className='text-sm text-gray-500 dark:text-gray-400'>
                   <div className='flex self-center'>
-                    <Badge color='info'>{assistant.model}</Badge>
+                    <Badge color='info'>{assistant.modelId}</Badge>
                   </div>
                 </span>
                 <span className='pt-4 text-sm text-gray-500 dark:text-gray-400'>

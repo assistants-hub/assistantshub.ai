@@ -18,8 +18,8 @@ export interface Assistant {
   instructions?: string;
   description?: string;
   tools?: Tool[];
-  model: string;
-  modelProvider?: string;
+  modelId?: string;
+  modelProviderId?: string;
   file_ids?: string[];
   metadata?: Record<string, string>;
   avatar?: string | null;

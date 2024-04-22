@@ -65,14 +65,15 @@ export async function setCredentials(openAiApiKey: string) {
 }
 
 export async function createAssistant(assistant: Assistant) {
-  let response = await fetch('/api/openai/assistants', {
+  let response = await fetch('/api/assistants', {
     method: 'POST',
     headers: {
       accept: 'application.json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: assistant.model,
+      modelProviderId: assistant.modelProviderId,
+      modelId: assistant.modelId,
       name: assistant.name,
       description: assistant.description,
       instructions: assistant.instructions,
