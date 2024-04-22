@@ -18,7 +18,7 @@ export function useGetModels() {
 
   return useMemo(
     () => ({
-      models: data as { models: Model[], providers: ModelProvider[]} ,
+      models: data as { models: Model[]; providers: ModelProvider[] },
       modelsLoading: isLoading,
       modelsError: error,
       modelsValidating: isValidating,

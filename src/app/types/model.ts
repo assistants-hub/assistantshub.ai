@@ -1,6 +1,6 @@
 export interface ModelProvider {
   id: string;
-  name: string
+  name: string;
 }
 
 export interface Model {

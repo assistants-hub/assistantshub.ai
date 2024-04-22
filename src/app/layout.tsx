@@ -9,8 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Assistants Hub',
-  description:
-    'Administration Portal for Deploying Assistants',
+  description: 'Administration Portal for Deploying Assistants',
 };
 
 export default function RootLayout({

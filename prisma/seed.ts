@@ -10,6 +10,15 @@ async function main() {
       name: 'OpenAI',
     },
   });
+  const google = await prisma.modelProvider.upsert({
+    where: { id: 'google' },
+    update: {},
+    create: {
+      id: 'google',
+      name: 'Google',
+    },
+  });
+
   const gpt35turbo = await prisma.model.upsert({
     where: { id: 'gpt-3.5-turbo' },
     update: {},
@@ -66,6 +75,18 @@ async function main() {
         'GPT-4 Turbo with Vision. The latest GPT-4 Turbo model with vision capabilities. Vision requests can now use JSON mode and function calling. Currently points to gpt-4-turbo-2024-04-09',
       url: 'https://platform.openai.com/docs/models/gpt-4-turbo-and-gpt-4',
       providerId: 'openai',
+    },
+  });
+
+  const geminipro = await prisma.model.upsert({
+    where: { id: 'gemini-pro' },
+    update: {},
+    create: {
+      id: 'gemini-pro',
+      name: 'Gemini Pro',
+      description: 'The latest model from Google',
+      url: 'https://ai.google.dev/gemini-api/docs/api-overview',
+      providerId: 'google',
     },
   });
 }

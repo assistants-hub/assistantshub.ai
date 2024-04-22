@@ -19,6 +19,7 @@ export interface Assistant {
   description?: string;
   tools?: Tool[];
   model: string;
+  modelProvider?: string;
   file_ids?: string[];
   metadata?: Record<string, string>;
   avatar?: string | null;

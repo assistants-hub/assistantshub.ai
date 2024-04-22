@@ -27,6 +27,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
   const [instructions, setInstructions] = useState('');
   const [functionTool, setFunctionTool] = useState(false);
   const [retrievalTool, setRetrievalTool] = useState(false);
+  const [modelProvider, setModelProvider] = useState('openai'); // Default to OpenAI
   const { modelsLoading, models } = useGetModels();
 
   const [creatingAssistant, setCreatingAssistant] = useState(false);
@@ -117,6 +118,37 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
           </div>
           <div className='max-w-3xl'>
             <div className='mb-2 block'>
+              <Label htmlFor='modelProvider' value='Model Provider' />
+            </div>
+            {modelsLoading ? (
+              <>
+                <Spinner aria-label='Loading model provider..' size='sm' />
+                <span className='pl-3'>
+                  Loading available model providers...
+                </span>
+              </>
+            ) : (
+              <Select
+                id='modelProvider'
+                required
+                value={modelProvider}
+                onChange={(e) => {
+                  setModelProvider(e.target.value);
+                }}
+              >
+                {models &&
+                  models.providers.map((provider, index) => {
+                    return (
+                      <option key={index} value={provider.id}>
+                        {provider.name}
+                      </option>
+                    );
+                  })}
+              </Select>
+            )}
+          </div>
+          <div className='max-w-3xl'>
+            <div className='mb-2 block'>
               <Label htmlFor='model' value='Model' />
             </div>
             {modelsLoading ? (
@@ -136,17 +168,22 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
                   setModel(e.target.value);
                 }}
               >
-                {models && models.models.map((model, index) => {
-                  return (
-                    <option key={index} value={model.id}>
-                      {model.id}
-                    </option>
-                  );
-                })}
+                {models &&
+                  models.models
+                    .filter((model) => {
+                      return model.provider.id === modelProvider;
+                    })
+                    .map((model, index) => {
+                      return (
+                        <option key={index} value={model.id}>
+                          {model.id}
+                        </option>
+                      );
+                    })}
               </Select>
             )}
           </div>
-          <div className='flex max-w-3xl flex-col gap-4'>
+          {/*<div className='flex max-w-3xl flex-col gap-4'>
             <div className='mb-2 block'>
               <Label htmlFor='model' value='Tools' />
             </div>
@@ -167,7 +204,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
                 onChange={setRetrievalTool}
               />
             </div>
-          </div>
+          </div>*/}
         </div>
       </Modal.Body>
       <Modal.Footer>

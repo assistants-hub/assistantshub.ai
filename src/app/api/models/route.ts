@@ -9,12 +9,12 @@ const prisma = new PrismaClient();
 export async function GET(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
   if (token) {
-    let providers = await prisma.model.findMany();
+    let providers = await prisma.modelProvider.findMany();
 
     let models = await prisma.model.findMany({
       include: {
-        provider: true
-      }
+        provider: true,
+      },
     });
     return Response.json({ models: models, providers: providers });
   } else {

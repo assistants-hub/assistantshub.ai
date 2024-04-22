@@ -39,6 +39,8 @@ model Organization {
 
 model Assistant {
   id                    String        @id
+  model                 String?       @default("gpt-4-turbo")
+  modelProvider         String?       @default("openai")
   object                Json?
   organizationOwner     String?
   organizationOwnerType String?

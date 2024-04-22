@@ -22,6 +22,9 @@ export default function EditAssistant(props: EditAssistantProps) {
   const [name, setName] = useState(props.assistant.name);
   const [description, setDescription] = useState(props.assistant.description);
   const [model, setModel] = useState(props.assistant.model);
+  const [modelProvider, setModelProvider] = useState(
+    props.assistant.modelProvider ? props.assistant.modelProvider : 'openai'
+  ); // Default to OpenAI
   const [instructions, setInstructions] = useState(
     props.assistant.instructions
   );
@@ -114,6 +117,34 @@ export default function EditAssistant(props: EditAssistantProps) {
         </div>
         <div className='max-w-3xl'>
           <div className='mb-2 block'>
+            <Label htmlFor='provider' value='Model Provider' />
+          </div>
+          {modelsLoading ? (
+            <>
+              <Spinner aria-label='Loading model provider..' size='sm' />
+              <span className='pl-3'>Loading available model providers...</span>
+            </>
+          ) : (
+            <Select
+              id='modelProvider'
+              required
+              value={modelProvider}
+              onChange={(e) => {
+                setModelProvider(e.target.value);
+              }}
+            >
+              {models.providers.map((provider, index) => {
+                return (
+                  <option key={index} value={provider.id}>
+                    {provider.name}
+                  </option>
+                );
+              })}
+            </Select>
+          )}
+        </div>
+        <div className='max-w-3xl'>
+          <div className='mb-2 block'>
             <Label htmlFor='model' value='Model' />
           </div>
           {modelsLoading ? (
@@ -133,17 +164,21 @@ export default function EditAssistant(props: EditAssistantProps) {
                 setModel(e.target.value);
               }}
             >
-              {models.models.map((model, index) => {
-                return (
-                  <option key={index} value={model.id}>
-                    {model.id}
-                  </option>
-                );
-              })}
+              {models.models
+                .filter((model) => {
+                  return model.provider.id === modelProvider;
+                })
+                .map((model, index) => {
+                  return (
+                    <option key={index} value={model.id}>
+                      {model.id}
+                    </option>
+                  );
+                })}
             </Select>
           )}
         </div>
-        <div className='flex max-w-3xl flex-col gap-4'>
+        {/*<div className='flex max-w-3xl flex-col gap-4'>
           <div className='mb-2 block'>
             <Label htmlFor='model' value='Tools' />
           </div>
@@ -164,7 +199,7 @@ export default function EditAssistant(props: EditAssistantProps) {
               onChange={setRetrievalTool}
             />
           </div>
-        </div>
+        </div>*/}
         <div>
           <Button
             gradientDuoTone='purpleToBlue'
