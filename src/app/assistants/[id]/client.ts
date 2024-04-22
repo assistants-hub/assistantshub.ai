@@ -177,7 +177,7 @@ export async function getMessages(
 
 export function useGetThreads(assistantId: string | undefined) {
   let { data, isLoading, error, isValidating, mutate } = useSWR(
-    '/api/openai/threads',
+    '/api/threads',
     (url: string) =>
       fetch(url, {
         headers: {
