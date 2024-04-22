@@ -116,6 +116,7 @@ export default function ChatPopup(props: ChatPopupProps) {
     if (!thread) {
       let [status, threadResponse] = await createThread(
         assistant.id,
+        assistant.modelProviderId ? assistant.modelProviderId : 'openai',
         fingerprint
       );
       thread = threadResponse.id;
@@ -131,6 +132,7 @@ export default function ChatPopup(props: ChatPopupProps) {
     let [messageStatus, messageResponse] = await createMessage(
       assistant.id,
       thread,
+      assistant.modelProviderId ? assistant.modelProviderId : 'openai',
       currentMessage
     );
     let currentMessageId = messageResponse.id;

@@ -60,13 +60,14 @@ export async function deleteAssistant(id: string) {
 
 export async function createThread(
   id: string | undefined,
+  modelProviderId: string,
   fingerprint: string | undefined
 ) {
   if (!id) {
     return [400, { error: 'Assistant ID is required' }];
   }
 
-  let response = await fetch('/api/openai/threads', {
+  let response = await fetch('/api/' + modelProviderId + '/threads', {
     method: 'POST',
     headers: {
       accept: 'application.json',
@@ -103,50 +104,30 @@ export async function createRun(
   return response.body;
 }
 
-export async function getRun(
-  assistantId: string | undefined,
-  threadId: string | undefined,
-  id: string | undefined
-) {
-  if (!id) {
-    return [400, { error: 'Run ID is required' }];
-  }
-
-  let response = await fetch(
-    '/api/openai/threads/' + threadId + '/runs/' + id,
-    {
-      method: 'GET',
-      headers: {
-        accept: 'application.json',
-        'Content-Type': 'application/json',
-        'X-Assistant-Id': assistantId || '',
-      },
-    }
-  );
-
-  return [response.status, await response.json()];
-}
-
 export async function createMessage(
   assistantId: string | undefined,
   threadId: string | null,
+  modelProviderId: string,
   message: Message | undefined
 ) {
   if (!message) {
     return [400, { error: 'Message is required' }];
   }
 
-  let response = await fetch('/api/openai/threads/' + threadId + '/messages', {
-    method: 'POST',
-    headers: {
-      accept: 'application.json',
-      'Content-Type': 'application',
-      'X-Assistant-Id': assistantId || '',
-    },
-    body: JSON.stringify({
-      message: message,
-    }),
-  });
+  let response = await fetch(
+    '/api/' + modelProviderId + '/threads/' + threadId + '/messages',
+    {
+      method: 'POST',
+      headers: {
+        accept: 'application.json',
+        'Content-Type': 'application',
+        'X-Assistant-Id': assistantId || '',
+      },
+      body: JSON.stringify({
+        message: message,
+      }),
+    }
+  );
 
   return [response.status, await response.json()];
 }
