@@ -24,7 +24,7 @@
 </div>
 -----
 
-Welcome to Assistants Hub, where you can **Build, Integrate, and Deploy AI Assistants in Minutes**. This project leverages the power of Next.js and OpenAI to provide a streamlined platform for creating sophisticated AI assistants. Our mission is to democratize AI development, making it accessible for developers, hobbyists, and businesses to innovate and implement AI solutions effortlessly.
+Welcome to Assistants Hub, where you can **Build, Integrate, and Deploy AI Assistants in Minutes**. This project leverages the power of Next.js, OpenAI, Google and other AI services to provide a streamlined platform for creating sophisticated AI assistants. Our mission is to democratize AI development, making it accessible for developers, hobbyists, and businesses to innovate and implement AI solutions effortlessly.
 
 ---
 
@@ -78,7 +78,7 @@ To get started with Assistants Hub, you'll need to have Node.js installed on you
     pnpm install
    ```
 
-4. Configure your environment: Rename .env.local.example to .env.local and fill in your OpenAI API key along with any other necessary settings.
+4. Configure your environment: Rename `.env.template` to `.env` and fill in the necessary settings.
 
 5. Configure Postgres Database
 
@@ -150,7 +150,7 @@ By continuing to use Assistants Hub, you agree to these terms. If you do not agr
 
 We extend our gratitude to:
 
-OpenAI, for their exceptional API that powers the intelligence of our assistants.
+OpenAI and Google for their exceptional APIs that powers the intelligence of our assistants.
 The Next.js community, for providing the robust framework that makes this project possible.
 
 Thank you for exploring Assistants Hub. We're eager to see the incredible AI assistants you'll build and deploy!
