@@ -36,6 +36,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     if (body.openAiApiKey) {
       if (body.openAiApiKey.toLowerCase() === 'use-default') {
         body.openAiApiKey = process.env.OPENAI_API_KEY;
+        body.googleAIStudioKey = process.env.GOOGLE_AI_STUDIO_KEY;
       }
 
       // Validate the Open API Key
@@ -60,10 +61,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
         },
         update: {
           openAIApiKey: body.openAiApiKey,
+          googleAIStudioKey: body.googleAIStudioKey,
         },
         create: {
           owner: token.sub,
           openAIApiKey: body.openAiApiKey,
+          googleAIStudioKey: body.googleAIStudioKey,
         },
       });
       return Response.json(

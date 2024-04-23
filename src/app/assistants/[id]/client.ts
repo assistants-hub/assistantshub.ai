@@ -82,6 +82,7 @@ export async function createThread(
 
 export async function createRun(
   id: string | undefined,
+  modelProviderId: string,
   threadId: string | null
 ) {
   if (!id) {
@@ -92,7 +93,7 @@ export async function createRun(
     throw new Error('Thread ID is required');
   }
 
-  let response = await fetch('/api/openai/threads/' + threadId + '/runs', {
+  let response = await fetch('/api/' + modelProviderId + '/threads/' + threadId + '/runs', {
     method: 'POST',
     headers: {
       accept: 'application.json',
@@ -106,8 +107,8 @@ export async function createRun(
 
 export async function createMessage(
   assistantId: string | undefined,
-  threadId: string | null,
   modelProviderId: string,
+  threadId: string | null,
   message: Message | undefined
 ) {
   if (!message) {
@@ -134,6 +135,7 @@ export async function createMessage(
 
 export async function getMessages(
   assistantId: string | undefined,
+  modelProviderId: string,
   threadId: string | undefined,
   after: string | undefined
 ) {
@@ -142,7 +144,7 @@ export async function getMessages(
   }
 
   let response = await fetch(
-    '/api/openai/threads/' + threadId + '/messages?after=' + after,
+    '/api/' + modelProviderId + '/threads/' + threadId + '/messages?after=' + after,
     {
       method: 'GET',
       headers: {

@@ -38,7 +38,6 @@ export function getSecondaryTextColor(assistant: Assistant) {
 }
 
 export function getInitialPrompt(assistant: Assistant) {
-  console.log(assistant.theme);
   if (assistant.theme && assistant.theme.initialPrompt) {
     return assistant.theme.initialPrompt;
   }

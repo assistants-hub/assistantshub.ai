@@ -49,6 +49,10 @@ export default function ChatPopup(props: ChatPopupProps) {
   const messagesRef = useRef<HTMLDivElement | null>(null);
   const [fingerprint, setFingerprint] = useState('');
 
+  const getModelProviderId = () => {
+    return assistant.modelProviderId ? assistant.modelProviderId : 'openai';
+  }
+
   useEffect(() => {
     setMessages([
       {
@@ -80,7 +84,7 @@ export default function ChatPopup(props: ChatPopupProps) {
     let threadId = getItemWithExpiry<string>(getAssistantThreadStorageKey());
     if (threadId) {
       setCurrentThread(threadId);
-      getMessages(assistant.id, threadId || '', '').then(
+      getMessages(assistant.id, getModelProviderId(), threadId || '', '').then(
         ([threadedMessageStatus, threadMessages]) => {
           const newMessages: Message[] = threadMessages.data;
           setStreamText('');
@@ -116,7 +120,7 @@ export default function ChatPopup(props: ChatPopupProps) {
     if (!thread) {
       let [status, threadResponse] = await createThread(
         assistant.id,
-        assistant.modelProviderId ? assistant.modelProviderId : 'openai',
+        getModelProviderId(),
         fingerprint
       );
       thread = threadResponse.id;
@@ -131,46 +135,68 @@ export default function ChatPopup(props: ChatPopupProps) {
     // Send message to thread
     let [messageStatus, messageResponse] = await createMessage(
       assistant.id,
+      getModelProviderId(),
       thread,
-      assistant.modelProviderId ? assistant.modelProviderId : 'openai',
       currentMessage
     );
     let currentMessageId = messageResponse.id;
 
     // Run the thread
-    let runResponse = await createRun(assistant.id, thread);
+    let runResponse = await createRun(assistant.id, getModelProviderId(), thread);
 
     let textDecoder = new TextDecoder();
+    if (getModelProviderId() === 'openai') {
+      let messageBuffer = '';
 
-    let messageBuffer = '';
+      let buffer = '';
+      for await (const chunk of streamAsyncIterator(runResponse)) {
+        if (chunk) {
+          const sseString = textDecoder.decode(chunk);
 
-    let buffer = '';
-    for await (const chunk of streamAsyncIterator(runResponse)) {
-      if (chunk) {
-        const sseString = textDecoder.decode(chunk);
-        let [events, leftOvers] = parseEventsFromChunk(sseString, buffer);
-        buffer = leftOvers;
+          let [events, leftOvers] = parseEventsFromChunk(sseString, buffer);
+          buffer = leftOvers;
 
-        for (const event of events) {
-          if (event.event === 'thread.message.delta') {
-            messageBuffer += event.data.delta.content[0].text.value;
-            setStreamText(messageBuffer);
-          }
+          for (const event of events) {
+            if (event.event === 'thread.message.delta') {
+              messageBuffer += event.data.delta.content[0].text.value;
+              setStreamText(messageBuffer);
+            }
 
-          if (event.event === 'thread.run.completed') {
-            setMessageStatus('completed');
-            const [threadedMessageStatus, threadMessages] = await getMessages(
-              assistant.id,
-              thread || '',
-              currentMessageId
-            );
+            if (event.event === 'thread.run.completed') {
+              setMessageStatus('completed');
+              const [threadedMessageStatus, threadMessages] = await getMessages(
+                assistant.id,
+                getModelProviderId(),
+                thread || '',
+                currentMessageId
+              );
 
-            const newMessages: Message[] = threadMessages.data;
-            setStreamText('');
-            setMessages([...messages, ...newMessages]);
+              const newMessages: Message[] = threadMessages.data;
+              setStreamText('');
+              setMessages([...messages, ...newMessages]);
+            }
           }
         }
       }
+    } else {
+      // This is for Google Gemini Models
+      let messageBuffer = '';
+      for await (const chunk of streamAsyncIterator(runResponse)) {
+        const result = textDecoder.decode(chunk);
+        messageBuffer = messageBuffer + result;
+        setStreamText(messageBuffer);
+      }
+      setMessageStatus('completed');
+      const [threadedMessageStatus, threadMessages] = await getMessages(
+        assistant.id,
+        getModelProviderId(),
+        thread || '',
+        currentMessageId
+      );
+      console.log("threadedMessages", threadMessages);
+      const newMessages: Message[] = threadMessages.data;
+      setStreamText('');
+      setMessages([...messages, ...newMessages]);
     }
   };
 
