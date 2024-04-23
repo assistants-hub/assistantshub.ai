@@ -51,7 +51,7 @@ export default function ChatPopup(props: ChatPopupProps) {
 
   const getModelProviderId = () => {
     return assistant.modelProviderId ? assistant.modelProviderId : 'openai';
-  }
+  };
 
   useEffect(() => {
     setMessages([
@@ -142,7 +142,11 @@ export default function ChatPopup(props: ChatPopupProps) {
     let currentMessageId = messageResponse.id;
 
     // Run the thread
-    let runResponse = await createRun(assistant.id, getModelProviderId(), thread);
+    let runResponse = await createRun(
+      assistant.id,
+      getModelProviderId(),
+      thread
+    );
 
     let textDecoder = new TextDecoder();
     if (getModelProviderId() === 'openai') {
@@ -193,7 +197,7 @@ export default function ChatPopup(props: ChatPopupProps) {
         thread || '',
         currentMessageId
       );
-      console.log("threadedMessages", threadMessages);
+      console.log('threadedMessages', threadMessages);
       const newMessages: Message[] = threadMessages.data;
       setStreamText('');
       setMessages([...messages, ...newMessages]);

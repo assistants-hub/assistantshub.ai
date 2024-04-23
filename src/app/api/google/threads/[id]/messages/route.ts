@@ -37,7 +37,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
           },
         });
 
-        return Response.json({ data: messages.map((item) => item.object) }, { status: 200 });
+        return Response.json(
+          { data: messages.map((item) => item.object) },
+          { status: 200 }
+        );
       } else {
         let messages = await prisma.message.findMany({
           where: {
@@ -77,7 +80,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         id: 'msg_' + ulid(),
         role: body.message.role,
         content: body.message.content,
-        created_at: Math.floor(new Date().getTime() / 1000)
+        created_at: Math.floor(new Date().getTime() / 1000),
       };
 
       await prisma.message.upsert({

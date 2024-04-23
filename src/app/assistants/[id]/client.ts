@@ -93,14 +93,17 @@ export async function createRun(
     throw new Error('Thread ID is required');
   }
 
-  let response = await fetch('/api/' + modelProviderId + '/threads/' + threadId + '/runs', {
-    method: 'POST',
-    headers: {
-      accept: 'application.json',
-      'Content-Type': 'application/json',
-      'X-Assistant-Id': id || '',
-    },
-  });
+  let response = await fetch(
+    '/api/' + modelProviderId + '/threads/' + threadId + '/runs',
+    {
+      method: 'POST',
+      headers: {
+        accept: 'application.json',
+        'Content-Type': 'application/json',
+        'X-Assistant-Id': id || '',
+      },
+    }
+  );
 
   return response.body;
 }
@@ -144,7 +147,12 @@ export async function getMessages(
   }
 
   let response = await fetch(
-    '/api/' + modelProviderId + '/threads/' + threadId + '/messages?after=' + after,
+    '/api/' +
+      modelProviderId +
+      '/threads/' +
+      threadId +
+      '/messages?after=' +
+      after,
     {
       method: 'GET',
       headers: {

@@ -15,18 +15,23 @@ const formatChatParams = () => {
   return {
     history: [
       {
-        role: "user",
-        parts: [{ text: "Hello, I have 2 dogs in my house." }],
+        role: 'user',
+        parts: [{ text: 'Hello, I have 2 dogs in my house.' }],
       },
       {
-        role: "model",
-        parts: [{ text: "Great to meet you. What would you like to know?" }],
+        role: 'model',
+        parts: [{ text: 'Great to meet you. What would you like to know?' }],
       },
-    ]
-  }
-}
+    ],
+  };
+};
 
-const createMessage = async (assistantId:string, threadId: string, msgId: string, buffer: string) => {
+const createMessage = async (
+  assistantId: string,
+  threadId: string,
+  msgId: string,
+  buffer: string
+) => {
   let object = {
     id: msgId,
     role: 'assistant',
@@ -35,12 +40,12 @@ const createMessage = async (assistantId:string, threadId: string, msgId: string
         type: 'text',
         text: {
           value: buffer,
-          annotations: []
-        }
-      }
+          annotations: [],
+        },
+      },
     ],
-    created_at: Math.floor(new Date().getTime() / 1000)
-  }
+    created_at: Math.floor(new Date().getTime() / 1000),
+  };
   // Save the message to the database
   let message = await prisma.message.upsert({
     where: {
@@ -68,7 +73,7 @@ const createMessage = async (assistantId:string, threadId: string, msgId: string
       tags: message as any,
     },
   });
-}
+};
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
@@ -76,17 +81,21 @@ export async function POST(req: NextRequest, res: NextResponse) {
     let assistantId = req.headers.get('X-Assistant-Id');
 
     if (!assistantId) {
-      return Response.json({ message: 'Assistant ID is required' }, { status: 400 });
+      return Response.json(
+        { message: 'Assistant ID is required' },
+        { status: 400 }
+      );
     }
 
-    const genAIModel = (await getGoogleGenAIObjectForAssistant(req, prisma));
+    const genAIModel = await getGoogleGenAIObjectForAssistant(req, prisma);
 
     const chat = genAIModel.startChat(formatChatParams()); // TODO build instructions and get the history here
 
-    const msg = "How many paws are in my house?"; // TODO get the latest message instead of the hardcoded one
-    const runResponse:GenerateContentStreamResult = await chat.sendMessageStream(msg);
+    const msg = 'How many paws are in my house?'; // TODO get the latest message instead of the hardcoded one
+    const runResponse: GenerateContentStreamResult =
+      await chat.sendMessageStream(msg);
 
-    let msgId = 'msg_' + ulid()
+    let msgId = 'msg_' + ulid();
 
     let buffer = '';
     const stream = new ReadableStream({
@@ -98,11 +107,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
           }
           controller.close();
 
-          await createMessage(assistantId ? assistantId : '', threadId, msgId, buffer);
+          await createMessage(
+            assistantId ? assistantId : '',
+            threadId,
+            msgId,
+            buffer
+          );
         } catch (error) {
           controller.error(error);
         }
-      }
+      },
     });
 
     return new Response(stream);

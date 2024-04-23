@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import OpenAI from 'openai';
 import { PrismaClient } from '@prisma/client';
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 export const getOpenAIObjectForAssistant = async (
   req: NextRequest,
@@ -29,7 +29,6 @@ export const getOpenAIObjectForAssistant = async (
   });
 };
 
-
 export const getGoogleGenAIObjectForAssistant = async (
   req: NextRequest,
   prisma: PrismaClient
@@ -43,14 +42,16 @@ export const getGoogleGenAIObjectForAssistant = async (
     },
     select: {
       organization: true,
-      modelId: true
-    }
+      modelId: true,
+    },
   });
 
   if (!assistant) {
     throw new Error('Assistant does not exist');
   }
 
-  let genAI = new GoogleGenerativeAI(assistant?.organization?.googleAIStudioKey);
+  let genAI = new GoogleGenerativeAI(
+    assistant?.organization?.googleAIStudioKey
+  );
   return genAI.getGenerativeModel({ model: assistant.modelId });
 };
