@@ -43,6 +43,7 @@ export const getGoogleGenAIObjectForAssistant = async (
     select: {
       organization: true,
       modelId: true,
+      object: true
     },
   });
 
@@ -53,5 +54,11 @@ export const getGoogleGenAIObjectForAssistant = async (
   let genAI = new GoogleGenerativeAI(
     assistant?.organization?.googleAIStudioKey
   );
-  return genAI.getGenerativeModel({ model: assistant.modelId });
+  return genAI.getGenerativeModel({
+    model: 'gemini-1.5-pro-latest',
+    systemInstruction: {
+      role: 'model',
+      // @ts-ignore
+      parts: [{ text: assistant?.object?.instructions }]
+    }});
 };

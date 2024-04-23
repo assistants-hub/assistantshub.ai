@@ -11,18 +11,60 @@ const getId = (req: Request) => {
   return url.pathname.split('/').splice(-2, 1)[0];
 };
 
-const formatChatParams = () => {
+const getLatestMessage = async (threadId: string) => {
+  let messages = await prisma.message.findMany({
+    take: 1,
+    where: {
+      threadId: threadId,
+    },
+    select: {
+      object: true,
+    },
+    orderBy: {
+      created_at: 'desc',
+    },
+  });
+
+  // @ts-ignore
+  return messages[0]?.object?.content[0]?.text?.value;
+}
+
+const formatChatParams = async (threadId: string) => {
+  let messages = await prisma.message.findMany({
+    where: {
+      threadId: threadId,
+    },
+    select: {
+      object: true,
+    },
+    orderBy: {
+      created_at: 'asc',
+    },
+  });
+
+  let history = [];
+  let previousRole = null;
+  for (let i = 0; i < messages.length - 1; i++) { // -1 to exclude the last message
+
+    let item = messages[i];
+    // @ts-ignore
+    if (previousRole === item.object.role) {
+      history.pop();
+    }
+
+    history.push({
+      // @ts-ignore
+      role: item.object.role === 'assistant' ? 'model' : 'user',
+      // @ts-ignore
+      parts: [{ text: item.object.content[0].text.value }],
+    });
+
+    // @ts-ignore
+    previousRole = item.object.role === 'assistant' ? 'model' : 'user';
+  }
+
   return {
-    history: [
-      {
-        role: 'user',
-        parts: [{ text: 'Hello, I have 2 dogs in my house.' }],
-      },
-      {
-        role: 'model',
-        parts: [{ text: 'Great to meet you. What would you like to know?' }],
-      },
-    ],
+    history: history,
   };
 };
 
@@ -88,12 +130,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
 
     const genAIModel = await getGoogleGenAIObjectForAssistant(req, prisma);
-
-    const chat = genAIModel.startChat(formatChatParams()); // TODO build instructions and get the history here
-
-    const msg = 'How many paws are in my house?'; // TODO get the latest message instead of the hardcoded one
-    const runResponse: GenerateContentStreamResult =
-      await chat.sendMessageStream(msg);
+    let chatParams = await formatChatParams(threadId);
+    const chat = genAIModel.startChat(chatParams);
+    let message = await getLatestMessage(threadId);
+    const runResponse: GenerateContentStreamResult = await chat.sendMessageStream(message);
 
     let msgId = 'msg_' + ulid();
 
