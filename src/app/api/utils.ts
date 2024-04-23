@@ -55,7 +55,7 @@ export const getGoogleGenAIObjectForAssistant = async (
     assistant?.organization?.googleAIStudioKey
   );
   return genAI.getGenerativeModel({
-    model: 'gemini-1.5-pro-latest',
+    model: assistant?.modelId,
     systemInstruction: {
       role: 'model',
       // @ts-ignore

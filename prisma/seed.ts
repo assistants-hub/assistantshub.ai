@@ -79,11 +79,11 @@ async function main() {
   });
 
   const geminipro = await prisma.model.upsert({
-    where: { id: 'gemini-pro' },
+    where: { id: 'gemini-1.5-pro-latest' },
     update: {},
     create: {
-      id: 'gemini-pro',
-      name: 'Gemini Pro',
+      id: 'gemini-1.5-pro-latest',
+      name: 'Gemini Pro 1.5',
       description: 'The latest model from Google',
       url: 'https://ai.google.dev/gemini-api/docs/api-overview',
       providerId: 'google',
