@@ -27,7 +27,7 @@ const getLatestMessage = async (threadId: string) => {
 
   // @ts-ignore
   return messages[0]?.object?.content[0]?.text?.value;
-}
+};
 
 const formatChatParams = async (threadId: string) => {
   let messages = await prisma.message.findMany({
@@ -44,7 +44,8 @@ const formatChatParams = async (threadId: string) => {
 
   let history = [];
   let previousRole = null;
-  for (let i = 0; i < messages.length - 1; i++) { // -1 to exclude the last message
+  for (let i = 0; i < messages.length - 1; i++) {
+    // -1 to exclude the last message
 
     let item = messages[i];
     // @ts-ignore
@@ -133,7 +134,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
     let chatParams = await formatChatParams(threadId);
     const chat = genAIModel.startChat(chatParams);
     let message = await getLatestMessage(threadId);
-    const runResponse: GenerateContentStreamResult = await chat.sendMessageStream(message);
+    const runResponse: GenerateContentStreamResult =
+      await chat.sendMessageStream(message);
 
     let msgId = 'msg_' + ulid();
 
