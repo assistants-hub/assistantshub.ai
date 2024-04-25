@@ -34,7 +34,7 @@ export default function Conversations() {
               <Table.HeadCell>Location</Table.HeadCell>
             </Table.Head>
             <Table.Body className='divide-y'>
-              {threads.map((thread) => (
+              {threads && threads.length ? threads.map((thread) => (
                 <Table.Row
                   key={thread.id}
                   className='bg-white dark:border-gray-700 dark:bg-gray-800'
@@ -80,7 +80,7 @@ export default function Conversations() {
                     <UserLocation metadata={thread.metadata} />
                   </Table.Cell>
                 </Table.Row>
-              ))}
+              )) : <></>}
             </Table.Body>
           </Table>
         </div>
