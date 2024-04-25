@@ -11,10 +11,9 @@ import UserLocation from '@/app/assistants/[id]/conversations/UserLocation';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export default function Conversations() {
+  const { assistant } = useContext(AssistantContext);
   const [openModal, setOpenModal] = useState(false);
   const [currentThread, setCurrentThread] = useState(null as Thread | null);
-
-  const { assistant } = useContext(AssistantContext);
 
   let { threadsLoading, threads, threadsEmpty } = useGetThreads(assistant.id);
 
@@ -87,7 +86,6 @@ export default function Conversations() {
         <ChatConversation
           openModal={openModal}
           setOpenModal={setOpenModal}
-          assistant={assistant}
           thread={currentThread}
         />
       </div>
