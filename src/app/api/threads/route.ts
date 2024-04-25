@@ -22,9 +22,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
         created_at: 'desc',
       },
     });
+    console.log(threads);
     let threadsCollection = threads.map((thread) => {
       return thread.object;
     });
+    console.log(threadsCollection);
     return Response.json(threadsCollection, { status: 200 });
   } catch (err: any) {
     console.log(err);
