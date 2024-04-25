@@ -96,6 +96,10 @@ To get started with Assistants Hub, you'll need to have Node.js installed on you
 
 Visit http://localhost:3001 in your browser to see your AI assistant in action.
 
+7. Logging into your local instance.
+   - By default the local instance is configured to use Credentials based authentication. 
+   - You can login using CREDENTIALS_APPROVED_USERNAME and CREDENTIALS_APPROVED_PASSWORD in your .env file.
+
 ## Contributing
 
 Your contributions can help make Assistants Hub even better. If you're interested in contributing, please read our [CONTRIBUTING.md](./CONTRIBUTING.md) file to learn how you can get involved.
