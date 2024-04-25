@@ -11,10 +11,9 @@ import UserLocation from '@/app/assistants/[id]/conversations/UserLocation';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export default function Conversations() {
+  const { assistant } = useContext(AssistantContext);
   const [openModal, setOpenModal] = useState(false);
   const [currentThread, setCurrentThread] = useState(null as Thread | null);
-
-  const { assistant } = useContext(AssistantContext);
 
   let { threadsLoading, threads, threadsEmpty } = useGetThreads(assistant.id);
 
@@ -34,7 +33,7 @@ export default function Conversations() {
               <Table.HeadCell>Location</Table.HeadCell>
             </Table.Head>
             <Table.Body className='divide-y'>
-              {threads.map((thread) => (
+              {threads && threads.length ? threads.map((thread) => (
                 <Table.Row
                   key={thread.id}
                   className='bg-white dark:border-gray-700 dark:bg-gray-800'
@@ -80,14 +79,13 @@ export default function Conversations() {
                     <UserLocation metadata={thread.metadata} />
                   </Table.Cell>
                 </Table.Row>
-              ))}
+              )) : <></>}
             </Table.Body>
           </Table>
         </div>
         <ChatConversation
           openModal={openModal}
           setOpenModal={setOpenModal}
-          assistant={assistant}
           thread={currentThread}
         />
       </div>

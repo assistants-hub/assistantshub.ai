@@ -168,13 +168,9 @@ export async function getMessages(
 
 export function useGetThreads(assistantId: string | undefined) {
   let { data, isLoading, error, isValidating, mutate } = useSWR(
-    '/api/threads',
+    '/api/assistants/' + assistantId + '/threads',
     (url: string) =>
-      fetch(url, {
-        headers: {
-          'X-Assistant-Id': assistantId || '',
-        },
-      }).then((r) => r.json()),
+      fetch(url, {}).then((r) => r.json()),
     {
       revalidateIfStale: true,
       revalidateOnFocus: false,
@@ -197,13 +193,14 @@ export function useGetThreads(assistantId: string | undefined) {
 
 export async function getMessagesForThread(
   assistantId: string | null,
+  modelProviderId: string,
   threadId: string | undefined
 ) {
   if (!threadId) {
     return [400, { error: 'Thread ID is required' }];
   }
 
-  let response = await fetch('/api/openai/threads/' + threadId + '/messages', {
+  let response = await fetch('/api/' + modelProviderId + '/threads/' + threadId + '/messages', {
     method: 'GET',
     headers: {
       accept: 'application.json',

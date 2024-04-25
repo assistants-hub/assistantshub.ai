@@ -1,20 +1,21 @@
 import { Button, Modal, Spinner } from 'flowbite-react';
 import { Thread } from '@/app/types/thread';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getMessagesForThread } from '@/app/assistants/[id]/client';
 import { Assistant } from '@/app/types/assistant';
 import { Message } from '@/app/types/message';
 import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
 import UserLocation from '@/app/assistants/[id]/conversations/UserLocation';
+import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export interface ChatMessageProps {
   openModal: boolean;
   setOpenModal: (openModal: boolean) => void;
   thread: Thread | null;
-  assistant: Assistant;
 }
 
 export default function ChatConversation(props: ChatMessageProps) {
+  const { assistant, setAssistant } = useContext(AssistantContext);
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -22,7 +23,8 @@ export default function ChatConversation(props: ChatMessageProps) {
     setLoading(true);
     if (props.thread) {
       getMessagesForThread(
-        props.assistant?.id?.toString() || '',
+        assistant?.id?.toString() || '',
+        assistant.modelProviderId ? assistant.modelProviderId : 'openai',
         props.thread.id
       ).then(([status, response]) => {
         let collection = [];
