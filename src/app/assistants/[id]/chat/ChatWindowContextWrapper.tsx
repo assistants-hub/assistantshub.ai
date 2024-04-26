@@ -1,14 +1,14 @@
 import { useContext, useEffect } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
-import ChatAgent from '@/app/assistants/[id]/chat/ChatAgent';
+import ChatWindow from '@/app/assistants/[id]/chat/ChatWindow';
 
-export default function ChatAgentContextWrapper() {
+export default function ChatWindowContextWrapper() {
   const { assistant } = useContext(AssistantContext);
 
   useEffect(() => {}, [assistant]);
 
   return assistant ? (
-    <ChatAgent assistant_id={assistant.id as string} fixed={true} />
+    <ChatWindow assistant_id={assistant.id as string} />
   ) : (
     <></>
   );

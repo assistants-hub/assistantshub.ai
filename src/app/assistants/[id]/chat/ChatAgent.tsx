@@ -10,11 +10,13 @@ import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 
 export interface ChatAgentProps {
   assistant_id: string;
+  fixed?: boolean;
 }
 
 export default function ChatAgent(props: ChatAgentProps) {
   const dropDownDiv = React.useRef<HTMLDivElement | null>(null);
   const [showPopup, setShowPopup] = React.useState(false);
+  const [fixed, setFixed] = React.useState(props.fixed ? props.fixed : false);
 
   let { assistantLoading, assistantResponse, assistantEmpty, reload } =
     useGetAssistant(props.assistant_id);
@@ -76,7 +78,10 @@ export default function ChatAgent(props: ChatAgentProps) {
 
   return (
     <div className='stack items-center justify-center'>
-      <div data-dial-init className='group fixed bottom-1 right-1'>
+      <div
+        data-dial-init
+        className={!fixed ? 'group fixed bottom-1 right-1' : 'group'}
+      >
         <div className='flex flex-row-reverse' ref={dropDownDiv}>
           {!showPopup ? (
             <Button

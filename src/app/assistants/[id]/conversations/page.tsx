@@ -33,53 +33,57 @@ export default function Conversations() {
               <Table.HeadCell>Location</Table.HeadCell>
             </Table.Head>
             <Table.Body className='divide-y'>
-              {threads && threads.length ? threads.map((thread) => (
-                <Table.Row
-                  key={thread.id}
-                  className='bg-white dark:border-gray-700 dark:bg-gray-800'
-                >
-                  <Table.Cell>
-                    <span className='font-semibold text-gray-700'>
-                      {thread.id}
-                    </span>
-                    <br />
-                    <span className='font-small text-gray-400'>
-                      {formatRelativeUnixTime(thread.created_at)}
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <a
-                      href='#'
-                      className='font-medium text-cyan-600 hover:underline dark:text-cyan-500'
-                    >
-                      <Button
-                        type='submit'
-                        className='inline-flex cursor-pointer justify-center p-1 dark:hover:bg-gray-600'
-                        color={'gray'}
-                        onClick={() => {
-                          setOpenModal(true);
-                          setCurrentThread(thread);
-                        }}
+              {threads && threads.length ? (
+                threads.map((thread) => (
+                  <Table.Row
+                    key={thread.id}
+                    className='bg-white dark:border-gray-700 dark:bg-gray-800'
+                  >
+                    <Table.Cell>
+                      <span className='font-semibold text-gray-700'>
+                        {thread.id}
+                      </span>
+                      <br />
+                      <span className='font-small text-gray-400'>
+                        {formatRelativeUnixTime(thread.created_at)}
+                      </span>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <a
+                        href='#'
+                        className='font-medium text-cyan-600 hover:underline dark:text-cyan-500'
                       >
-                        <HiChatAlt2 size={'20'} />
-                      </Button>
-                    </a>
-                  </Table.Cell>
-                  <Table.Cell>
-                    {thread.metadata && thread.metadata.user
-                      ? thread.metadata.user
-                      : 'Anonymous'}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {thread.metadata && thread.metadata.fingerprint
-                      ? thread.metadata.fingerprint
-                      : ''}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <UserLocation metadata={thread.metadata} />
-                  </Table.Cell>
-                </Table.Row>
-              )) : <></>}
+                        <Button
+                          type='submit'
+                          className='inline-flex cursor-pointer justify-center p-1 dark:hover:bg-gray-600'
+                          color={'gray'}
+                          onClick={() => {
+                            setOpenModal(true);
+                            setCurrentThread(thread);
+                          }}
+                        >
+                          <HiChatAlt2 size={'20'} />
+                        </Button>
+                      </a>
+                    </Table.Cell>
+                    <Table.Cell>
+                      {thread.metadata && thread.metadata.user
+                        ? thread.metadata.user
+                        : 'Anonymous'}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {thread.metadata && thread.metadata.fingerprint
+                        ? thread.metadata.fingerprint
+                        : ''}
+                    </Table.Cell>
+                    <Table.Cell>
+                      <UserLocation metadata={thread.metadata} />
+                    </Table.Cell>
+                  </Table.Row>
+                ))
+              ) : (
+                <></>
+              )}
             </Table.Body>
           </Table>
         </div>

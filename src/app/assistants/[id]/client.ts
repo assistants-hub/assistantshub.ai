@@ -169,8 +169,7 @@ export async function getMessages(
 export function useGetThreads(assistantId: string | undefined) {
   let { data, isLoading, error, isValidating, mutate } = useSWR(
     '/api/assistants/' + assistantId + '/threads',
-    (url: string) =>
-      fetch(url, {}).then((r) => r.json()),
+    (url: string) => fetch(url, {}).then((r) => r.json()),
     {
       revalidateIfStale: true,
       revalidateOnFocus: false,
@@ -200,14 +199,17 @@ export async function getMessagesForThread(
     return [400, { error: 'Thread ID is required' }];
   }
 
-  let response = await fetch('/api/' + modelProviderId + '/threads/' + threadId + '/messages', {
-    method: 'GET',
-    headers: {
-      accept: 'application.json',
-      'Content-Type': 'application/json',
-      'X-Assistant-Id': assistantId || '',
-    },
-  });
+  let response = await fetch(
+    '/api/' + modelProviderId + '/threads/' + threadId + '/messages',
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application.json',
+        'Content-Type': 'application/json',
+        'X-Assistant-Id': assistantId || '',
+      },
+    }
+  );
 
   return [response.status, await response.json()];
 }

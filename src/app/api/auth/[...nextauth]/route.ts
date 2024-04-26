@@ -4,7 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import EmailProvider from 'next-auth/providers/email';
-import CredentialsProvider from "next-auth/providers/credentials"
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { sendVerificationRequest } from '@/app/api/utils';
 
 const prisma = new PrismaClient();
@@ -22,13 +22,21 @@ if (process.env.ENABLE_CREDENTIALS_PROVIDER === 'true') {
       username: { label: 'Username', type: 'text' },
       password: { label: 'Password', type: 'password' },
     },
-    async authorize(credentials:any) {
-      if(credentials.username === process.env.CREDENTIALS_APPROVED_USERNAME && credentials.password === process.env.CREDENTIALS_APPROVED_PASSWORD) {
-        return { id: 1, name: 'J Smith', email: process.env.CREDENTIALS_APPROVED_USERNAME + '@assistantshub.ai' };
+    async authorize(credentials: any) {
+      if (
+        credentials.username === process.env.CREDENTIALS_APPROVED_USERNAME &&
+        credentials.password === process.env.CREDENTIALS_APPROVED_PASSWORD
+      ) {
+        return {
+          id: 1,
+          name: 'J Smith',
+          email:
+            process.env.CREDENTIALS_APPROVED_USERNAME + '@assistantshub.ai',
+        };
       }
       return null;
-    }
-  }
+    },
+  };
 
   providers.push(CredentialsProvider(credentialsProvider as any));
 }

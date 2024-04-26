@@ -9,7 +9,7 @@ import {
 
 export interface ChatHeaderProps extends ChatProps {
   minimize: boolean;
-  setMinimize: (minimize: boolean) => void;
+  setMinimize: ((minimize: boolean) => void) | null;
   close: () => void;
 }
 
@@ -28,24 +28,22 @@ export default function ChatHeader(props: ChatHeaderProps) {
       >
         <div className='grid grid-cols-2'>
           <div className='col-span-1'>
-            <p className='max-w-[200px] text-xl leading-relaxed'>
-              {assistant.name}
-            </p>
+            <p className='max-w-sm text-xl leading-relaxed'>{assistant.name}</p>
           </div>
           <div className='col-span-1'>
-            {!props.minimize ? (
+            {!props.minimize && props.setMinimize ? (
               <div>
-                <HiX
+                {/*<HiX
                   size={'20'}
                   className='float-right cursor-pointer justify-end'
                   onClick={() => props.close()}
-                />
+                />*/}
                 &nbsp;
                 <HiMinus
                   size={'20'}
                   className='float-right cursor-pointer justify-end'
                   onClick={() => {
-                    props.setMinimize(true);
+                    props.setMinimize ? props.setMinimize(true) : null;
                   }}
                 />
               </div>

@@ -33,7 +33,7 @@ import {
 
 export interface ChatPopupProps extends ChatProps {
   hide: boolean;
-  setHide: (minimize: boolean) => void;
+  setHide: ((minimize: boolean) => void) | null;
 }
 
 export default function ChatPopup(props: ChatPopupProps) {
@@ -234,7 +234,7 @@ export default function ChatPopup(props: ChatPopupProps) {
   const closeChatPopup = (confirmation: boolean) => {
     if (confirmation) {
       removeItem(getAssistantThreadStorageKey());
-      props.setHide(true);
+      props.setHide ? props.setHide(true) : null;
     }
   };
 
@@ -242,7 +242,9 @@ export default function ChatPopup(props: ChatPopupProps) {
     <>
       <div
         className={
-          'relative flex max-h-full w-full flex-auto rounded-lg bg-white'
+          'border-[ relative m-2 flex max-h-full max-w-md flex-auto rounded-lg border-2 bg-white' +
+          getPrimaryColor(assistant) +
+          ']'
         }
       >
         <div
@@ -253,7 +255,7 @@ export default function ChatPopup(props: ChatPopupProps) {
         ></div>
         <div
           className={
-            'flex min-w-[calc(100vw-5rem)] flex-col space-y-4 p-4 md:min-w-max'
+            'flex min-w-[calc(100vw-5rem)] flex-col space-y-4 p-2 md:min-w-max'
           }
         >
           <ChatHeader
@@ -274,14 +276,14 @@ export default function ChatPopup(props: ChatPopupProps) {
                 borderColor: getSecondaryColor(assistant),
               }}
             >
-              <div className='flex flex-col space-y-2 rounded-b rounded-t-none border border-t-0'>
+              <div className='flex max-w-sm flex-col rounded-b rounded-t-none border border-t-0'>
                 <div
                   className={
-                    'max-h-[calc(100vh-50vh)] min-h-[calc(100vh-50vh)] overflow-y-auto bg-white'
+                    'max-h-[calc(100vh-50vh)] min-h-[calc(100vh-50vh)] max-w-md overflow-y-auto bg-white'
                   }
                 >
                   <div
-                    className='flex max-w-2xl flex-col gap-3 self-center overflow-y-auto px-6 py-4'
+                    className='flex max-w-md flex-col gap-3 self-center overflow-y-auto px-4 py-4'
                     ref={messagesRef}
                   >
                     {messages.map((message: Message, index) => {
