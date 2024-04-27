@@ -10,10 +10,12 @@ import ChatPopupFrame from '@/app/assistants/[id]/chat/ChatPopupFrame';
 
 export interface ChatWindowProps {
   assistant_id: string;
+  frameless?: boolean;
 }
 
 export default function ChatWindow(props: ChatWindowProps) {
   const dropDownDiv = React.useRef<HTMLDivElement | null>(null);
+  const [frameless, setFrameless] = React.useState(props.frameless ? props.frameless : false);
 
   let { assistantLoading, assistantResponse, assistantEmpty, reload } =
     useGetAssistant(props.assistant_id);
@@ -48,7 +50,12 @@ export default function ChatWindow(props: ChatWindowProps) {
             <AssistantContext.Provider
               value={{ assistant, setAssistant: changeAssistant }}
             >
-              <ChatPopupFrame hide={false} setHide={null} />
+              {frameless ? (
+                <ChatPopup hide={false} setHide={null} />
+              ) : (
+                <ChatPopupFrame hide={false} setHide={null} />
+              )}
+
             </AssistantContext.Provider>
           )}
         </div>

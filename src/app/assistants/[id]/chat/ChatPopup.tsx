@@ -306,9 +306,9 @@ export default function ChatPopup(props: ChatPopupProps) {
                 setOpenConfirmationModal={setOpenConfirmationModal}
                 handleDismissal={closeChatPopup}
               />
-              <div className='flex items-center justify-center rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-700'>
+              <div className='flex items-center justify-center rounded-lg bg-gray-50 px-2 py-2 dark:bg-gray-700'>
                 <TextInput
-                  className='mx-4 block w-full rounded-lg border bg-white text-sm text-gray-900 dark:text-white dark:placeholder-gray-400'
+                  className='block w-full rounded-lg border bg-white text-sm text-gray-900 dark:text-white dark:placeholder-gray-400'
                   placeholder={getInputMessageLabel(assistant)}
                   readOnly={false}
                   disabled={messageStatus === 'in_progress'}

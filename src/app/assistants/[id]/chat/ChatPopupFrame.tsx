@@ -21,7 +21,7 @@ export default function ChatPopupFrame(props: ChatPopupFrameProps) {
     <>
       <div
         className={
-          'relative m-2 flex max-h-full max-w-md flex-auto rounded-lg border-2 bg-white border-[' + getPrimaryColor(assistant) + ']'
+          'relative m-2 flex flex-auto max-h-full max-w-md  rounded-lg border-2 bg-white border-[' + getPrimaryColor(assistant) + ']'
         }
       >
         <div
@@ -32,7 +32,7 @@ export default function ChatPopupFrame(props: ChatPopupFrameProps) {
         ></div>
         <div
           className={
-            'flex min-w-[calc(100vw-5rem)] flex-col space-y-4 p-2 md:min-w-max bg-white'
+            'flex min-w-max flex-col space-y-4 p-2 md:min-w-max bg-white'
           }
         >
           <ChatHeader
