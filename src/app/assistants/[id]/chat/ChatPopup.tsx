@@ -239,10 +239,10 @@ export default function ChatPopup(props: ChatPopupProps) {
   };
 
   return (
-    <>
+    <div className="items-center justify-center self-center">
         <div
           className={
-            'flex min-w-[calc(100vw-5rem)] flex-col space-y-4 p-2 md:min-w-max'
+            'flex flex-col space-y-4 p-2'
           }
         >
           <div
@@ -346,6 +346,6 @@ export default function ChatPopup(props: ChatPopupProps) {
             </div>
           </div>
         </div>
-    </>
+    </div>
   );
 }

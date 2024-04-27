@@ -18,10 +18,9 @@ export default function ChatPopupFrame(props: ChatPopupFrameProps) {
   const { assistant } = useContext(AssistantContext);
 
   return (
-    <>
       <div
         className={
-          'relative m-2 flex flex-auto max-h-full max-w-md  rounded-lg border-2 bg-white border-[' + getPrimaryColor(assistant) + ']'
+          'relative m-2 flex flex-auto max-h-full max-w-md rounded-lg justify-center border-2 bg-white border-[' + getPrimaryColor(assistant) + ']'
         }
       >
         <div
@@ -32,7 +31,7 @@ export default function ChatPopupFrame(props: ChatPopupFrameProps) {
         ></div>
         <div
           className={
-            'flex min-w-max flex-col space-y-4 p-2 md:min-w-max bg-white'
+            'flex flex-col space-y-4 p-2 md:min-w-max'
           }
         >
           <ChatHeader
@@ -45,6 +44,5 @@ export default function ChatPopupFrame(props: ChatPopupFrameProps) {
           <ChatPopup hide={props.hide} setHide={props.setHide} />
         </div>
       </div>
-    </>
   );
 }
