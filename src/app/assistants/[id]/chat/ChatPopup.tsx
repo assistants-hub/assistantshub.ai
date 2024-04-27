@@ -240,31 +240,11 @@ export default function ChatPopup(props: ChatPopupProps) {
 
   return (
     <>
-      <div
-        className={
-          'border-[ relative m-2 flex max-h-full max-w-md flex-auto rounded-lg border-2 bg-white' +
-          getPrimaryColor(assistant) +
-          ']'
-        }
-      >
-        <div
-          className={'absolute h-48 w-full rounded-t-lg'}
-          style={{
-            backgroundColor: getPrimaryColor(assistant),
-          }}
-        ></div>
         <div
           className={
             'flex min-w-[calc(100vw-5rem)] flex-col space-y-4 p-2 md:min-w-max'
           }
         >
-          <ChatHeader
-            minimize={props.hide}
-            setMinimize={props.setHide}
-            close={() => {
-              setOpenConfirmationModal(true);
-            }}
-          />
           <div
             className={
               'relative z-10 max-w-md items-center justify-center self-center'
@@ -366,7 +346,6 @@ export default function ChatPopup(props: ChatPopupProps) {
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 }

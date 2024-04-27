@@ -11,6 +11,7 @@ import ThemeSelections from '@/app/assistants/[id]/customize/ThemeSelections';
 import ResetToDefaultsAlert from '@/app/assistants/[id]/customize/ResetToDefaultsAlert';
 import { EditInitialPrompt } from '@/app/assistants/[id]/customize/EditInitialPrompt';
 import { EditMessageLabel } from '@/app/assistants/[id]/customize/EditMessageLabel';
+import ChatPopupFrame from '@/app/assistants/[id]/chat/ChatPopupFrame';
 
 export default function Customize() {
   const { assistant, setAssistant } = useContext(AssistantContext);
@@ -81,7 +82,7 @@ export default function Customize() {
           }}
         ></ResetToDefaultsAlert>
         <div className='group col-span-1 m-auto flex items-center justify-start'>
-          <ChatPopup hide={false} setHide={() => {}} />
+          <ChatPopupFrame hide={false} setHide={() => {}} />
         </div>
       </div>
     </div>

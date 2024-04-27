@@ -7,6 +7,7 @@ import { updateAssistant, useGetAssistant } from '@/app/assistants/[id]/client';
 import React, { useEffect, useState } from 'react';
 import { Assistant } from '@/app/types/assistant';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
+import ChatPopupFrame from '@/app/assistants/[id]/chat/ChatPopupFrame';
 
 export interface ChatAgentProps {
   assistant_id: string;
@@ -99,7 +100,7 @@ export default function ChatAgent(props: ChatAgentProps) {
             <AssistantContext.Provider
               value={{ assistant, setAssistant: changeAssistant }}
             >
-              <ChatPopup hide={!showPopup} setHide={hidePopup} />
+              <ChatPopupFrame hide={!showPopup} setHide={hidePopup} />
             </AssistantContext.Provider>
           )}
         </div>

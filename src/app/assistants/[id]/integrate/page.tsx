@@ -9,6 +9,7 @@ import ChatAgentContextWrapper from '@/app/assistants/[id]/chat/ChatAgentContext
 import { Table } from 'flowbite-react';
 import AvatarCropUpload from '@/app/assistants/[id]/customize/AvatarCropUpload';
 import ChatWindowContextWrapper from '@/app/assistants/[id]/chat/ChatWindowContextWrapper';
+import ChatPopupContextWrapper from '@/app/assistants/[id]/chat/ChatPopupContextWrapper';
 
 export default function Customize() {
   const { assistant } = useContext(AssistantContext);
@@ -83,7 +84,7 @@ export default function Customize() {
                 <div className='max-w-screen overflow-hidden text-sm'>
                   <Markdown>{`\`\`\`xml
 <iframe 
-  src="${window.location.origin}/embed/${assistant.id}?style=window"
+  src="${window.location.origin}/embed/${assistant.id}?style=window-frameless"
   style="right: 0;
          position: fixed;
          overflow: hidden;
@@ -97,7 +98,7 @@ export default function Customize() {
               </Table.Cell>
               <Table.Cell className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                 <div className='bg-white'>
-                  <ChatWindowContextWrapper />
+                  <ChatPopupContextWrapper />
                 </div>
               </Table.Cell>
             </Table.Row>
