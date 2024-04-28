@@ -7,7 +7,6 @@ import React, { useContext, useEffect } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import ChatAgentContextWrapper from '@/app/assistants/[id]/chat/ChatAgentContextWrapper';
 import { Table } from 'flowbite-react';
-import AvatarCropUpload from '@/app/assistants/[id]/customize/AvatarCropUpload';
 import ChatWindowContextWrapper from '@/app/assistants/[id]/chat/ChatWindowContextWrapper';
 import ChatPopupContextWrapper from '@/app/assistants/[id]/chat/ChatPopupContextWrapper';
 
@@ -61,13 +60,10 @@ export default function Customize() {
                   <Markdown>{`\`\`\`xml
 <iframe 
   src="${window.location.origin}/embed/${assistant.id}?style=window"
-  style="right: 0;
-         position: fixed;
-         overflow: hidden;
-         height: 100vh;
+  style="height: 900px;
          border: 0 none;
          width: 480px;
-         bottom: -30px;"
+         min-width: 340px;"
   allowFullScreen 
   allowTransparency></iframe>`}</Markdown>
                 </div>
@@ -85,13 +81,10 @@ export default function Customize() {
                   <Markdown>{`\`\`\`xml
 <iframe 
   src="${window.location.origin}/embed/${assistant.id}?style=window-frameless"
-  style="right: 0;
-         position: fixed;
-         overflow: hidden;
-         height: 100vh;
+  style="height: 900px;
          border: 0 none;
          width: 480px;
-         bottom: -30px;"
+         min-width: 340px;"
   allowFullScreen 
   allowTransparency></iframe>`}</Markdown>
                 </div>
