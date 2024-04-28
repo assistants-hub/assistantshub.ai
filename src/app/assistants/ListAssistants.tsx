@@ -14,12 +14,15 @@ export default function ListAssistants() {
     useState(false);
   const [assistantCreated, setAssistantCreated] = useState(false);
 
-  let { assistantsLoading, assistants, assistantsEmpty, reload } =
+  let { assistantsLoading, assistants, assistantsEmpty, mutate } =
     useGetAssistants();
 
   useEffect(() => {
     if (assistantCreated) {
-      reload();
+      assistantsLoading = true;
+      mutate([...assistants, assistantCreated]).then (() => {
+        assistantsLoading = false;
+      });
     }
   }, [assistantCreated]);
 

@@ -101,7 +101,7 @@ export function useGetAssistants() {
       assistantsError: error,
       assistantsValidating: isValidating,
       assistantsEmpty: !isLoading && !data?.length,
-      reload: mutate,
+      mutate: mutate,
     }),
     [data, error, isLoading, isValidating, mutate]
   );
