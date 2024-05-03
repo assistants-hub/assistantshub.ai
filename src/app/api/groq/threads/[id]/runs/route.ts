@@ -133,8 +133,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const groq = await getGroqObjectForAssistant(req, prisma);
     let chatParams = await formatChatParams(
       threadId,
-      assistant.modelId,
-      assistant.object.instructions
+      assistant?.modelId ? assistant.modelId : '',
+      // @ts-ignore
+      assistant?.object?.instructions ? assistant.object.instructions : ''
     );
     let completionResponse = await groq.chat.completions.create(chatParams);
 
@@ -144,7 +145,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          for await (const chunk of completionResponse) {
+          for await (const chunk of completionResponse as any) {
             if (!chunk.choices[0].finish_reason) {
               buffer += chunk.choices[0].delta.content;
               controller.enqueue(chunk.choices[0].delta.content);
