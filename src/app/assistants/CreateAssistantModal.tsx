@@ -194,7 +194,9 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
                         );
                       })}
                 </Select>
-                <div className={"text-sm text-gray-500 mt-2"}>{modelDescription}</div>
+                <div className={'mt-2 text-sm text-gray-500'}>
+                  {modelDescription}
+                </div>
               </>
             )}
           </div>

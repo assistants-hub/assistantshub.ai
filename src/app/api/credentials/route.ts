@@ -37,6 +37,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       if (body.openAiApiKey.toLowerCase() === 'use-default') {
         body.openAiApiKey = process.env.OPENAI_API_KEY;
         body.googleAIStudioKey = process.env.GOOGLE_AI_STUDIO_KEY;
+        body.groqCloudAPIKey = process.env.GROQ_CLOUD_API_KEY;
       }
 
       // Validate the Open API Key
@@ -62,11 +63,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
         update: {
           openAIApiKey: body.openAiApiKey,
           googleAIStudioKey: body.googleAIStudioKey,
+          groqCloudApiKey: body.groqCloudApiKey,
         },
         create: {
           owner: token.sub,
           openAIApiKey: body.openAiApiKey,
           googleAIStudioKey: body.googleAIStudioKey,
+          groqCloudApiKey: body.groqCloudApiKey,
         },
       });
       return Response.json(

@@ -8,9 +8,5 @@ export default function ChatPopupContextWrapper() {
 
   useEffect(() => {}, [assistant]);
 
-  return assistant ? (
-    <ChatPopup hide={false} setHide={null}/>
-  ) : (
-    <></>
-  );
+  return assistant ? <ChatPopup hide={false} setHide={null} /> : <></>;
 }
