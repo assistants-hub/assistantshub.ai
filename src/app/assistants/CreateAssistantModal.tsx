@@ -24,6 +24,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [model, setModel] = useState('');
+  const [modelDescription, setModelDescription] = useState('');
   const [instructions, setInstructions] = useState('');
   const [functionTool, setFunctionTool] = useState(false);
   const [retrievalTool, setRetrievalTool] = useState(false);
@@ -112,7 +113,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
             <Textarea
               id='instructions'
               placeholder='Example: You are a personal math tutor. When asked a question, write and run Python code to answer the question.'
-              rows={6}
+              rows={3}
               value={instructions}
               onChange={(e) => {
                 setInstructions(e.target.value);
@@ -137,6 +138,10 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
                 value={modelProvider}
                 onChange={(e) => {
                   setModelProvider(e.target.value);
+                  let selectedModel = models.models.filter((model) => {
+                    return model.provider.id === e.target.value;
+                  });
+                  setModelDescription(selectedModel[0].description);
                 }}
               >
                 {models &&
@@ -163,27 +168,34 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
                 <span className='pl-3'>Loading available models...</span>
               </>
             ) : (
-              <Select
-                id='model'
-                required
-                value={model}
-                onChange={(e) => {
-                  setModel(e.target.value);
-                }}
-              >
-                {models &&
-                  models.models
-                    .filter((model) => {
-                      return model.provider.id === modelProvider;
-                    })
-                    .map((model, index) => {
-                      return (
-                        <option key={index} value={model.id}>
-                          {model.id}
-                        </option>
-                      );
-                    })}
-              </Select>
+              <>
+                <Select
+                  id='model'
+                  required
+                  value={model}
+                  onChange={(e) => {
+                    setModel(e.target.value);
+                    let selectedModel = models.models.filter((model) => {
+                      return model.id === e.target.value;
+                    });
+                    setModelDescription(selectedModel[0].description);
+                  }}
+                >
+                  {models &&
+                    models.models
+                      .filter((model) => {
+                        return model.provider.id === modelProvider;
+                      })
+                      .map((model, index) => {
+                        return (
+                          <option key={index} value={model.id}>
+                            {model.id}
+                          </option>
+                        );
+                      })}
+                </Select>
+                <div className={"text-sm text-gray-500 mt-2"}>{modelDescription}</div>
+              </>
             )}
           </div>
           {/*<div className='flex max-w-3xl flex-col gap-4'>
