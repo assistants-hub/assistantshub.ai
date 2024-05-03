@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { getGoogleGenAIObjectForAssistant } from '@/app/api/utils';
-import { GenerateContentStreamResult } from '@google/generative-ai';
+import { getGroqObjectForAssistant } from '@/app/api/utils';
 import { ulid } from 'ulidx';
 
 const prisma = new PrismaClient();
@@ -11,25 +10,11 @@ const getId = (req: Request) => {
   return url.pathname.split('/').splice(-2, 1)[0];
 };
 
-const getLatestMessage = async (threadId: string) => {
-  let messages = await prisma.message.findMany({
-    take: 1,
-    where: {
-      threadId: threadId,
-    },
-    select: {
-      object: true,
-    },
-    orderBy: {
-      created_at: 'desc',
-    },
-  });
-
-  // @ts-ignore
-  return messages[0]?.object?.content[0]?.text?.value;
-};
-
-const formatChatParams = async (threadId: string) => {
+const formatChatParams = async (
+  threadId: string,
+  modelId: string,
+  systemInstructions: string
+) => {
   let messages = await prisma.message.findMany({
     where: {
       threadId: threadId,
@@ -43,10 +28,13 @@ const formatChatParams = async (threadId: string) => {
   });
 
   let history = [];
-  let previousRole = null;
-  for (let i = 0; i < messages.length - 1; i++) {
-    // -1 to exclude the last message
+  history.push({
+    role: 'system',
+    content: systemInstructions,
+  });
 
+  let previousRole = null;
+  for (let i = 0; i < messages.length; i++) {
     let item = messages[i];
     // @ts-ignore
     if (previousRole === item.object.role) {
@@ -55,17 +43,19 @@ const formatChatParams = async (threadId: string) => {
 
     history.push({
       // @ts-ignore
-      role: item.object.role === 'assistant' ? 'model' : 'user',
+      role: item.object.role === 'assistant' ? 'assistant' : 'user',
       // @ts-ignore
-      parts: [{ text: item.object.content[0].text.value }],
+      content: item.object.content[0].text.value,
     });
 
     // @ts-ignore
-    previousRole = item.object.role === 'assistant' ? 'model' : 'user';
+    previousRole = item.object.role === 'assistant' ? 'assistant' : 'user';
   }
 
   return {
-    history: history,
+    messages: history,
+    model: modelId,
+    stream: true,
   };
 };
 
@@ -130,12 +120,23 @@ export async function POST(req: NextRequest, res: NextResponse) {
       );
     }
 
-    const genAIModel = await getGoogleGenAIObjectForAssistant(req, prisma);
-    let chatParams = await formatChatParams(threadId);
-    const chat = genAIModel.startChat(chatParams);
-    let message = await getLatestMessage(threadId);
-    const runResponse: GenerateContentStreamResult =
-      await chat.sendMessageStream(message);
+    let assistant = await prisma.assistant.findFirst({
+      where: {
+        id: assistantId ? assistantId : undefined,
+      },
+      select: {
+        modelId: true,
+        object: true,
+      },
+    });
+
+    const groq = await getGroqObjectForAssistant(req, prisma);
+    let chatParams = await formatChatParams(
+      threadId,
+      assistant.modelId,
+      assistant.object.instructions
+    );
+    let completionResponse = await groq.chat.completions.create(chatParams);
 
     let msgId = 'msg_' + ulid();
 
@@ -143,11 +144,22 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          for await (const chunk of runResponse.stream) {
-            buffer += chunk.text();
-            controller.enqueue(chunk.text());
+          for await (const chunk of completionResponse) {
+            if (!chunk.choices[0].finish_reason) {
+              buffer += chunk.choices[0].delta.content;
+              controller.enqueue(chunk.choices[0].delta.content);
+            } else {
+              // Check to see if there are errors in the response
+              if (chunk.x_groq && chunk.x_groq.error) {
+                if (chunk.x_groq.error === 'over_capacity') {
+                  controller.enqueue(
+                    'Sorry I am over capacity right now, please try again later'
+                  );
+                }
+              }
+              controller.close();
+            }
           }
-          controller.close();
 
           await createMessage(
             assistantId ? assistantId : '',
@@ -156,6 +168,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             buffer
           );
         } catch (error) {
+          console.log(error);
           controller.error(error);
         }
       },
