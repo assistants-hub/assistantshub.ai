@@ -229,7 +229,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
       }
     } else {
       return Response.json(
-        { message: 'OpenAI API Key does not exist' },
+        { message: 'API Key does not exist' },
         { status: 400 }
       );
     }

@@ -18,7 +18,7 @@ const ChatComponent: React.FC<ChatComponentProps> = ({ style, params }) => {
       component = <ChatWindow assistant_id={params.id} />;
       break;
     case 'window-frameless':
-      component = <ChatWindow assistant_id={params.id} frameless={true}/>;
+      component = <ChatWindow assistant_id={params.id} frameless={true} />;
       break;
     default:
       component = <ChatAgent assistant_id={params.id} />;

@@ -20,7 +20,7 @@ export default function ListAssistants() {
   useEffect(() => {
     if (assistantCreated) {
       assistantsLoading = true;
-      mutate([...assistants, assistantCreated]).then (() => {
+      mutate([...assistants, assistantCreated]).then(() => {
         assistantsLoading = false;
       });
     }

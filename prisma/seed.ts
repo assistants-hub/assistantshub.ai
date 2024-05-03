@@ -18,6 +18,14 @@ async function main() {
       name: 'Google',
     },
   });
+  const groq = await prisma.modelProvider.upsert({
+    where: { id: 'groq' },
+    update: {},
+    create: {
+      id: 'groq',
+      name: 'Groq',
+    },
+  });
 
   const gpt35turbo = await prisma.model.upsert({
     where: { id: 'gpt-3.5-turbo' },
@@ -37,7 +45,7 @@ async function main() {
       id: 'gpt-3.5-turbo-0125',
       name: 'GPT-3.5 Turbo 0125',
       description:
-        'Updated The latest GPT-3.5 Turbo model with higher accuracy at responding in requested formats and a fix for a bug which caused a text encoding issue for non-English language function calls. Returns a maximum of 4,096 output tokens.',
+        'Updated The latest GPT-3.5 Turbo model with higher accuracy at responding in requested formats.',
       url: 'https://platform.openai.com/docs/models/gpt-3-5-turbo',
       providerId: 'openai',
     },
@@ -87,6 +95,58 @@ async function main() {
       description: 'The latest model from Google',
       url: 'https://ai.google.dev/gemini-api/docs/api-overview',
       providerId: 'google',
+    },
+  });
+
+  const groq_llama3_8b = await prisma.model.upsert({
+    where: { id: 'llama3-8b-8192' },
+    update: {},
+    create: {
+      id: 'llama3-8b-8192',
+      name: 'LLaMA3 8b',
+      description:
+        'The Llama 3 instruction tuned models are optimized for dialogue use cases and outperform many of the available open source chat models on common industry benchmarks.',
+      url: 'https://console.groq.com/docs/models#llama3-8b',
+      providerId: 'groq',
+    },
+  });
+
+  const groq_llama3_70b = await prisma.model.upsert({
+    where: { id: 'llama3-70b-8192' },
+    update: {},
+    create: {
+      id: 'llama3-70b-8192',
+      name: 'LLaMA3 70b',
+      description:
+        'The Llama 3 instruction tuned models are optimized for dialogue use cases and outperform many of the available open source chat models on common industry benchmarks. ',
+      url: 'https://console.groq.com/docs/models#llama3-70b',
+      providerId: 'groq',
+    },
+  });
+
+  const groq_mixtral_7b = await prisma.model.upsert({
+    where: { id: 'mixtral-8x7b-32768' },
+    update: {},
+    create: {
+      id: 'mixtral-8x7b-32768',
+      name: 'Mistral 8x7b',
+      description:
+        'The Mixtral-8x7B Large Language Model (LLM) is a pretrained generative Sparse Mixture of Experts. The Mixtral-8x7B outperforms Llama 2 70B on most benchmarks we tested.',
+      url: 'https://console.groq.com/docs/models#mixtral-8x7b',
+      providerId: 'groq',
+    },
+  });
+
+  const groq_gemma_7b = await prisma.model.upsert({
+    where: { id: 'gemma-7b-it' },
+    update: {},
+    create: {
+      id: 'gemma-7b-it',
+      name: 'Google Gemma 7B',
+      description:
+        'Gemma models are well-suited for a variety of text generation tasks, including question answering, summarization, and reasoning.',
+      url: 'https://console.groq.com/docs/models#gemma-7b',
+      providerId: 'groq',
     },
   });
 }

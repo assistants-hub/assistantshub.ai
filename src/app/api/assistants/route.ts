@@ -69,7 +69,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
           createResponse = await openai.beta.assistants.create(body);
         } else {
-          // Google doesn't provide an API for its assistants so we just store everything else into the database
+          // Google or Groq doesn't provide an API for its assistants so we just store everything else into the database
           createResponse = body;
           createResponse.id = 'asst_g' + ulid();
         }

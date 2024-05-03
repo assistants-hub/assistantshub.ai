@@ -15,7 +15,9 @@ export interface ChatWindowProps {
 
 export default function ChatWindow(props: ChatWindowProps) {
   const dropDownDiv = React.useRef<HTMLDivElement | null>(null);
-  const [frameless, setFrameless] = React.useState(props.frameless ? props.frameless : false);
+  const [frameless, setFrameless] = React.useState(
+    props.frameless ? props.frameless : false
+  );
 
   let { assistantLoading, assistantResponse, assistantEmpty, reload } =
     useGetAssistant(props.assistant_id);
@@ -55,7 +57,6 @@ export default function ChatWindow(props: ChatWindowProps) {
               ) : (
                 <ChatPopupFrame hide={false} setHide={null} />
               )}
-
             </AssistantContext.Provider>
           )}
         </div>
