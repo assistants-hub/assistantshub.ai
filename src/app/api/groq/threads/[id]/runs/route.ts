@@ -152,13 +152,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
             } else {
               // Check to see if there are errors in the response
               if (chunk.x_groq && chunk.x_groq.error) {
-                if (chunk.x_groq.error === 'over_capacity') {
-                  controller.enqueue(
-                    'Sorry I am over capacity right now, please try again later'
-                  );
+                if (chunk.x_groq.error) {
+                  controller.error(chunk.x_groq.error);
                 }
               }
-              controller.close();
             }
           }
 
@@ -172,6 +169,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
           console.log(error);
           controller.error(error);
         }
+
+        controller.close();
       },
     });
 

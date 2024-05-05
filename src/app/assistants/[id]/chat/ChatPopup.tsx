@@ -1,9 +1,8 @@
 'use client';
 
 import { ChatProps } from '@/app/assistants/[id]/chat/ChatProps';
-import ChatHeader from '@/app/assistants/[id]/chat/ChatHeader';
 import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
-import { Button, Textarea, TextInput } from 'flowbite-react';
+import { Button, TextInput } from 'flowbite-react';
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Message } from '@/app/types/message';
 import {
@@ -183,24 +182,30 @@ export default function ChatPopup(props: ChatPopupProps) {
         }
       }
     } else {
-      // This is for Google Gemini Models
+      // This is for Google Gemini and Groq Models
       let messageBuffer = '';
       for await (const chunk of streamAsyncIterator(runResponse)) {
         const result = textDecoder.decode(chunk);
         messageBuffer = messageBuffer + result;
         setStreamText(messageBuffer);
       }
-      setMessageStatus('completed');
       const [threadedMessageStatus, threadMessages] = await getMessages(
         assistant.id,
         getModelProviderId(),
         thread || '',
         currentMessageId
       );
+      setMessageStatus('completed');
       console.log('threadedMessages', threadMessages);
       const newMessages: Message[] = threadMessages.data;
-      setStreamText('');
-      setMessages([...messages, ...newMessages]);
+      if (newMessages.length > 0) {
+        setStreamText('');
+        setMessages([...messages, ...newMessages]);
+      } else {
+        // Something wrong happened here, no new messages, but we just streamed text
+        console.log('TODO: No new messages, but we just streamed text, check this');
+        //TODO: There should be a way to handle this error
+      }
     }
   };
 

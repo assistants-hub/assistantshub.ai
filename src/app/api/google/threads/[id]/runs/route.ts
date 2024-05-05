@@ -147,7 +147,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
             buffer += chunk.text();
             controller.enqueue(chunk.text());
           }
-          controller.close();
 
           await createMessage(
             assistantId ? assistantId : '',
@@ -158,6 +157,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         } catch (error) {
           controller.error(error);
         }
+        controller.close();
       },
     });
 
