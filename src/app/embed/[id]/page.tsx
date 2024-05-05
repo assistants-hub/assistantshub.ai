@@ -33,7 +33,6 @@ export default function Chat() {
   const searchParams = useSearchParams();
 
   let style = searchParams.get('style');
-  console.log(style);
 
   /*
   <iframe src="http://localhost:3001/embed/asst_GDAqYSylPoffSzu9eZygXU7l"

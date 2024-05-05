@@ -26,7 +26,6 @@ export default function ChatWindow(props: ChatWindowProps) {
   const [assistant, setAssistant] = useState<Assistant>(assistantResponse);
 
   useEffect(() => {
-    console.log('assistantResponse', assistantResponse);
     if (assistantResponse) {
       setAssistant(assistantResponse);
       setLoading(false);

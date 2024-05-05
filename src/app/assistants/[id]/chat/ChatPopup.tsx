@@ -151,7 +151,6 @@ export default function ChatPopup(props: ChatPopupProps) {
     for await (const chunk of streamAsyncIterator(runResponse)) {
       const result = textDecoder.decode(chunk);
       messageBuffer = messageBuffer + result;
-      console.log(messageBuffer);
       setStreamText(messageBuffer);
     }
     const [threadedMessageStatus, threadMessages] = await getMessages(
@@ -161,7 +160,6 @@ export default function ChatPopup(props: ChatPopupProps) {
       currentMessageId
     );
     setMessageStatus('completed');
-    console.log('threadedMessages', threadMessages);
     const newMessages: Message[] = threadMessages.data;
     if (newMessages.length > 0) {
       setStreamText('');

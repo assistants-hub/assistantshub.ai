@@ -49,3 +49,41 @@ export const createMessage = async (
     },
   });
 };
+
+export const getMessages = async (threadId: string, after?:string | null) => {
+  let messages = [];
+  if (after) {
+    let messages = await prisma.message.findMany({
+      take: 1,
+      skip: 1,
+      cursor: {
+        id: after,
+      },
+      where: {
+        threadId: threadId,
+      },
+      select: {
+        object: true,
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+
+    return messages.map((item) => item.object);
+  } else {
+    let messages = await prisma.message.findMany({
+      where: {
+        threadId: threadId,
+      },
+      select: {
+        object: true,
+      },
+      orderBy: {
+        created_at: 'asc',
+      },
+    });
+
+    return messages.map((item) => item.object);
+  }
+}
