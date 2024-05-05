@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { getOpenAIObjectForAssistant } from '@/app/api/utils';
 import { Stream } from 'openai/streaming';
+import { ulid } from 'ulidx';
+import { createMessage } from '@/app/api/utils/messages';
 
 const prisma = new PrismaClient();
 
@@ -22,7 +24,39 @@ export async function POST(req: NextRequest, res: NextResponse) {
       { assistant_id: assistantId ? assistantId : '', stream: true }
     );
 
-    return new Response(runResponse.toReadableStream());
+    let msgId = 'msg_' + ulid();
+    let buffer = '';
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          let completed = false;
+          for await (const event of runResponse) {
+            if (event.event === 'thread.message.delta') {
+              let data = event.data.delta.content[0].text.value;
+              buffer += data;
+              controller.enqueue(data);
+            }
+
+            if (event.event === 'thread.run.completed') {
+              completed = true;
+            }
+          }
+          if (completed) {
+            await createMessage(
+              assistantId ? assistantId : '',
+              threadId,
+              msgId,
+              buffer
+            );
+          }
+        } catch (error) {
+          controller.error(error);
+        }
+        controller.close();
+      },
+    });
+
+    return new Response(stream);
   } catch (err: any) {
     console.log(err);
     return Response.json({ message: err.message }, { status: err.status });

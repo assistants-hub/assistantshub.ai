@@ -22,7 +22,7 @@ export default function ChatHeader(props: ChatHeaderProps) {
     <>
       <div
         className={
-          'z-10 ml-2 flex flex-col max-w-md ' +
+          'z-10 ml-2 flex max-w-md flex-col ' +
           `text-[${getPrimaryTextColor(assistant)}]`
         }
       >
