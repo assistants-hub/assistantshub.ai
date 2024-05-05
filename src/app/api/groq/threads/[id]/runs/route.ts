@@ -6,7 +6,7 @@ import { Groq } from 'groq-sdk';
 
 const prisma = new PrismaClient();
 
-export const getGroqObjectForAssistant = async (
+const getGroqObjectForAssistant = async (
   req: NextRequest,
   prisma: PrismaClient
 ) => {

@@ -5,7 +5,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import EmailProvider from 'next-auth/providers/email';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { sendVerificationRequest } from '@/app/api/utils';
+import { sendVerificationRequest } from '@/app/api/utils/email';
 
 const prisma = new PrismaClient();
 

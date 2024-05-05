@@ -6,16 +6,20 @@ import { createMessage } from '@/app/api/utils/messages';
 
 const prisma = new PrismaClient();
 
-export const getGoogleGenAIObjectForAssistant = async (
+const getGoogleGenAIObjectForAssistant = async (
   req: NextRequest,
   prisma: PrismaClient
 ) => {
   let assistantId = req.headers.get('X-Assistant-Id');
 
+  if(!assistantId) {
+    throw new Error('Assistant ID is required');
+  }
+
   // @ts-ignore
   let assistant = await prisma.assistant.findFirst({
     where: {
-      id: assistantId ? assistantId : undefined,
+      id: assistantId,
     },
     select: {
       organization: true,
@@ -27,12 +31,20 @@ export const getGoogleGenAIObjectForAssistant = async (
   if (!assistant) {
     throw new Error('Assistant does not exist');
   }
+  let googleAIStudioKey = assistant.organization?.googleAIStudioKey;
 
-  let genAI = new GoogleGenerativeAI(
-    assistant?.organization?.googleAIStudioKey
-  );
+  if (!googleAIStudioKey) {
+    throw new Error('Google AI Studio Key is required');
+  }
+
+  let modelId = assistant.modelId;
+  if (!modelId) {
+    throw new Error('Model ID is required');
+  }
+
+  let genAI = new GoogleGenerativeAI(googleAIStudioKey);
   return genAI.getGenerativeModel({
-    model: assistant?.modelId,
+    model: modelId,
     systemInstruction: {
       role: 'model',
       // @ts-ignore
