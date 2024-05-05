@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { ulid } from 'ulidx';
+import { getMessages } from '@/app/api/utils/messages';
 
 const prisma = new PrismaClient();
 
@@ -16,53 +17,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
     if (after) {
       after = after.trim();
     }
-    let assistantId = req.headers.get('X-Assistant-Id');
-
-    try {
-      if (after) {
-        let messages = await prisma.message.findMany({
-          take: 1,
-          skip: 1,
-          cursor: {
-            id: after,
-          },
-          where: {
-            threadId: threadId,
-          },
-          select: {
-            object: true,
-          },
-          orderBy: {
-            id: 'asc',
-          },
-        });
-
-        return Response.json(
-          { data: messages.map((item) => item.object) },
-          { status: 200 }
-        );
-      } else {
-        let messages = await prisma.message.findMany({
-          where: {
-            threadId: threadId,
-          },
-          select: {
-            object: true,
-          },
-          orderBy: {
-            created_at: 'asc',
-          },
-        });
-
-        return Response.json(
-          { data: messages.map((item) => item.object) },
-          { status: 200 }
-        );
-      }
-    } catch (err: any) {
-      console.log(err);
-      return Response.json({ message: err.message }, { status: err.status });
-    }
+    let messages = await getMessages(threadId, after);
+    return Response.json({ data:messages },{ status: 200 });
   } catch (err: any) {
     console.log(err);
     return Response.json({ message: err.message }, { status: err.status });

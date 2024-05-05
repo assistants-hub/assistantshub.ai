@@ -1,10 +1,57 @@
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { getGoogleGenAIObjectForAssistant } from '@/app/api/utils';
-import { GenerateContentStreamResult } from '@google/generative-ai';
+import { GenerateContentStreamResult, GoogleGenerativeAI } from '@google/generative-ai';
 import { ulid } from 'ulidx';
+import { createMessage } from '@/app/api/utils/messages';
 
 const prisma = new PrismaClient();
+
+const getGoogleGenAIObjectForAssistant = async (
+  req: NextRequest,
+  prisma: PrismaClient
+) => {
+  let assistantId = req.headers.get('X-Assistant-Id');
+
+  if(!assistantId) {
+    throw new Error('Assistant ID is required');
+  }
+
+  // @ts-ignore
+  let assistant = await prisma.assistant.findFirst({
+    where: {
+      id: assistantId,
+    },
+    select: {
+      organization: true,
+      modelId: true,
+      object: true,
+    },
+  });
+
+  if (!assistant) {
+    throw new Error('Assistant does not exist');
+  }
+  let googleAIStudioKey = assistant.organization?.googleAIStudioKey;
+
+  if (!googleAIStudioKey) {
+    throw new Error('Google AI Studio Key is required');
+  }
+
+  let modelId = assistant.modelId;
+  if (!modelId) {
+    throw new Error('Model ID is required');
+  }
+
+  let genAI = new GoogleGenerativeAI(googleAIStudioKey);
+  return genAI.getGenerativeModel({
+    model: modelId,
+    systemInstruction: {
+      role: 'model',
+      // @ts-ignore
+      parts: [{ text: assistant?.object?.instructions }],
+    },
+  });
+};
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
@@ -69,55 +116,6 @@ const formatChatParams = async (threadId: string) => {
   };
 };
 
-const createMessage = async (
-  assistantId: string,
-  threadId: string,
-  msgId: string,
-  buffer: string
-) => {
-  let object = {
-    id: msgId,
-    role: 'assistant',
-    content: [
-      {
-        type: 'text',
-        text: {
-          value: buffer,
-          annotations: [],
-        },
-      },
-    ],
-    created_at: Math.floor(new Date().getTime() / 1000),
-  };
-  // Save the message to the database
-  let message = await prisma.message.upsert({
-    where: {
-      id: msgId,
-    },
-    update: {
-      id: msgId,
-      threadId: threadId,
-      object: object,
-    },
-    create: {
-      id: msgId,
-      threadId: threadId,
-      object: object,
-    },
-  });
-
-  // add the metric event for Message creation
-  await prisma.metric.create({
-    data: {
-      assistantId: assistantId ? assistantId : 'unknown',
-      name: 'MESSAGE_CREATED',
-      value: 1,
-      time: new Date(message.created_at),
-      tags: message as any,
-    },
-  });
-};
-
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     let threadId = getId(req);
@@ -147,7 +145,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
             buffer += chunk.text();
             controller.enqueue(chunk.text());
           }
-          controller.close();
 
           await createMessage(
             assistantId ? assistantId : '',
@@ -158,6 +155,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         } catch (error) {
           controller.error(error);
         }
+        controller.close();
       },
     });
 

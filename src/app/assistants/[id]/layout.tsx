@@ -28,7 +28,6 @@ export default function AssistantsLayout({
 
   const changeAssistant = async (assistant: Assistant) => {
     setAssistant(assistant);
-    console.log('changeAssistant', assistant);
     await updateAssistant(assistant);
   };
 

@@ -1,8 +1,8 @@
 import OpenAI from 'openai';
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { getOpenAIObjectForAssistant } from '@/app/api/utils';
 import { geolocation } from '@vercel/edge';
+import { getOpenAIObjectForAssistant } from '@/app/api/openai/util';
 
 const prisma = new PrismaClient();
 

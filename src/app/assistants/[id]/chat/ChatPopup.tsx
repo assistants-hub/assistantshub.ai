@@ -1,9 +1,8 @@
 'use client';
 
 import { ChatProps } from '@/app/assistants/[id]/chat/ChatProps';
-import ChatHeader from '@/app/assistants/[id]/chat/ChatHeader';
 import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
-import { Button, Textarea, TextInput } from 'flowbite-react';
+import { Button, TextInput } from 'flowbite-react';
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Message } from '@/app/types/message';
 import {
@@ -15,7 +14,6 @@ import {
 import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
 import { getFingerprint } from '@thumbmarkjs/thumbmarkjs';
 import { streamAsyncIterator } from '@/app/utils/streamAsyncIterator';
-import parseEventsFromChunk from '@/app/utils/parseEventsFromChunk';
 import ChatMessageStreaming from '@/app/assistants/[id]/chat/ChatMessageStreaming';
 import {
   getItemWithExpiry,
@@ -149,58 +147,29 @@ export default function ChatPopup(props: ChatPopupProps) {
     );
 
     let textDecoder = new TextDecoder();
-    if (getModelProviderId() === 'openai') {
-      let messageBuffer = '';
-
-      let buffer = '';
-      for await (const chunk of streamAsyncIterator(runResponse)) {
-        if (chunk) {
-          const sseString = textDecoder.decode(chunk);
-
-          let [events, leftOvers] = parseEventsFromChunk(sseString, buffer);
-          buffer = leftOvers;
-
-          for (const event of events) {
-            if (event.event === 'thread.message.delta') {
-              messageBuffer += event.data.delta.content[0].text.value;
-              setStreamText(messageBuffer);
-            }
-
-            if (event.event === 'thread.run.completed') {
-              setMessageStatus('completed');
-              const [threadedMessageStatus, threadMessages] = await getMessages(
-                assistant.id,
-                getModelProviderId(),
-                thread || '',
-                currentMessageId
-              );
-
-              const newMessages: Message[] = threadMessages.data;
-              setStreamText('');
-              setMessages([...messages, ...newMessages]);
-            }
-          }
-        }
-      }
-    } else {
-      // This is for Google Gemini Models
-      let messageBuffer = '';
-      for await (const chunk of streamAsyncIterator(runResponse)) {
-        const result = textDecoder.decode(chunk);
-        messageBuffer = messageBuffer + result;
-        setStreamText(messageBuffer);
-      }
-      setMessageStatus('completed');
-      const [threadedMessageStatus, threadMessages] = await getMessages(
-        assistant.id,
-        getModelProviderId(),
-        thread || '',
-        currentMessageId
-      );
-      console.log('threadedMessages', threadMessages);
-      const newMessages: Message[] = threadMessages.data;
+    let messageBuffer = '';
+    for await (const chunk of streamAsyncIterator(runResponse)) {
+      const result = textDecoder.decode(chunk);
+      messageBuffer = messageBuffer + result;
+      setStreamText(messageBuffer);
+    }
+    const [threadedMessageStatus, threadMessages] = await getMessages(
+      assistant.id,
+      getModelProviderId(),
+      thread || '',
+      currentMessageId
+    );
+    setMessageStatus('completed');
+    const newMessages: Message[] = threadMessages.data;
+    if (newMessages.length > 0) {
       setStreamText('');
       setMessages([...messages, ...newMessages]);
+    } else {
+      // Something wrong happened here, no new messages, but we just streamed text
+      console.log(
+        'TODO: No new messages, but we just streamed text, check this'
+      );
+      //TODO: There should be a way to handle this error
     }
   };
 

@@ -1,9 +1,37 @@
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { getGroqObjectForAssistant } from '@/app/api/utils';
 import { ulid } from 'ulidx';
+import { createMessage } from '@/app/api/utils/messages';
+import { Groq } from 'groq-sdk';
 
 const prisma = new PrismaClient();
+
+const getGroqObjectForAssistant = async (
+  req: NextRequest,
+  prisma: PrismaClient
+) => {
+  let assistantId = req.headers.get('X-Assistant-Id');
+
+  // @ts-ignore
+  let assistant = await prisma.assistant.findFirst({
+    where: {
+      id: assistantId ? assistantId : undefined,
+    },
+    select: {
+      organization: true,
+      modelId: true,
+      object: true,
+    },
+  });
+
+  if (!assistant) {
+    throw new Error('Assistant does not exist');
+  }
+
+  return new Groq({
+    apiKey: assistant?.organization?.groqCloudApiKey,
+  });
+};
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
@@ -59,55 +87,6 @@ const formatChatParams = async (
   };
 };
 
-const createMessage = async (
-  assistantId: string,
-  threadId: string,
-  msgId: string,
-  buffer: string
-) => {
-  let object = {
-    id: msgId,
-    role: 'assistant',
-    content: [
-      {
-        type: 'text',
-        text: {
-          value: buffer,
-          annotations: [],
-        },
-      },
-    ],
-    created_at: Math.floor(new Date().getTime() / 1000),
-  };
-  // Save the message to the database
-  let message = await prisma.message.upsert({
-    where: {
-      id: msgId,
-    },
-    update: {
-      id: msgId,
-      threadId: threadId,
-      object: object,
-    },
-    create: {
-      id: msgId,
-      threadId: threadId,
-      object: object,
-    },
-  });
-
-  // add the metric event for Message creation
-  await prisma.metric.create({
-    data: {
-      assistantId: assistantId ? assistantId : 'unknown',
-      name: 'MESSAGE_CREATED',
-      value: 1,
-      time: new Date(message.created_at),
-      tags: message as any,
-    },
-  });
-};
-
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     let threadId = getId(req);
@@ -152,13 +131,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
             } else {
               // Check to see if there are errors in the response
               if (chunk.x_groq && chunk.x_groq.error) {
-                if (chunk.x_groq.error === 'over_capacity') {
-                  controller.enqueue(
-                    'Sorry I am over capacity right now, please try again later'
-                  );
+                if (chunk.x_groq.error) {
+                  controller.error(chunk.x_groq.error);
                 }
               }
-              controller.close();
             }
           }
 
@@ -172,6 +148,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
           console.log(error);
           controller.error(error);
         }
+
+        controller.close();
       },
     });
 
