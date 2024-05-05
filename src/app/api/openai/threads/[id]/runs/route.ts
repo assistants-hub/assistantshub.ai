@@ -1,12 +1,36 @@
 import OpenAI from 'openai';
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { getOpenAIObjectForAssistant } from '@/app/api/utils';
 import { Stream } from 'openai/streaming';
 import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
 
 const prisma = new PrismaClient();
+
+export const getOpenAIObjectForAssistant = async (
+  req: NextRequest,
+  prisma: PrismaClient
+) => {
+  let assistantId = req.headers.get('X-Assistant-Id');
+
+  // @ts-ignore
+  let assistant = await prisma.assistant.findFirst({
+    where: {
+      id: assistantId ? assistantId : undefined,
+    },
+    include: {
+      organization: true,
+    },
+  });
+
+  if (!assistant) {
+    throw new Error('Assistant does not exist');
+  }
+
+  return new OpenAI({
+    apiKey: assistant?.organization?.openAIApiKey,
+  });
+};
 
 const getId = (req: Request) => {
   const url = new URL(req.url);

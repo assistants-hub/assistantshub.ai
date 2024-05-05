@@ -1,98 +1,5 @@
-import { NextRequest } from 'next/server';
-import OpenAI from 'openai';
-import { PrismaClient } from '@prisma/client';
 import { createTransport } from 'nodemailer';
 import { Theme } from 'next-auth';
-import { Groq } from 'groq-sdk';
-
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
-export const getOpenAIObjectForAssistant = async (
-  req: NextRequest,
-  prisma: PrismaClient
-) => {
-  let assistantId = req.headers.get('X-Assistant-Id');
-
-  // @ts-ignore
-  let assistant = await prisma.assistant.findFirst({
-    where: {
-      id: assistantId ? assistantId : undefined,
-    },
-    include: {
-      organization: true,
-    },
-  });
-
-  if (!assistant) {
-    throw new Error('Assistant does not exist');
-  }
-
-  return new OpenAI({
-    apiKey: assistant?.organization?.openAIApiKey,
-  });
-};
-
-export const getGoogleGenAIObjectForAssistant = async (
-  req: NextRequest,
-  prisma: PrismaClient
-) => {
-  let assistantId = req.headers.get('X-Assistant-Id');
-
-  // @ts-ignore
-  let assistant = await prisma.assistant.findFirst({
-    where: {
-      id: assistantId ? assistantId : undefined,
-    },
-    select: {
-      organization: true,
-      modelId: true,
-      object: true,
-    },
-  });
-
-  if (!assistant) {
-    throw new Error('Assistant does not exist');
-  }
-
-  let genAI = new GoogleGenerativeAI(
-    assistant?.organization?.googleAIStudioKey
-  );
-  return genAI.getGenerativeModel({
-    model: assistant?.modelId,
-    systemInstruction: {
-      role: 'model',
-      // @ts-ignore
-      parts: [{ text: assistant?.object?.instructions }],
-    },
-  });
-};
-
-export const getGroqObjectForAssistant = async (
-  req: NextRequest,
-  prisma: PrismaClient
-) => {
-  let assistantId = req.headers.get('X-Assistant-Id');
-
-  // @ts-ignore
-  let assistant = await prisma.assistant.findFirst({
-    where: {
-      id: assistantId ? assistantId : undefined,
-    },
-    select: {
-      organization: true,
-      modelId: true,
-      object: true,
-    },
-  });
-
-  if (!assistant) {
-    throw new Error('Assistant does not exist');
-  }
-
-  return new Groq({
-    apiKey: assistant?.organization?.groqCloudApiKey,
-  });
-};
 
 /**
  * Email HTML body
@@ -168,11 +75,11 @@ function text({ url, host }: { url: string; host: string }) {
 }
 
 export async function sendVerificationRequest({
-  identifier,
-  url,
-  provider,
-  theme,
-}: any) {
+                                                identifier,
+                                                url,
+                                                provider,
+                                                theme,
+                                              }: any) {
   const { host } = new URL(url);
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
   const transport = createTransport(provider.server);

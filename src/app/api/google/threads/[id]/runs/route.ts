@@ -1,11 +1,45 @@
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { getGoogleGenAIObjectForAssistant } from '@/app/api/utils';
-import { GenerateContentStreamResult } from '@google/generative-ai';
+import { GenerateContentStreamResult, GoogleGenerativeAI } from '@google/generative-ai';
 import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
 
 const prisma = new PrismaClient();
+
+export const getGoogleGenAIObjectForAssistant = async (
+  req: NextRequest,
+  prisma: PrismaClient
+) => {
+  let assistantId = req.headers.get('X-Assistant-Id');
+
+  // @ts-ignore
+  let assistant = await prisma.assistant.findFirst({
+    where: {
+      id: assistantId ? assistantId : undefined,
+    },
+    select: {
+      organization: true,
+      modelId: true,
+      object: true,
+    },
+  });
+
+  if (!assistant) {
+    throw new Error('Assistant does not exist');
+  }
+
+  let genAI = new GoogleGenerativeAI(
+    assistant?.organization?.googleAIStudioKey
+  );
+  return genAI.getGenerativeModel({
+    model: assistant?.modelId,
+    systemInstruction: {
+      role: 'model',
+      // @ts-ignore
+      parts: [{ text: assistant?.object?.instructions }],
+    },
+  });
+};
 
 const getId = (req: Request) => {
   const url = new URL(req.url);

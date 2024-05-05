@@ -14,7 +14,6 @@ import {
 import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
 import { getFingerprint } from '@thumbmarkjs/thumbmarkjs';
 import { streamAsyncIterator } from '@/app/utils/streamAsyncIterator';
-import parseEventsFromChunk from '@/app/utils/parseEventsFromChunk';
 import ChatMessageStreaming from '@/app/assistants/[id]/chat/ChatMessageStreaming';
 import {
   getItemWithExpiry,
