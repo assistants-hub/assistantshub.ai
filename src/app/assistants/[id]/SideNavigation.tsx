@@ -4,6 +4,7 @@ import { Avatar, Badge, Card, Sidebar } from 'flowbite-react';
 import {
   HiColorSwatch,
   HiChatAlt2,
+  HiFolder,
   HiCog,
   HiChartBar,
   HiPuzzle,
@@ -74,6 +75,12 @@ export default function SideNavigation() {
               icon={HiChatAlt2}
             >
               Conversations
+            </Sidebar.Item>
+            <Sidebar.Item
+              href={getAssistantComponentUrl(assistant, 'documents')}
+              icon={HiFolder}
+            >
+              Documents
             </Sidebar.Item>
             <Sidebar.Item
               href={getAssistantComponentUrl(assistant, 'customize')}

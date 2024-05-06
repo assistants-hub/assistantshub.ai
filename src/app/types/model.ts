@@ -9,4 +9,7 @@ export interface Model {
   description: string;
   url: string;
   provider: ModelProvider;
+  features?: {
+    retrieval: boolean;
+  }
 }

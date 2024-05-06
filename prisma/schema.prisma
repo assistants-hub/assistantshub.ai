@@ -25,6 +25,7 @@ model Model {
   providerId  String
   provider    ModelProvider @relation(fields: [providerId], references: [id])
   Assistant   Assistant[]
+  features    Json?
 }
 
 model Organization {

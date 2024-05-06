@@ -27,6 +27,27 @@ export function useGetAssistant(id: string) {
   );
 }
 
+export async function getModel(modelId: string) {
+  if (!modelId) {
+    return [400, { error: 'Model Id is required' }];
+  }
+
+  let response = await fetch(
+    '/api/models/' + modelId,
+    {
+      method: 'GET',
+      headers: {
+        accept: 'application.json',
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  console.log(response)
+
+  return [response.status, await response.json()];
+}
+
 export async function updateAssistant(assistant: Assistant) {
   let response = await fetch('/api/assistants/' + assistant.id, {
     method: 'PATCH',
