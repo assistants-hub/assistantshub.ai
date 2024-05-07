@@ -27,7 +27,7 @@ export const UserProfile = async () => {
           href='https://docs.assistantshub.ai/'
           className='justify-end'
         >
-          <div className='pt-1 text-xl font-normal'>Docs</div>
+          <div className='pt-1 lg:text-lg'>Docs</div>
         </NavbarLink>
         <SignIn />
       </NavbarCollapse>
@@ -58,19 +58,19 @@ export const UserProfile = async () => {
           </Dropdown>
         </div>
         <NavbarLink href='/'>
-          <div className='pt-2 text-xl font-normal'>Home</div>
+          <div className='pt-2 lg:text-lg'>Home</div>
         </NavbarLink>
         <NavbarLink href='/assistants' className='justify-end'>
-          <div className='pt-2 text-xl font-normal'>Assistants</div>
+          <div className='pt-2 lg:text-lg'>Assistants</div>
         </NavbarLink>
         <NavbarLink
           href='https://docs.assistantshub.ai/'
           className='justify-end'
         >
-          <div className='pt-2 text-xl font-normal'>Docs</div>
+          <div className='pt-2 lg:text-lg'>Docs</div>
         </NavbarLink>
         <NavbarLink href='mailto:santthosh@gmail.com' className='justify-end'>
-          <div className='pt-2 text-xl font-normal'>Help</div>
+          <div className='pt-2 lg:text-lg'>Help</div>
         </NavbarLink>
         <NavbarLink className='justify-end'>
           <DarkThemeToggle />

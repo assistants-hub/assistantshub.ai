@@ -6,6 +6,7 @@ import { getModel } from '@/app/assistants/[id]/client';
 import { Spinner } from 'flowbite-react';
 import { Model } from '@/app/types/model';
 import { HiOutlineFolder } from "react-icons/hi";
+import DocumentsManager from '@/app/assistants/[id]/documents/DocumentsManager';
 
 export default function Documents() {
   const { assistant } = useContext(AssistantContext);
@@ -34,7 +35,8 @@ export default function Documents() {
           <div>
             { model?.features?.retrieval ? (
                 <div>
-                  This model supports document retrieval, we are working on it
+                  <p className={"text-sm text-gray-400"}>Upload documents that will be used for retrieval function by your assistant</p>
+                  <DocumentsManager/>
                 </div>
               ) : (
                 <div className='bg-grey flex flex-col h-[calc(100vh-120px)] items-center justify-center'>
