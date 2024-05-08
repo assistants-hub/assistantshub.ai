@@ -58,6 +58,8 @@ model Assistant {
   created_at            DateTime       @default(now())
   updated_at            DateTime       @updatedAt
   Thread                Thread[]
+  Folder                Folder[]
+  File                  File[]
 }
 
 model Thread {
@@ -89,6 +91,36 @@ model Metric {
 
   @@unique([assistantId, name, time])
   @@index(fields: [time], map: "Metric_time_idx") // This is necessary because Prisma overrode the default index name by timescaledb
+}
+
+model Folder {
+  id          String     @id
+  name        String
+  type        String?    @default("documents")
+  object      Json?
+  status      String?    @default("active")
+  assistantId String
+  assistant   Assistant? @relation(fields: [assistantId], references: [id])
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  File        File[]
+
+  @@unique([assistantId, name])
+}
+
+model File {
+  id          String     @id
+  name        String
+  type        String?
+  size        Int?
+  object      Json?
+  url         String
+  folderId    String
+  folder      Folder     @relation(fields: [folderId], references: [id])
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  Assistant   Assistant? @relation(fields: [assistantId], references: [id])
+  assistantId String?
 }
 
 // NextAuth.js schema
