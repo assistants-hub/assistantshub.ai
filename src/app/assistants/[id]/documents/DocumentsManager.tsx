@@ -15,10 +15,13 @@ export default function DocumentsManager() {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  const handleGetFiles = async () => {
+    let response = await getFiles(assistant.id);
+    setFiles(response);
+  }
+
   useEffect(() => {
-    getFiles(assistant.id).then((response) => {
-      setFiles(response);
-    });
+    handleGetFiles().then(() => {});
   }, []);
 
   useEffect(() => {
@@ -50,12 +53,13 @@ export default function DocumentsManager() {
 
     const response: Response = await uploadFile(assistant.id, file);
     if (response.ok) {
+      handleGetFiles().then(() => {});
       toast.success('Document ' + file.name + ' uploaded successfully.', {
         duration: 4000,
       });
     } else {
       console.error('Upload Error:', response);
-      toast.success('Document ' + file.name + ' uploaded failed.' + response, {
+      toast.error('Document ' + file.name + ' uploaded failed.' + response, {
         duration: 4000,
       });
     }
@@ -94,7 +98,7 @@ export default function DocumentsManager() {
           <Spinner />
         </div>
       ) : files && files.length ? (
-        <DocumentsList files={files} />
+        <DocumentsList files={files} refresh={handleGetFiles}/>
       ) : (
         <DocumentsEmpty onFiles={setFile} />
       )}

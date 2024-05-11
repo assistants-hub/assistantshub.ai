@@ -1,14 +1,16 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import * as path from 'path';
 import { formatRelativeDate } from '@/app/utils/date';
-import { Dropdown } from 'flowbite-react';
-import { HiDotsHorizontal, HiDownload, HiOutlineTrash } from 'react-icons/hi';
-import { getFile } from '@/app/assistants/[id]/client';
+import { Button, Dropdown, Modal } from 'flowbite-react';
+import { HiDotsHorizontal, HiDownload, HiOutlineExclamationCircle, HiOutlineTrash } from 'react-icons/hi';
+import { deleteFile, getFile, uploadFile } from '@/app/assistants/[id]/client';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
+import { toast } from 'react-hot-toast';
 
 export interface DocumentsListProps {
   files: any[];
+  refresh: () => void;
 }
 
 const getImageForFile = (file: any) => {
@@ -29,8 +31,38 @@ const getImageForFile = (file: any) => {
 };
 
 export default function DocumentsList(props: DocumentsListProps) {
+  const [files, setFiles] = useState<any[] | null>(props.files);
   const { assistant } = useContext(AssistantContext);
   const [iframeSrc, setIframeSrc] = useState('');
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<any>(null);
+  const [deletingFile, setDeletingFile] = useState(false);
+
+  const handleDeleteFile = async () => {
+    if (!assistant.id) {
+      throw new Error('Assistant ID is missing');
+    }
+    setDeletingFile(true);
+    const response: Response = await deleteFile(assistant.id, selectedFile.id);
+    if (response.ok) {
+      if (files) {
+        setFiles(files.filter((file) => file.id !== selectedFile.id));
+        props.refresh();
+      }
+
+      toast.success('Document ' + selectedFile.originalFileName + ' deleted successfully.', {
+        duration: 4000,
+      });
+    } else {
+      console.error('Delete Error:', response);
+      toast.error('Document ' + selectedFile.originalFileName + ' deletion failed.' + response, {
+        duration: 4000,
+      });
+    }
+
+    setDeletingFile(false);
+    setOpenModal(false)
+  }
 
   const handleDownload = (file: any) => {
     getFile(assistant.id, file.id).then((response) => {
@@ -43,8 +75,8 @@ export default function DocumentsList(props: DocumentsListProps) {
   return (
     <div className='flex grid flex-col gap-12 sm:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-10'>
       {iframeSrc && <iframe src={iframeSrc} style={{ display: 'none' }} onLoad={() => setIframeSrc('')}></iframe>}
-      {props.files &&
-        props.files.map((file, index) => {
+      {files &&
+        files.map((file, index) => {
           return (
             <div className='max-h-xs col-span-2 max-w-xs' key={index}>
               <div className='mt-3 rounded-lg bg-gray-200'>
@@ -57,7 +89,10 @@ export default function DocumentsList(props: DocumentsListProps) {
                   >
                     <Dropdown.Item icon={HiDownload} onClick={() => { handleDownload(file) }}>Download</Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item icon={HiOutlineTrash}>Delete</Dropdown.Item>
+                    <Dropdown.Item icon={HiOutlineTrash} onClick={() => {
+                      setSelectedFile(file);
+                      setOpenModal(true);
+                    }}>Delete</Dropdown.Item>
                   </Dropdown>
                 </div>
                 <div className='pb-12 pl-12 pr-12 dark:border-gray-800'>
@@ -83,6 +118,31 @@ export default function DocumentsList(props: DocumentsListProps) {
             </div>
           );
         })}
+      <Modal
+        show={openModal}
+        size='xl'
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className='text-center'>
+            <HiOutlineExclamationCircle className='mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200' />
+            <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
+              Are you sure you want to delete this document{' '}
+              <a className='font-bold'>{selectedFile ? selectedFile.originalFileName : ''}</a>?
+            </h3>
+            <div className='flex justify-center gap-4'>
+              <Button color='failure' isProcessing={deletingFile} onClick={handleDeleteFile}>
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color='gray' disabled={deletingFile} onClick={() => setOpenModal(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

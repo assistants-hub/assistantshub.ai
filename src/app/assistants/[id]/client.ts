@@ -305,3 +305,9 @@ export async function getFile(assistantId: string | undefined, fileId: string) {
 
   return await response.json();
 }
+
+export async function deleteFile(assistantId: string, fileId: string) {
+  return await fetch('/api/assistants/' + assistantId + '/files/' + fileId, {
+    method: 'DELETE',
+  });
+}
