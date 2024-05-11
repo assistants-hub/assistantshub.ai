@@ -192,8 +192,6 @@ export async function POST(req: NextRequest, res: Response) {
               await openai.beta.vectorStores.files.create(folder.object.id, {
                 file_id: fileResponse.id,
               });
-
-            console.log('Vector Store File Response:', vectorStoreFileResponse);
           }
 
           file = await prisma.file.create({
@@ -228,7 +226,6 @@ export async function POST(req: NextRequest, res: Response) {
 }
 
 export async function GET(req: NextRequest) {
-  console.log('GET');
   let assistantId = getId(req);
   let assistant = await getAssistant(assistantId);
   if (!assistant) {
@@ -260,8 +257,6 @@ export async function GET(req: NextRequest) {
       folderId: folder.id,
     },
   });
-
-  console.log(files);
 
   return Response.json(files, { status: 200 });
 }
