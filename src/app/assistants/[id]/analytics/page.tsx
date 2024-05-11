@@ -90,7 +90,9 @@ export default function Analytics() {
   return assistant.id ? (
     <div className='flex flex-col gap-4'>
       <h3 className='text-3xl font-bold dark:text-white'>Analytics</h3>
-      <p className={"pb-4 text-sm text-gray-400"}>Observe metrics for your assistant</p>
+      <p className={'pb-4 text-sm text-gray-400'}>
+        Observe metrics for your assistant
+      </p>
       <div className='flex flex-row-reverse'>
         <Dropdown label={selectedTimePeriod} outline={true} color={'gray'}>
           <Dropdown.Item onClick={() => userSelectedTimePeriod('Yesterday')}>

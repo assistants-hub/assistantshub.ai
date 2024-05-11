@@ -32,18 +32,13 @@ export async function getModel(modelId: string) {
     return [400, { error: 'Model Id is required' }];
   }
 
-  let response = await fetch(
-    '/api/models/' + modelId,
-    {
-      method: 'GET',
-      headers: {
-        accept: 'application.json',
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-
-  console.log(response)
+  let response = await fetch('/api/models/' + modelId, {
+    method: 'GET',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+    },
+  });
 
   return [response.status, await response.json()];
 }
@@ -282,4 +277,22 @@ export async function getMessageMetrics(request: MetricsRequest) {
   );
 
   return [response.status, await response.json()];
+}
+
+export async function uploadFile(assistantId: string, file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+  return await fetch('/api/assistants/' + assistantId + '/files', {
+    method: 'POST',
+    body: formData,
+  });
+}
+
+export async function getFiles(assistantId: string | undefined) {
+  if (!assistantId) {
+    return;
+  }
+  let response = await fetch('/api/assistants/' + assistantId + '/files');
+
+  return await response.json();
 }

@@ -20,8 +20,9 @@ export default function Customize() {
   return assistant.id ? (
     <div className='max-w-screen flex flex-col gap-4'>
       <h3 className='text-3xl font-bold dark:text-white'>Integrate</h3>
-      <p className={'pb-4 text-sm text-gray-400'}>Use the below embed code to integrate your assistant to any web
-        page</p>
+      <p className={'pb-4 text-sm text-gray-400'}>
+        Use the below embed code to integrate your assistant to any web page
+      </p>
       <div className='max-w-screen items-center justify-center'>
         <Table className='max-w-3xl flex-auto'>
           <Table.Body className='divide-y'>

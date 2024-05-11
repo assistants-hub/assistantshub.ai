@@ -60,3 +60,8 @@ export function formatRelativeUnixTime(value: number | undefined): string {
   }
   return formatRelativeTime(value * 1000);
 }
+
+export function formatRelativeDate(utcString: string): string {
+  const date = new Date(utcString);
+  return formatRelativeTime(date.getTime());
+}

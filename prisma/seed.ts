@@ -32,7 +32,7 @@ async function main() {
     update: {
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'gpt-3.5-turbo',
@@ -42,7 +42,7 @@ async function main() {
       providerId: 'openai',
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
   const gpt35turbo0125 = await prisma.model.upsert({
@@ -50,7 +50,7 @@ async function main() {
     update: {
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'gpt-3.5-turbo-0125',
@@ -61,7 +61,7 @@ async function main() {
       providerId: 'openai',
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
   const gpt35turbo16k = await prisma.model.upsert({
@@ -69,7 +69,7 @@ async function main() {
     update: {
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'gpt-3.5-turbo-16k',
@@ -79,7 +79,7 @@ async function main() {
       providerId: 'openai',
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
   const gpt4 = await prisma.model.upsert({
@@ -87,7 +87,7 @@ async function main() {
     update: {
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'gpt-4',
@@ -98,7 +98,7 @@ async function main() {
       providerId: 'openai',
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
   const gpt4turbo = await prisma.model.upsert({
@@ -106,7 +106,7 @@ async function main() {
     update: {
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'gpt-4-turbo',
@@ -117,7 +117,7 @@ async function main() {
       providerId: 'openai',
       features: {
         retrieval: true,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
 
@@ -126,7 +126,7 @@ async function main() {
     update: {
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'gemini-1.5-pro-latest',
@@ -136,7 +136,7 @@ async function main() {
       providerId: 'google',
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
 
@@ -145,7 +145,7 @@ async function main() {
     update: {
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'llama3-8b-8192',
@@ -156,7 +156,7 @@ async function main() {
       providerId: 'groq',
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
 
@@ -165,7 +165,7 @@ async function main() {
     update: {
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'llama3-70b-8192',
@@ -176,7 +176,7 @@ async function main() {
       providerId: 'groq',
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
 
@@ -185,7 +185,7 @@ async function main() {
     update: {
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'mixtral-8x7b-32768',
@@ -196,7 +196,7 @@ async function main() {
       providerId: 'groq',
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
 
@@ -205,7 +205,7 @@ async function main() {
     update: {
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
     create: {
       id: 'gemma-7b-it',
@@ -216,7 +216,7 @@ async function main() {
       providerId: 'groq',
       features: {
         retrieval: false,
-      } as Prisma.JsonObject
+      } as Prisma.JsonObject,
     },
   });
 }

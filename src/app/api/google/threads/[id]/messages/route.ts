@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       after = after.trim();
     }
     let messages = await getMessages(threadId, after);
-    return Response.json({ data:messages },{ status: 200 });
+    return Response.json({ data: messages }, { status: 200 });
   } catch (err: any) {
     console.log(err);
     return Response.json({ message: err.message }, { status: err.status });

@@ -75,11 +75,11 @@ function text({ url, host }: { url: string; host: string }) {
 }
 
 export async function sendVerificationRequest({
-                                                identifier,
-                                                url,
-                                                provider,
-                                                theme,
-                                              }: any) {
+  identifier,
+  url,
+  provider,
+  theme,
+}: any) {
   const { host } = new URL(url);
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
   const transport = createTransport(provider.server);

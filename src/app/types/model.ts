@@ -11,5 +11,5 @@ export interface Model {
   provider: ModelProvider;
   features?: {
     retrieval: boolean;
-  }
+  };
 }
