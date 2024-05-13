@@ -17,8 +17,9 @@ export default function DocumentsManager() {
 
   const handleGetFiles = async () => {
     let response = await getFiles(assistant.id);
+    console.log(response);
     setFiles(response);
-  }
+  };
 
   useEffect(() => {
     handleGetFiles().then(() => {});
@@ -59,7 +60,7 @@ export default function DocumentsManager() {
       });
     } else {
       console.error('Upload Error:', response);
-      toast.error('Document ' + file.name + ' uploaded failed.' + response, {
+      toast.error('Document ' + file.name + ' upload failed.' + response, {
         duration: 4000,
       });
     }
@@ -98,7 +99,7 @@ export default function DocumentsManager() {
           <Spinner />
         </div>
       ) : files && files.length ? (
-        <DocumentsList files={files} refresh={handleGetFiles}/>
+        <DocumentsList files={files} refresh={handleGetFiles} />
       ) : (
         <DocumentsEmpty onFiles={setFile} />
       )}

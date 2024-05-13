@@ -3,10 +3,16 @@ import Image from 'next/image';
 import * as path from 'path';
 import { formatRelativeDate } from '@/app/utils/date';
 import { Button, Dropdown, Modal } from 'flowbite-react';
-import { HiDotsHorizontal, HiDownload, HiOutlineExclamationCircle, HiOutlineTrash } from 'react-icons/hi';
+import {
+  HiDotsHorizontal,
+  HiDownload,
+  HiOutlineExclamationCircle,
+  HiOutlineTrash,
+} from 'react-icons/hi';
 import { deleteFile, getFile, uploadFile } from '@/app/assistants/[id]/client';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import { toast } from 'react-hot-toast';
+import DocumentStatus from '@/app/assistants/[id]/documents/DocumentStatus';
 
 export interface DocumentsListProps {
   files: any[];
@@ -38,6 +44,10 @@ export default function DocumentsList(props: DocumentsListProps) {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [deletingFile, setDeletingFile] = useState(false);
 
+  useEffect(() => {
+    setFiles(props.files);
+  }, [props.files]);
+
   const handleDeleteFile = async () => {
     if (!assistant.id) {
       throw new Error('Assistant ID is missing');
@@ -50,19 +60,28 @@ export default function DocumentsList(props: DocumentsListProps) {
         props.refresh();
       }
 
-      toast.success('Document ' + selectedFile.originalFileName + ' deleted successfully.', {
-        duration: 4000,
-      });
+      toast.success(
+        'Document ' + selectedFile.originalFileName + ' deleted successfully.',
+        {
+          duration: 4000,
+        }
+      );
     } else {
       console.error('Delete Error:', response);
-      toast.error('Document ' + selectedFile.originalFileName + ' deletion failed.' + response, {
-        duration: 4000,
-      });
+      toast.error(
+        'Document ' +
+          selectedFile.originalFileName +
+          ' deletion failed.' +
+          response,
+        {
+          duration: 4000,
+        }
+      );
     }
 
     setDeletingFile(false);
-    setOpenModal(false)
-  }
+    setOpenModal(false);
+  };
 
   const handleDownload = (file: any) => {
     getFile(assistant.id, file.id).then((response) => {
@@ -70,11 +89,17 @@ export default function DocumentsList(props: DocumentsListProps) {
         setIframeSrc(response.downloadUrl);
       }
     });
-  }
+  };
 
   return (
     <div className='flex grid flex-col gap-12 sm:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-10'>
-      {iframeSrc && <iframe src={iframeSrc} style={{ display: 'none' }} onLoad={() => setIframeSrc('')}></iframe>}
+      {iframeSrc && (
+        <iframe
+          src={iframeSrc}
+          style={{ display: 'none' }}
+          onLoad={() => setIframeSrc('')}
+        ></iframe>
+      )}
       {files &&
         files.map((file, index) => {
           return (
@@ -87,15 +112,27 @@ export default function DocumentsList(props: DocumentsListProps) {
                     inline
                     arrowIcon={false}
                   >
-                    <Dropdown.Item icon={HiDownload} onClick={() => { handleDownload(file) }}>Download</Dropdown.Item>
+                    <Dropdown.Item
+                      icon={HiDownload}
+                      onClick={() => {
+                        handleDownload(file);
+                      }}
+                    >
+                      Download
+                    </Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item icon={HiOutlineTrash} onClick={() => {
-                      setSelectedFile(file);
-                      setOpenModal(true);
-                    }}>Delete</Dropdown.Item>
+                    <Dropdown.Item
+                      icon={HiOutlineTrash}
+                      onClick={() => {
+                        setSelectedFile(file);
+                        setOpenModal(true);
+                      }}
+                    >
+                      Delete
+                    </Dropdown.Item>
                   </Dropdown>
                 </div>
-                <div className='pb-12 pl-12 pr-12 dark:border-gray-800'>
+                <div className='pb-5 pl-12 pr-12 dark:border-gray-800'>
                   <div className='mb-2 items-center justify-center'>
                     <Image
                       alt='File thumbnail'
@@ -106,6 +143,7 @@ export default function DocumentsList(props: DocumentsListProps) {
                     />
                   </div>
                 </div>
+                <DocumentStatus file={file} />
               </div>
               <div className='flex-1 bg-white py-2'>
                 <p className='truncate text-sm font-semibold'>
@@ -130,13 +168,24 @@ export default function DocumentsList(props: DocumentsListProps) {
             <HiOutlineExclamationCircle className='mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200' />
             <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
               Are you sure you want to delete this document{' '}
-              <a className='font-bold'>{selectedFile ? selectedFile.originalFileName : ''}</a>?
+              <a className='font-bold'>
+                {selectedFile ? selectedFile.originalFileName : ''}
+              </a>
+              ?
             </h3>
             <div className='flex justify-center gap-4'>
-              <Button color='failure' isProcessing={deletingFile} onClick={handleDeleteFile}>
+              <Button
+                color='failure'
+                isProcessing={deletingFile}
+                onClick={handleDeleteFile}
+              >
                 {"Yes, I'm sure"}
               </Button>
-              <Button color='gray' disabled={deletingFile} onClick={() => setOpenModal(false)}>
+              <Button
+                color='gray'
+                disabled={deletingFile}
+                onClick={() => setOpenModal(false)}
+              >
                 Cancel
               </Button>
             </div>

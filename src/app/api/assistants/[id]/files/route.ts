@@ -133,7 +133,7 @@ export async function POST(req: NextRequest, res: Response) {
       mimetype: string
     ) => {
       // Create a temporary file path
-      let tmpFileName = fileId + path.extname(filename);
+      let tmpFileName = fileId + path.extname(filename).trim();
       const filePath = path.join(os.tmpdir(), tmpFileName);
       const writeStream = fs.createWriteStream(filePath);
 
@@ -257,6 +257,46 @@ export async function GET(req: NextRequest) {
       folderId: folder.id,
     },
   });
+
+  let updates = false;
+  if (assistant?.modelProviderId === 'openai') {
+    files.map(async (file) => {
+      // @ts-ignore
+      if (!['completed', 'cancelled', 'failed'].includes(file.object.status)) {
+        updates = true;
+        let openai = new OpenAI({
+          apiKey: assistant?.organization?.openAIApiKey,
+        });
+
+        let vectorStoreFileResponse =
+          // @ts-ignore
+          await openai.beta.vectorStores.files.retrieve(folder.object.id, file.object.id);
+
+        // @ts-ignore
+        file.object.status = vectorStoreFileResponse.status;
+        // @ts-ignore
+        file.object.last_error = vectorStoreFileResponse.last_error;
+
+        await prisma.file.update({
+          where: {
+            id: file.id,
+          },
+          data: {
+            // @ts-ignore
+            object: file.object,
+          },
+        });
+      }
+    });
+  }
+
+  if (updates) {
+    files = await prisma.file.findMany({
+      where: {
+        folderId: folder.id,
+      },
+    });
+  }
 
   return Response.json(files, { status: 200 });
 }

@@ -301,7 +301,9 @@ export async function getFile(assistantId: string | undefined, fileId: string) {
   if (!assistantId) {
     return;
   }
-  let response = await fetch('/api/assistants/' + assistantId + '/files/' + fileId);
+  let response = await fetch(
+    '/api/assistants/' + assistantId + '/files/' + fileId
+  );
 
   return await response.json();
 }

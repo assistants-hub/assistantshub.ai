@@ -42,10 +42,18 @@ export default function AssistantsLayout({
           <AssistantContext.Provider
             value={{ assistant, setAssistant: changeAssistant }}
           >
-            <div className={'xs:col-span-12 sm:col-span-4 md:col-span-4 xl:col-span-3 m-2 items-center justify-center'}>
+            <div
+              className={
+                'm-2 items-center justify-center xs:col-span-12 sm:col-span-4 md:col-span-4 xl:col-span-3'
+              }
+            >
               <SideNavigation />
             </div>
-            <div className={'xs:col-span-12 sm:col-span-8 md:col-span-8 xl:col-span-9 m-4 items-center justify-center'}>
+            <div
+              className={
+                'm-4 items-center justify-center xs:col-span-12 sm:col-span-8 md:col-span-8 xl:col-span-9'
+              }
+            >
               {children}
             </div>
           </AssistantContext.Provider>

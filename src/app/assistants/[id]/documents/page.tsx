@@ -16,7 +16,6 @@ export default function Documents() {
   useEffect(() => {
     if (assistant.modelId) {
       getModel(assistant.modelId).then(([status, response]) => {
-        console.log(response);
         setModel(response);
         setLoading(false);
       });

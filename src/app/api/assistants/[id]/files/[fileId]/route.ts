@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { getToken } from 'next-auth/jwt';
-import { DeleteObjectCommand, GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import path from 'path';
 import OpenAI from 'openai';
@@ -35,7 +39,10 @@ const validateIncomingToken = async (req: NextRequest, assistant: any) => {
   return !(token === null || assistant.organization.owner !== token.sub);
 };
 
-const createPresignedGet = async (file: string, expires: number = 3600): Promise<string> => {
+const createPresignedGet = async (
+  file: string,
+  expires: number = 3600
+): Promise<string> => {
   let configuration = { region: process.env.AWS_REGION };
   // @ts-ignore
   const s3Client = new S3Client(configuration);
@@ -51,7 +58,7 @@ const createPresignedGet = async (file: string, expires: number = 3600): Promise
     console.error('Error creating presigned URL:', err);
     throw new Error('Failed to create presigned URL');
   }
-}
+};
 
 async function deleteFileFromS3(file: string): Promise<any> {
   let configuration = { region: process.env.AWS_REGION };
@@ -60,7 +67,7 @@ async function deleteFileFromS3(file: string): Promise<any> {
 
   const deleteCommand = new DeleteObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET,
-    Key: file
+    Key: file,
   });
 
   try {
@@ -134,8 +141,8 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
         id: true,
         originalFileName: true,
         object: true,
-        folder: true
-      }
+        folder: true,
+      },
     });
 
     if (!file) {
@@ -147,9 +154,9 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
         apiKey: assistant?.organization?.openAIApiKey,
       });
       try {
-          // 1. Remove file from Vector Store
-          // @ts-ignore
-          let vectorStoreFileResponse = await openai.beta.vectorStores.files.del(file.folder.object.id, file.object.i);
+        // 1. Remove file from Vector Store
+        // @ts-ignore
+        let vectorStoreFileResponse = await openai.beta.vectorStores.files.del(file.folder.object.id, file.object.id);
       } catch (err) {
         console.error('Error removing file from Vector Store:', err);
       }
@@ -157,7 +164,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
       try {
         // 2. Delete file from Open AI
         // @ts-ignore
-        let filesResponse = await openai.files.del(file.object.i);
+        let filesResponse = await openai.files.del(file.object.id);
       } catch (err) {
         console.error('Error removing file from OpenAI:', err);
       }
