@@ -121,6 +121,26 @@ async function main() {
     },
   });
 
+  const gpt4o = await prisma.model.upsert({
+    where: { id: 'gpt-4o' },
+    update: {
+      features: {
+        retrieval: true,
+      } as Prisma.JsonObject,
+    },
+    create: {
+      id: 'gpt-4o',
+      name: 'GPT-4 Omni',
+      description:
+        'GPT-4o, OpenAI\'s new flagship model that can reason across audio, vision, and text in real time',
+      url: 'https://openai.com/index/hello-gpt-4o/',
+      providerId: 'openai',
+      features: {
+        retrieval: true,
+      } as Prisma.JsonObject,
+    },
+  });
+
   const geminipro = await prisma.model.upsert({
     where: { id: 'gemini-1.5-pro-latest' },
     update: {
