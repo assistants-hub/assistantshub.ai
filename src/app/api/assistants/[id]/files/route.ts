@@ -74,7 +74,7 @@ export async function POST(req: NextRequest, res: Response) {
   });
 
   // No folders exist, create a default folder
-  if ((!assistant.Folder || !assistant.Folder.length) && folder) {
+  if ((!assistant.Folder || !assistant.Folder.length)) {
     let folderId = ulid();
     let openai = new OpenAI({
       apiKey: assistant?.organization?.openAIApiKey,
