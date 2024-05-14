@@ -19,7 +19,10 @@ export default function Customize() {
 
   return assistant.id ? (
     <div className='max-w-screen flex flex-col gap-4'>
-      <h3 className='pb-4 text-3xl font-bold dark:text-white'>Customize</h3>
+      <h3 className='text-3xl font-bold dark:text-white'>Customize</h3>
+      <p className={'pb-4 text-sm text-gray-400'}>
+        Adjust the look and feel of your assistant to match your preferences
+      </p>
       <div className='grid md:grid-cols-2'>
         <div className='col-span-1 max-h-[100vh] overflow-y-auto'>
           <Table className='max-w-3xl flex-auto'>

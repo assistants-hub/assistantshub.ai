@@ -38,14 +38,22 @@ export default function AssistantsLayout({
           <Spinner />
         </div>
       ) : (
-        <div className='grid min-h-[calc(100vh-100px)] grid-cols-1 justify-center lg:grid-cols-12'>
+        <div className='grid min-h-[calc(100vh-100px)] grid-cols-12 justify-center'>
           <AssistantContext.Provider
             value={{ assistant, setAssistant: changeAssistant }}
           >
-            <div className={'col-span-2 m-2 items-center justify-center'}>
+            <div
+              className={
+                'm-2 items-center justify-center col-span-12 sm:col-span-4 md:col-span-4 xl:col-span-3'
+              }
+            >
               <SideNavigation />
             </div>
-            <div className={'col-span-10 m-4 items-center justify-center'}>
+            <div
+              className={
+                'm-4 items-center justify-center col-span-12 sm:col-span-8 md:col-span-8 xl:col-span-9'
+              }
+            >
               {children}
             </div>
           </AssistantContext.Provider>

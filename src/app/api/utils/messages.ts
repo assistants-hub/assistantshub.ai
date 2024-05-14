@@ -50,7 +50,7 @@ export const createMessage = async (
   });
 };
 
-export const getMessages = async (threadId: string, after?:string | null) => {
+export const getMessages = async (threadId: string, after?: string | null) => {
   let messages = [];
   if (after) {
     let messages = await prisma.message.findMany({
@@ -86,4 +86,4 @@ export const getMessages = async (threadId: string, after?:string | null) => {
 
     return messages.map((item) => item.object);
   }
-}
+};

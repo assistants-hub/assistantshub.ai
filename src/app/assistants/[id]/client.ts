@@ -27,6 +27,22 @@ export function useGetAssistant(id: string) {
   );
 }
 
+export async function getModel(modelId: string) {
+  if (!modelId) {
+    return [400, { error: 'Model Id is required' }];
+  }
+
+  let response = await fetch('/api/models/' + modelId, {
+    method: 'GET',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return [response.status, await response.json()];
+}
+
 export async function updateAssistant(assistant: Assistant) {
   let response = await fetch('/api/assistants/' + assistant.id, {
     method: 'PATCH',
@@ -261,4 +277,39 @@ export async function getMessageMetrics(request: MetricsRequest) {
   );
 
   return [response.status, await response.json()];
+}
+
+export async function uploadFile(assistantId: string, file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+  return await fetch('/api/assistants/' + assistantId + '/files', {
+    method: 'POST',
+    body: formData,
+  });
+}
+
+export async function getFiles(assistantId: string | undefined) {
+  if (!assistantId) {
+    return;
+  }
+  let response = await fetch('/api/assistants/' + assistantId + '/files');
+
+  return await response.json();
+}
+
+export async function getFile(assistantId: string | undefined, fileId: string) {
+  if (!assistantId) {
+    return;
+  }
+  let response = await fetch(
+    '/api/assistants/' + assistantId + '/files/' + fileId
+  );
+
+  return await response.json();
+}
+
+export async function deleteFile(assistantId: string, fileId: string) {
+  return await fetch('/api/assistants/' + assistantId + '/files/' + fileId, {
+    method: 'DELETE',
+  });
 }

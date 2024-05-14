@@ -1,6 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { GenerateContentStreamResult, GoogleGenerativeAI } from '@google/generative-ai';
+import {
+  GenerateContentStreamResult,
+  GoogleGenerativeAI,
+} from '@google/generative-ai';
 import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
 
@@ -12,7 +15,7 @@ const getGoogleGenAIObjectForAssistant = async (
 ) => {
   let assistantId = req.headers.get('X-Assistant-Id');
 
-  if(!assistantId) {
+  if (!assistantId) {
     throw new Error('Assistant ID is required');
   }
 

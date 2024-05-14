@@ -20,9 +20,10 @@ export default function Conversations() {
   return assistant.id ? (
     !threadsLoading ? (
       <div className='max-w-screen flex max-h-full flex-col gap-4'>
-        <h3 className='pb-4 text-3xl font-bold dark:text-white'>
-          Conversations
-        </h3>
+        <h3 className='text-3xl font-bold dark:text-white'>Conversations</h3>
+        <p className={'pb-4 text-sm text-gray-400'}>
+          Logs of your assistant&apos;s conversations are available below
+        </p>
         <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
           <Table hoverable className='flex-auto self-center'>
             <Table.Head>

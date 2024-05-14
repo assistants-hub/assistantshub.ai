@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "File" ADD COLUMN     "object" JSONB,
+ALTER COLUMN "type" DROP NOT NULL,
+ALTER COLUMN "size" DROP NOT NULL;
