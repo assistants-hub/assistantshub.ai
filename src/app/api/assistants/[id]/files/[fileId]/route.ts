@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { getToken } from 'next-auth/jwt';
 import {
   DeleteObjectCommand,
@@ -9,8 +8,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import path from 'path';
 import OpenAI from 'openai';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/api/utils/prisma';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);

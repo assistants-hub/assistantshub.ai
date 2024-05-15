@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/api/utils/prisma';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);

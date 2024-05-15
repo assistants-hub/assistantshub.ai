@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { geolocation } from '@vercel/edge';
 import { ulid } from 'ulidx';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/api/utils/prisma';
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {

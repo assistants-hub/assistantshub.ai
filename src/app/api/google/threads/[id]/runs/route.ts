@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import {
   GenerateContentStreamResult,
@@ -6,12 +5,10 @@ import {
 } from '@google/generative-ai';
 import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/api/utils/prisma';
 
 const getGoogleGenAIObjectForAssistant = async (
-  req: NextRequest,
-  prisma: PrismaClient
+  req: NextRequest
 ) => {
   let assistantId = req.headers.get('X-Assistant-Id');
 
@@ -131,7 +128,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       );
     }
 
-    const genAIModel = await getGoogleGenAIObjectForAssistant(req, prisma);
+    const genAIModel = await getGoogleGenAIObjectForAssistant(req);
     let chatParams = await formatChatParams(threadId);
     const chat = genAIModel.startChat(chatParams);
     let message = await getLatestMessage(threadId);

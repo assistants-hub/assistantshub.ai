@@ -1,9 +1,6 @@
-import OpenAI from 'openai';
-import { PrismaClient } from '@prisma/client';
 import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/api/utils/prisma';
 
 // Note: We should not cache the models list as it may change frequently for different organizations
 export async function GET(req: NextRequest, res: NextResponse) {
