@@ -66,7 +66,7 @@ export const getMessages = async (threadId: string, after?: string | null) => {
         object: true,
       },
       orderBy: {
-        id: 'asc',
+        created_at: 'asc',
       },
     });
 
