@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/api/utils/prisma';
 export const createMessage = async (
   assistantId: string,
   threadId: string,

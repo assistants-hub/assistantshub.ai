@@ -1,10 +1,9 @@
 import { NextRequest } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import OpenAI from 'openai';
+import prisma from '@/app/api/utils/prisma';
 
 export const getOpenAIObjectForAssistant = async (
-  req: NextRequest,
-  prisma: PrismaClient
+  req: NextRequest
 ) => {
   let assistantId = req.headers.get('X-Assistant-Id');
 

@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/app/api/utils/prisma';
 import { getToken } from 'next-auth/jwt';
 import OpenAI from 'openai';
-import { ulid } from 'ulidx';
-
-const prisma = new PrismaClient();
 
 const getId = (req: Request) => {
   const url = new URL(req.url);

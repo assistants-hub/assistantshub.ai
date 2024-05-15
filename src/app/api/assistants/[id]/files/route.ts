@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import { ulid } from 'ulidx';
 import OpenAI from 'openai';
 import fs from 'fs';
@@ -10,8 +9,7 @@ import { NextRequest } from 'next/server';
 import Busboy from '@fastify/busboy';
 import { Readable } from 'node:stream';
 import { getToken } from 'next-auth/jwt';
-
-const prisma = new PrismaClient();
+import prisma from '@/app/api/utils/prisma';
 
 // Utility function to convert ReadableStream to Node.js Stream
 function toNodeReadable(readable: any) {
