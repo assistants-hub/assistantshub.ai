@@ -52,9 +52,11 @@ Assistants Hub is not another LLM user interface, it is a comprehensive platform
 
 Explore our [Guides](https://docs.assistantshub.ai/docs/category/guides) to get started with Assistants Hub or check out our [Demos](https://docs.assistantshub.ai/docs/category/demos) to see our AI assistants in action.
 
-Below is an AI assistant demo generated with Assistants Hub available at [British Slang](https://docs.assistantshub.ai/docs/demos/british-slang-generator)
+Below is an AI assistant demo generated with Assistants Hub available at [Math Whiz Kid](https://docs.assistantshub.ai/docs/demos/math-tutor)
 
-<img src="./docs/math-whiz-kid.gif" alt="Math Whiz Kid" width="380px"/>
+<div style="text-align: center;">
+  <img src="./docs/math-whiz-kid.gif" alt="Math Whiz Kid" width="380px"/>
+</div>
 
 ## Supported Models
 
