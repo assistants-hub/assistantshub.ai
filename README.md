@@ -33,9 +33,11 @@ Welcome to Assistants Hub, where you can **Build, Integrate, and Deploy AI Assis
 
 ## Why should you use Assistants Hub?
 
-- **Rapid Development**: Jumpstart your AI assistant project with our easy-to-follow setup and comprehensive documentation.
-- **Seamless Integration**: Connect your assistant with a wide array of APIs and services to enhance its functionality and intelligence.
-- **Community-Powered**: Tap into the collective knowledge of a vibrant community dedicated to pushing the boundaries of AI assistants.
+Assistants Hub is not another LLM user interface, it is a comprehensive platform that enables businesses and AI practitioners to build, integrate, and deploy AI assistants to their end users with ease. Here are some reasons why you should consider using Assistants Hub:
+
+- **Rapid Build and Rollout**: Quickly create and deploy your AI assistants with our intuitive setup and detailed documentation.
+- **Comprehensive Platform**: Utilize advanced analytics, conversation history tracking, and extensive customization options to tailor your assistant to your needs.
+- **Extensive Collection of Models**: Access a wide variety of AI models to power your assistants, ensuring the best fit for your specific use case.
 
 ## Key Features
 
@@ -72,10 +74,17 @@ Below is an AI assistant demo generated with Assistants Hub available at [Britis
 
 To get started with Assistants Hub, you'll need to have Node.js installed on your machine. Follow the steps below to set up your development environment.
 
+```bash
+git clone https://github.com/assistants-hub/assistantshub.ai
+cd assistantshub.ai
+pnpm install
+```
+
 ### Prerequisites
 
 - Node.js (LTS version recommended)
 - pnpm
+- PostgreSQL database
 
 ### Installation
 
