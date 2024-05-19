@@ -60,17 +60,17 @@ Below is an AI assistant demo generated with Assistants Hub available at [Math W
 
 ## Supported Models
 
-| Model Name            | Provider | Streaming Responses | Documents | Functions |
+| Model Name            | Provider | Streaming <br/>Responses | Documents | Functions |
 |-----------------------|----------|---------------------|-----------|-----|
 | GPT-4o                | OpenAI   | :white_check_mark:  | :white_check_mark: | :construction: |
 | GPT-4-Turbo           | OpenAI   | :white_check_mark:  | :white_check_mark: | :construction: |
 | GPT-4                 | OpenAI   | :white_check_mark:  | :white_check_mark: | :construction: |
-| GPT-3.5-Turbo         | OpenAI | :white_check_mark:  | :x: | :x: |
-| Gemini-1.5-pro-latest | Google | :white_check_mark:  | :x: | :x: |
-| Llama3-8b-8192        | Groq | :white_check_mark:  | :x: | :x: |
-| Llama3-70b-8192       | Groq | :white_check_mark:  | :x: | :x: |
-| Mixtral-8x7b-32768    | Groq | :white_check_mark:  | :x: | :x: |
-| gemma-7b-it-8192      | Groq | :white_check_mark:  | :x: | :x: |
+| GPT-3.5-Turbo         | OpenAI | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Gemini-1.5-pro-latest | Google | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Llama3-8b-8192        | Groq | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Llama3-70b-8192       | Groq | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Mixtral-8x7b-32768    | Groq | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| gemma-7b-it-8192      | Groq | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
 
 ## Getting Started
 
