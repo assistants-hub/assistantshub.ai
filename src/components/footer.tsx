@@ -4,42 +4,39 @@ import {
   FooterLink,
   FooterLinkGroup,
 } from 'flowbite-react';
-import { BsGithub } from 'react-icons/bs';
+import { BsGithub, BsLinkedin, BsTwitterX, BsX } from 'react-icons/bs';
 
 export function PageFooter() {
   return (
     <Footer container>
-      <div className='flex items-end justify-start'>
-        <div className='flex justify-end space-x-3 sm:flex sm:items-center sm:justify-between'>
-          <FooterCopyright
-            href='#'
-            by='Assistants Hub'
-            year={new Date().getFullYear()}
-          />
-          <FooterLinkGroup>
-            <div className='w-full justify-between sm:flex sm:items-center sm:justify-between'>
-              <Footer.Icon
-                href='https://github.com/santthosh/assistants-hub'
-                icon={BsGithub}
-              />
-            </div>
-          </FooterLinkGroup>
-        </div>
-      </div>
-      <div className='flex items-end justify-end'>
-        <div className='flex justify-end space-x-3 sm:flex sm:items-center sm:justify-between'>
-          <FooterLinkGroup>
-            <div className='w-full justify-between sm:flex sm:items-center sm:justify-between'>
-              <Footer.Link
-                href='/pages/terms.html'
-              >Terms</Footer.Link>
-              <Footer.Link
-                href='/pages/privacy.html'
-              >Privacy</Footer.Link>
-            </div>
-          </FooterLinkGroup>
-        </div>
-      </div>
+      <FooterCopyright
+        href='#'
+        by='Assistants Hub'
+        year={new Date().getFullYear()}
+      />
+      <FooterLinkGroup className={"space-x-3"}>
+        <Footer.Icon
+          href='https://x.com/assistantshubai'
+          icon={BsTwitterX}
+        />
+        <Footer.Icon
+          href='https://www.linkedin.com/company/assistants-hub/'
+          icon={BsLinkedin}
+        />
+        <Footer.Icon
+          href='https://github.com/santthosh/assistants-hub'
+          icon={BsGithub}
+        />
+        <Footer.Link
+          href='/pages/terms.html'
+        >Terms</Footer.Link>
+        <Footer.Link
+          href='/pages/privacy.html'
+        >Privacy</Footer.Link>
+        <Footer.Link
+          href='/pages/cookie.html'
+        >Cookie Policy</Footer.Link>
+      </FooterLinkGroup>
     </Footer>
   );
 }
