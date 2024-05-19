@@ -1,10 +1,9 @@
 import {
   Footer,
   FooterCopyright,
-  FooterLink,
   FooterLinkGroup,
 } from 'flowbite-react';
-import { BsGithub, BsLinkedin, BsTwitterX, BsX } from 'react-icons/bs';
+import { BsGithub, BsLinkedin, BsTwitterX } from 'react-icons/bs';
 
 export function PageFooter() {
   return (
