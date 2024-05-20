@@ -23,7 +23,7 @@ export function PageFooter() {
           icon={BsLinkedin}
         />
         <Footer.Icon
-          href='https://github.com/santthosh/assistants-hub'
+          href='https://github.com/assistants-hub/assistantshub.ai'
           icon={BsGithub}
         />
         <Footer.Link
