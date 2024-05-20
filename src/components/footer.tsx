@@ -33,7 +33,7 @@ export function PageFooter() {
           href='/pages/privacy.html'
         >Privacy</Footer.Link>
         <Footer.Link
-          href='/pages/cookie.html'
+          href='/pages/cookies.html'
         >Cookie Policy</Footer.Link>
       </FooterLinkGroup>
     </Footer>
