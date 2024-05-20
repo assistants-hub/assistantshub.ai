@@ -69,7 +69,10 @@ export const UserProfile = async () => {
         >
           <div className='pt-2 lg:text-lg'>Docs</div>
         </NavbarLink>
-        <NavbarLink href='mailto:support@assistantshub.ai' className='justify-end'>
+        <NavbarLink
+          href='mailto:support@assistantshub.ai'
+          className='justify-end'
+        >
           <div className='pt-2 lg:text-lg'>Help</div>
         </NavbarLink>
         <NavbarLink className='justify-end'>

@@ -7,9 +7,7 @@ import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
 import prisma from '@/app/api/utils/prisma';
 
-const getGoogleGenAIObjectForAssistant = async (
-  req: NextRequest
-) => {
+const getGoogleGenAIObjectForAssistant = async (req: NextRequest) => {
   let assistantId = req.headers.get('X-Assistant-Id');
 
   if (!assistantId) {

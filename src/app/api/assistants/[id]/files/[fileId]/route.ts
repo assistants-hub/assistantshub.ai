@@ -154,7 +154,12 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
       try {
         // 1. Remove file from Vector Store
         // @ts-ignore
-        let vectorStoreFileResponse = await openai.beta.vectorStores.files.del(file.folder.object.id, file.object.id);
+        let vectorStoreFileResponse = await openai.beta.vectorStores.files.del(
+          // @ts-ignore
+          file.folder.object.id,
+          // @ts-ignore
+          file.object.id
+        );
       } catch (err) {
         console.error('Error removing file from Vector Store:', err);
       }

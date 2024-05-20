@@ -4,9 +4,7 @@ import { createMessage } from '@/app/api/utils/messages';
 import { Groq } from 'groq-sdk';
 import prisma from '@/app/api/utils/prisma';
 
-const getGroqObjectForAssistant = async (
-  req: NextRequest
-) => {
+const getGroqObjectForAssistant = async (req: NextRequest) => {
   let assistantId = req.headers.get('X-Assistant-Id');
 
   // @ts-ignore

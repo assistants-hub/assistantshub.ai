@@ -72,7 +72,7 @@ export async function POST(req: NextRequest, res: Response) {
   });
 
   // No folders exist, create a default folder
-  if ((!assistant.Folder || !assistant.Folder.length)) {
+  if (!assistant.Folder || !assistant.Folder.length) {
     let folderId = ulid();
     let openai = new OpenAI({
       apiKey: assistant?.organization?.openAIApiKey,
@@ -268,7 +268,12 @@ export async function GET(req: NextRequest) {
 
         let vectorStoreFileResponse =
           // @ts-ignore
-          await openai.beta.vectorStores.files.retrieve(folder.object.id, file.object.id);
+          await openai.beta.vectorStores.files.retrieve(
+            // @ts-ignore
+            folder.object.id,
+            // @ts-ignore
+            file.object.id
+          );
 
         // @ts-ignore
         file.object.status = vectorStoreFileResponse.status;

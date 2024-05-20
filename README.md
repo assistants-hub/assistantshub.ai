@@ -41,14 +41,14 @@ Assistants Hub is not another LLM user interface, it is a comprehensive platform
 
 ## Key Features
 
-* **Extensive LLM and GPT models**: Access the latest AI models from OpenAI, Google, and Groq to power your AI assistants.
-* **Streaming Responses**: Enable real-time interactions with your AI assistant through streaming responses.
-* **Analytics**: Monitor and analyze your assistant's performance with detailed analytics and insights.
-* **Conversation Log**: Review and analyze past conversations to improve your assistant's responses.
-* **Customizations**: Tailor your assistant's appearance, behavior, and responses to suit your needs.
-* **Easy Integration**: Seamlessly integrate your assistant with popular platforms and services.
-* **Document Management**: Organize and manage your assistant's documents for quick reference and retrieval.
-* **Function Integration**: Extend your assistant's capabilities by integrating custom functions and services.
+- **Extensive LLM and GPT models**: Access the latest AI models from OpenAI, Google, and Groq to power your AI assistants.
+- **Streaming Responses**: Enable real-time interactions with your AI assistant through streaming responses.
+- **Analytics**: Monitor and analyze your assistant's performance with detailed analytics and insights.
+- **Conversation Log**: Review and analyze past conversations to improve your assistant's responses.
+- **Customizations**: Tailor your assistant's appearance, behavior, and responses to suit your needs.
+- **Easy Integration**: Seamlessly integrate your assistant with popular platforms and services.
+- **Document Management**: Organize and manage your assistant's documents for quick reference and retrieval.
+- **Function Integration**: Extend your assistant's capabilities by integrating custom functions and services.
 
 Explore our [Guides](https://docs.assistantshub.ai/docs/category/guides) to get started with Assistants Hub or check out our [Demos](https://docs.assistantshub.ai/docs/category/demos) to see our AI assistants in action.
 
@@ -60,17 +60,17 @@ Below is an AI assistant demo generated with Assistants Hub available at [Math W
 
 ## Supported Models
 
-| Model Name            | Provider | Streaming <br/>Responses | Documents | Functions |
-|-----------------------|----------|---------------------|-----------|-----|
-| GPT-4o                | OpenAI   | :white_check_mark:  | :white_check_mark: | :construction: |
-| GPT-4-Turbo           | OpenAI   | :white_check_mark:  | :white_check_mark: | :construction: |
-| GPT-4                 | OpenAI   | :white_check_mark:  | :white_check_mark: | :construction: |
-| GPT-3.5-Turbo         | OpenAI | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
-| Gemini-1.5-pro-latest | Google | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
-| Llama3-8b-8192        | Groq | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
-| Llama3-70b-8192       | Groq | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
-| Mixtral-8x7b-32768    | Groq | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
-| gemma-7b-it-8192      | Groq | :white_check_mark:  | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Model Name            | Provider | Streaming <br/>Responses | Documents                | Functions                |
+| --------------------- | -------- | ------------------------ | ------------------------ | ------------------------ |
+| GPT-4o                | OpenAI   | :white_check_mark:       | :white_check_mark:       | :construction:           |
+| GPT-4-Turbo           | OpenAI   | :white_check_mark:       | :white_check_mark:       | :construction:           |
+| GPT-4                 | OpenAI   | :white_check_mark:       | :white_check_mark:       | :construction:           |
+| GPT-3.5-Turbo         | OpenAI   | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Gemini-1.5-pro-latest | Google   | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Llama3-8b-8192        | Groq     | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Llama3-70b-8192       | Groq     | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Mixtral-8x7b-32768    | Groq     | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| gemma-7b-it-8192      | Groq     | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
 
 ## Getting Started
 
