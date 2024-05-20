@@ -132,7 +132,7 @@ async function main() {
       id: 'gpt-4o',
       name: 'GPT-4 Omni',
       description:
-        'GPT-4o, OpenAI\'s new flagship model that can reason across audio, vision, and text in real time',
+        "GPT-4o, OpenAI's new flagship model that can reason across audio, vision, and text in real time",
       url: 'https://openai.com/index/hello-gpt-4o/',
       providerId: 'openai',
       features: {

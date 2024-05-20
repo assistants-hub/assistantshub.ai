@@ -2,9 +2,7 @@ import { NextRequest } from 'next/server';
 import OpenAI from 'openai';
 import prisma from '@/app/api/utils/prisma';
 
-export const getOpenAIObjectForAssistant = async (
-  req: NextRequest
-) => {
+export const getOpenAIObjectForAssistant = async (req: NextRequest) => {
   let assistantId = req.headers.get('X-Assistant-Id');
 
   // @ts-ignore
