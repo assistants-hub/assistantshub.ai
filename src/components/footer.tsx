@@ -23,7 +23,7 @@ export function PageFooter() {
           icon={BsLinkedin}
         />
         <Footer.Icon
-          href='https://github.com/santthosh/assistants-hub'
+          href='https://github.com/assistants-hub/assistantshub.ai'
           icon={BsGithub}
         />
         <Footer.Link
@@ -33,7 +33,7 @@ export function PageFooter() {
           href='/pages/privacy.html'
         >Privacy</Footer.Link>
         <Footer.Link
-          href='/pages/cookie.html'
+          href='/pages/cookies.html'
         >Cookie Policy</Footer.Link>
       </FooterLinkGroup>
     </Footer>
