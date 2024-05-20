@@ -160,6 +160,26 @@ async function main() {
     },
   });
 
+  const geminiflash = await prisma.model.upsert({
+    where: { id: 'gemini-1.5-flash-latest' },
+    update: {
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+    create: {
+      id: 'gemini-1.5-flash-latest',
+      name: 'Gemini Flash 1.5',
+      description:
+        'Gemini 1.5 Flash is a fast and versatile multimodal model for scaling across diverse tasks.',
+      url: 'https://ai.google.dev/gemini-api/docs/api-overview',
+      providerId: 'google',
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+  });
+
   const groq_llama3_8b = await prisma.model.upsert({
     where: { id: 'llama3-8b-8192' },
     update: {
