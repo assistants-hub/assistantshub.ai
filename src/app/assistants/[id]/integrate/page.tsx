@@ -6,9 +6,11 @@ import 'highlight.js/styles/github.css';
 import React, { useContext, useEffect } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import ChatAgentContextWrapper from '@/app/assistants/[id]/chat/ChatAgentContextWrapper';
-import { Table } from 'flowbite-react';
+import { Button, Table } from 'flowbite-react';
 import ChatWindowContextWrapper from '@/app/assistants/[id]/chat/ChatWindowContextWrapper';
 import ChatPopupContextWrapper from '@/app/assistants/[id]/chat/ChatPopupContextWrapper';
+import { HiLibrary, HiLink, HiPlus } from 'react-icons/hi';
+import Link from 'next/link';
 
 export default function Customize() {
   const { assistant } = useContext(AssistantContext);
@@ -21,17 +23,35 @@ export default function Customize() {
     <div className='max-w-screen flex flex-col gap-4'>
       <h3 className='text-3xl font-bold dark:text-white'>Integrate</h3>
       <p className={'pb-4 text-sm text-gray-400'}>
-        Use the below embed code to integrate your assistant to any web page
+        Use the below link direct users to your assistant or embed codes to
+        integrate to your web pages
       </p>
-      <div className='max-w-screen items-center justify-center'>
-        <Table className='max-w-3xl flex-auto'>
-          <Table.Body className='divide-y'>
+      <div className='max-w-2xl items-center justify-center'>
+        <Table className='max-w-2xl flex-auto '>
+          <Table.Body className='divide-y overflow-x-auto'>
+            <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+              <Table.Cell>
+                <div>Fully hosted assistant with a permanent URL</div>
+              </Table.Cell>
+              <Table.Cell className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+                <div className='bg-white'>
+                  <Link href={`/link/${assistant.id}`} target='_blank'>
+                    <Button
+                      className='float-right'
+                      gradientDuoTone='purpleToBlue'
+                    >
+                      <HiLink className='mr-2 h-5 w-5' /> Go to Assistant
+                    </Button>
+                  </Link>
+                </div>
+              </Table.Cell>
+            </Table.Row>
             <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
               <Table.Cell>
                 <div>
                   Floating assistant icon on the bottom right corner of the page
                 </div>
-                <div className='max-w-screen overflow-hidden text-sm'>
+                <div className='max-w-lg overflow-hidden text-sm'>
                   <Markdown>{`\`\`\`xml
 <iframe 
   src="${window.location.origin}/embed/${assistant.id}"
@@ -55,7 +75,7 @@ export default function Customize() {
             <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
               <Table.Cell>
                 <div>Fixed chat window</div>
-                <div className='max-w-screen overflow-hidden text-sm'>
+                <div className='max-w-xl overflow-hidden text-sm'>
                   <Markdown>{`\`\`\`xml
 <iframe 
   src="${window.location.origin}/embed/${assistant.id}?style=window"
@@ -76,7 +96,7 @@ export default function Customize() {
             <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
               <Table.Cell>
                 <div>Fixed chat window, without the outer frame</div>
-                <div className='max-w-screen overflow-hidden text-sm'>
+                <div className='max-w-xl overflow-hidden text-sm'>
                   <Markdown>{`\`\`\`xml
 <iframe 
   src="${window.location.origin}/embed/${assistant.id}?style=window-frameless"

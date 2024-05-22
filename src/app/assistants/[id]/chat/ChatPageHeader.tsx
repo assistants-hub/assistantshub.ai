@@ -10,7 +10,7 @@ export function ChatPageHeader() {
   const { assistant } = useContext(AssistantContext);
 
   return (
-    <Card className='mx-auto my-auto max-w-2xl'>
+    <Card className='mx-auto my-auto flex max-w-2xl'>
       <div className='grid grid-cols-12 items-center'>
         <div className='col-span-2'>
           <Image

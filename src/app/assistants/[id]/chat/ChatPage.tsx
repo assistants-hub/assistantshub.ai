@@ -19,11 +19,8 @@ export default function ChatPage() {
     typedMessage,
     setTypedMessage,
     messageStatus,
-    setMessageStatus,
     streamText,
-    setStreamText,
     messages,
-    setMessages,
     sendMessage,
   } = useChatContext();
 
@@ -40,14 +37,14 @@ export default function ChatPage() {
 
   return (
     <div key='1' className='flex h-screen flex-col'>
-      <div className='flex-grow space-y-4 pb-2 pt-1'>
+      <div className='flex space-y-4 bg-gray-100 pb-2 pt-1'>
         <ChatPageHeader />
       </div>
-      <div className='flex-grow space-y-4 overflow-auto p-4 pt-0'>
+      <div className='flex-grow space-y-4 overflow-auto p-4 py-0 pt-0'>
         <div className='mx-auto flex max-w-2xl flex-col rounded-b rounded-t-none'>
-          <div className={'max-w-2xl overflow-y-auto bg-white'}>
+          <div className={'max-w-2xl overflow-y-auto'}>
             <div
-              className='flex max-w-2xl flex-col gap-3 self-center overflow-y-auto px-4 py-4'
+              className='flex flex-col gap-3 self-center overflow-y-auto px-4 py-2'
               ref={messagesRef}
             >
               {messages.map((message: Message, index) => {
@@ -72,7 +69,7 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
-      <div className='mx-auto w-full max-w-2xl rounded-lg border border-2 bg-white p-6 shadow md:w-[800px]'>
+      <div className='z-100 mx-auto w-full max-w-2xl rounded-lg border border-2 bg-white p-6 shadow md:w-[800px]'>
         {messageStatus === 'in_progress' ? (
           <span className='text-xs font-normal text-gray-500 dark:text-white'>
             {assistant.name} is typing...
@@ -80,7 +77,7 @@ export default function ChatPage() {
         ) : (
           <></>
         )}
-        <div className='flex items-center space-x-2'>
+        <div className='items-top flex space-x-2'>
           <TextInput
             className='block w-full rounded-lg border bg-white text-sm text-gray-900 dark:text-white dark:placeholder-gray-400'
             placeholder={getInputMessageLabel(assistant)}
