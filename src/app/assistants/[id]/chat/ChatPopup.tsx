@@ -5,29 +5,15 @@ import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
 import { Button, TextInput } from 'flowbite-react';
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Message } from '@/app/types/message';
-import {
-  createMessage,
-  createRun,
-  createThread,
-  getMessages,
-} from '@/app/assistants/[id]/client';
 import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
-import { getFingerprint } from '@thumbmarkjs/thumbmarkjs';
-import { streamAsyncIterator } from '@/app/utils/streamAsyncIterator';
 import ChatMessageStreaming from '@/app/assistants/[id]/chat/ChatMessageStreaming';
-import {
-  getItemWithExpiry,
-  removeItem,
-  setItemWithExpiry,
-} from '@/app/utils/store';
-import ChatDisMissalAlert from '@/app/assistants/[id]/chat/ChatDismissalAlert';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import {
-  getInitialPrompt,
   getInputMessageLabel,
   getPrimaryColor,
   getSecondaryColor,
 } from '@/app/utils/assistant';
+import { useChatContext } from '@/app/assistants/[id]/chat/useChatContext';
 
 export interface ChatPopupProps extends ChatProps {
   hide: boolean;
@@ -36,61 +22,21 @@ export interface ChatPopupProps extends ChatProps {
 
 export default function ChatPopup(props: ChatPopupProps) {
   const { assistant } = useContext(AssistantContext);
+
   const bottomRef = useRef(null);
-  const [typedMessage, setTypedMessage] = useState('');
-  const [messageStatus, setMessageStatus] = useState('' as string);
-  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [streamText, setStreamText] = useState<string>('');
-  const [currentThread, setCurrentThread] = useState<string | null>(null);
-  const [currentMessage, setCurrentMessage] = useState<Message | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
   const messagesRef = useRef<HTMLDivElement | null>(null);
-  const [fingerprint, setFingerprint] = useState('');
 
-  const getModelProviderId = () => {
-    return assistant.modelProviderId ? assistant.modelProviderId : 'openai';
-  };
-
-  useEffect(() => {
-    setMessages([
-      {
-        created_at: Date.now() / 1000,
-        role: 'assistant',
-        content: [
-          {
-            type: 'text',
-            text: {
-              value: getInitialPrompt(assistant),
-              annotations: [],
-            },
-          },
-        ],
-      },
-    ]);
-  }, [assistant]);
-
-  useEffect(() => {
-    getFingerprint()
-      .then((fingerprint) => {
-        setFingerprint(fingerprint);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    // Check to see if there is a thread in the session storage
-    let threadId = getItemWithExpiry<string>(getAssistantThreadStorageKey());
-    if (threadId) {
-      setCurrentThread(threadId);
-      getMessages(assistant.id, getModelProviderId(), threadId || '', '').then(
-        ([threadedMessageStatus, threadMessages]) => {
-          const newMessages: Message[] = threadMessages.data;
-          setStreamText('');
-          setMessages([...messages, ...newMessages]);
-        }
-      ); // eslint-disable-line
-    }
-  }, []);
+  const {
+    typedMessage,
+    setTypedMessage,
+    messageStatus,
+    setMessageStatus,
+    streamText,
+    setStreamText,
+    messages,
+    setMessages,
+    sendMessage,
+  } = useChatContext();
 
   useEffect(() => {
     if (messagesRef?.current && 'scrollIntoView' in messagesRef.current) {
@@ -99,113 +45,9 @@ export default function ChatPopup(props: ChatPopupProps) {
   }, [messages]);
 
   useEffect(() => {
-    if (messageStatus === 'in_progress') {
-      sendMessageAndPoll().then((r) => {});
-    }
-  }, [currentMessage]);
-
-  useEffect(() => {
     // @ts-ignore
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [streamText]);
-
-  const sendMessageAndPoll = async () => {
-    if (!currentMessage) {
-      return;
-    }
-    // If thread doesn't exist create thread
-    let thread = currentThread;
-    if (!thread) {
-      let [status, threadResponse] = await createThread(
-        assistant.id,
-        getModelProviderId(),
-        fingerprint
-      );
-      thread = threadResponse.id;
-      setCurrentThread(threadResponse.id);
-      setItemWithExpiry(
-        getAssistantThreadStorageKey(),
-        threadResponse.id,
-        24 * 60 * 60 * 1000
-      );
-    }
-
-    // Send message to thread
-    let [messageStatus, messageResponse] = await createMessage(
-      assistant.id,
-      getModelProviderId(),
-      thread,
-      currentMessage
-    );
-    let currentMessageId = messageResponse.id;
-
-    // Run the thread
-    let runResponse = await createRun(
-      assistant.id,
-      getModelProviderId(),
-      thread
-    );
-
-    let textDecoder = new TextDecoder();
-    let messageBuffer = '';
-    for await (const chunk of streamAsyncIterator(runResponse)) {
-      const result = textDecoder.decode(chunk);
-      messageBuffer = messageBuffer + result;
-      setStreamText(messageBuffer);
-    }
-    const [threadedMessageStatus, threadMessages] = await getMessages(
-      assistant.id,
-      getModelProviderId(),
-      thread || '',
-      currentMessageId
-    );
-    setMessageStatus('completed');
-    const newMessages: Message[] = threadMessages.data;
-    if (newMessages.length > 0) {
-      setStreamText('');
-      setMessages([...messages, ...newMessages]);
-    } else {
-      // Something wrong happened here, no new messages, but we just streamed text
-      console.log(
-        'TODO: No new messages, but we just streamed text, check this'
-      );
-      //TODO: There should be a way to handle this error
-    }
-  };
-
-  const handleSendMessage = async () => {
-    if (!typedMessage || !typedMessage.trim() || typedMessage.length <= 0) {
-      return;
-    }
-    let message: Message = {
-      created_at: Date.now() / 1000,
-      role: 'user',
-      content: [
-        {
-          type: 'text',
-          text: {
-            value: typedMessage,
-            annotations: [],
-          },
-        },
-      ],
-    };
-    setCurrentMessage(message);
-    setMessages([...messages, message]);
-    setTypedMessage('');
-    setMessageStatus('in_progress' as string);
-  };
-
-  const getAssistantThreadStorageKey = () => {
-    return `ai.assistantshub.assistant.${assistant.id}.thread`;
-  };
-
-  const closeChatPopup = (confirmation: boolean) => {
-    if (confirmation) {
-      removeItem(getAssistantThreadStorageKey());
-      props.setHide ? props.setHide(true) : null;
-    }
-  };
 
   return (
     <div className='items-center justify-center self-center'>
@@ -266,11 +108,6 @@ export default function ChatPopup(props: ChatPopupProps) {
             ) : (
               <></>
             )}
-            <ChatDisMissalAlert
-              openConfirmationModal={openConfirmationModal}
-              setOpenConfirmationModal={setOpenConfirmationModal}
-              handleDismissal={closeChatPopup}
-            />
             <div className='flex items-center justify-center rounded-lg bg-gray-50 px-2 py-2 dark:bg-gray-700'>
               <TextInput
                 className='block w-full rounded-lg border bg-white text-sm text-gray-900 dark:text-white dark:placeholder-gray-400'
@@ -280,7 +117,7 @@ export default function ChatPopup(props: ChatPopupProps) {
                 value={typedMessage}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
-                    handleSendMessage();
+                    sendMessage();
                   }
                   e.stopPropagation();
                 }}
@@ -295,7 +132,7 @@ export default function ChatPopup(props: ChatPopupProps) {
                 style={{
                   color: getPrimaryColor(assistant),
                 }}
-                onClick={handleSendMessage}
+                onClick={sendMessage}
               >
                 <svg
                   className='h-5 w-5 rotate-90 rtl:-rotate-90'
