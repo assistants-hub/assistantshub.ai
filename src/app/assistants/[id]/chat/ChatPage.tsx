@@ -2,7 +2,13 @@ import { Button, TextInput } from 'flowbite-react';
 import React, { useContext, useEffect, useRef } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import { useChatContext } from '@/app/assistants/[id]/chat/useChatContext';
-import { getInputMessageLabel, getPrimaryColor } from '@/app/utils/assistant';
+import {
+  getInputMessageLabel,
+  getPrimaryBackgroundColor,
+  getPrimaryColor,
+  getPrimaryTextColor,
+  getSecondaryColor,
+} from '@/app/utils/assistant';
 import { ChatPageHeader } from '@/app/assistants/[id]/chat/ChatPageHeader';
 import { Message } from '@/app/types/message';
 import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
@@ -37,7 +43,10 @@ export default function ChatPage() {
 
   return (
     <div key='1' className='flex h-screen flex-col'>
-      <div className='flex space-y-4 bg-gray-100 pb-2 pt-1'>
+      <div className={ 'flex space-y-4 pb-2 pt-1 '}
+           style={{
+        backgroundColor: getPrimaryBackgroundColor(assistant),
+      }}>
         <ChatPageHeader />
       </div>
       <div className='flex-grow space-y-4 overflow-auto p-4 py-0 pt-0'>
