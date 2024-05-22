@@ -25,7 +25,7 @@ export function ChatPageHeader() {
             alt='Assistant'
           />
         </div>
-        <div className='col-span-10 items-center justify-center'>
+        <div className='col-span-10 pl-2 items-center justify-center'>
           <p className='max-w-md text-xl font-semibold leading-relaxed'>
             {assistant.name}
           </p>
