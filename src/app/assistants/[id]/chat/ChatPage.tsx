@@ -43,10 +43,12 @@ export default function ChatPage() {
 
   return (
     <div key='1' className='flex h-screen flex-col'>
-      <div className={ 'flex space-y-4 pb-2 pt-1 '}
-           style={{
-        backgroundColor: getPrimaryBackgroundColor(assistant),
-      }}>
+      <div
+        className={'flex space-y-4 pb-2 pt-1 '}
+        style={{
+          backgroundColor: getPrimaryBackgroundColor(assistant),
+        }}
+      >
         <ChatPageHeader />
       </div>
       <div className='flex-grow space-y-4 overflow-auto p-4 py-0 pt-0'>
