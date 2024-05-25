@@ -41,7 +41,7 @@ Assistants Hub is not another LLM user interface, it is a comprehensive platform
 
 ## Key Features
 
-- **Extensive LLM and GPT models**: Access the latest AI models from OpenAI, Google, and Groq to power your AI assistants.
+- **Extensive LLM and GPT models**: Access the latest AI models from OpenAI, Google, Anthropic and Groq to power your AI assistants.
 - **Streaming Responses**: Enable real-time interactions with your AI assistant through streaming responses.
 - **Analytics**: Monitor and analyze your assistant's performance with detailed analytics and insights.
 - **Conversation Log**: Review and analyze past conversations to improve your assistant's responses.
@@ -81,6 +81,16 @@ The gemini-1.5-pro-latest model is a large-scale language model developed by Goo
 | ----------------------- | -------- | ------------------------ | ------------------------ | ------------------------ |
 | Gemini-1.5-Pro-latest   | Google   | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
 | Gemini-1.5-Flash-latest | Google   | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+
+### Anthropic Models
+
+All models that support [Anthropic API](https://docs.anthropic.com/en/docs/models-overview) are supported by [Assistants Hub](https://assistantshub.ai).
+
+| Model Name      | Provider  | Streaming <br/>Responses | Documents                | Functions                |
+|-----------------|-----------| ------------------------ | ------------------------ | ------------------------ |
+| Claude 3 Opus   | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Claude 3 Sonnet | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Claude 3 Haiku  | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
 
 ### Gorq Cloud
 
@@ -175,7 +185,7 @@ Please review our [DISCLAIMER.md](./DISCLAIMER.md) to understand the limitations
 
 We extend our gratitude to:
 
-OpenAI, Groq and Google for their exceptional APIs that powers the intelligence of our assistants.
+OpenAI, Anthropic, Groq and Google for their exceptional APIs that powers the intelligence of our assistants.
 The Next.js community, for providing the robust framework that makes this project possible.
 
 Thank you for exploring Assistants Hub. We're eager to see the incredible AI assistants you'll build and deploy!
