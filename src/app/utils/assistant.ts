@@ -17,16 +17,23 @@ export function getSecondaryColor(assistant: Assistant) {
   return getStyleHash(assistant.id).secondaryColor;
 }
 
-function hexToRgbA(hex:string, opacity:number = 1) {
+function hexToRgbA(hex: string, opacity: number = 1) {
   let c;
-  if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-    c= hex.substring(1).split('');
-    if(c.length== 3){
-      c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    c = hex.substring(1).split('');
+    if (c.length == 3) {
+      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
     }
-    c= '0x'+c.join('');
+    c = '0x' + c.join('');
     // @ts-ignore
-    return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',' + opacity + ')';
+    return (
+      'rgba(' +
+      // @ts-ignore
+      [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') +
+      ',' +
+      opacity +
+      ')'
+    );
   }
   throw new Error('Bad Hex');
 }
@@ -36,9 +43,12 @@ export function getPrimaryBackgroundColor(assistant: Assistant) {
     return hexToRgbA(assistant.theme.primaryColor, 0.5);
   }
 
-  return hexToRgbA(getStyleHash(assistant.id)
-    .primaryColor.replace('bg-[', '')
-    .replace(']', ''),0.7);
+  return hexToRgbA(
+    getStyleHash(assistant.id)
+      .primaryColor.replace('bg-[', '')
+      .replace(']', ''),
+    0.7
+  );
 }
 
 export function getPrimaryTextColor(assistant: Assistant) {

@@ -15,6 +15,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.21.1",
     "@auth/prisma-adapter": "^2.0.0",
     "@aws-sdk/client-s3": "^3.569.0",
     "@aws-sdk/s3-presigned-post": "^3.569.0",

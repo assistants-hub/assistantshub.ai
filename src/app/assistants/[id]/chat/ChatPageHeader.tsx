@@ -10,7 +10,7 @@ export function ChatPageHeader() {
   const { assistant } = useContext(AssistantContext);
 
   return (
-    <Card className='mx-auto my-auto flex max-w-2xl'>
+    <div className='mx-auto my-auto flex flex-auto p-2 md:max-w-2xl'>
       <div className='grid grid-cols-12 items-center'>
         <div className='col-span-2'>
           <Image
@@ -25,7 +25,7 @@ export function ChatPageHeader() {
             alt='Assistant'
           />
         </div>
-        <div className='col-span-10 pl-2 items-center justify-center'>
+        <div className='col-span-10 items-center justify-center pl-2'>
           <p className='max-w-md text-xl font-semibold leading-relaxed'>
             {assistant.name}
           </p>
@@ -34,6 +34,6 @@ export function ChatPageHeader() {
           </p>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }

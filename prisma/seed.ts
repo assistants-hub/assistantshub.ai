@@ -27,6 +27,15 @@ async function main() {
     },
   });
 
+  const anthropic = await prisma.modelProvider.upsert({
+    where: { id: 'anthropic' },
+    update: {},
+    create: {
+      id: 'anthropic',
+      name: 'Anthropic',
+    },
+  });
+
   const gpt35turbo = await prisma.model.upsert({
     where: { id: 'gpt-3.5-turbo' },
     update: {
@@ -254,6 +263,66 @@ async function main() {
         'Gemma models are well-suited for a variety of text generation tasks, including question answering, summarization, and reasoning.',
       url: 'https://console.groq.com/docs/models#gemma-7b',
       providerId: 'groq',
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+  });
+
+  const claude_3_opus_20240229 = await prisma.model.upsert({
+    where: { id: 'claude-3-opus-20240229' },
+    update: {
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+    create: {
+      id: 'claude-3-opus-20240229',
+      name: 'Claude 3 Opus',
+      description:
+        "Claude 3 Opus is anthropic's most powerful model, delivering state-of-the-art performance on highly complex tasks and demonstrating fluency and human-like understanding",
+      url: 'https://docs.anthropic.com/en/docs/models-overview',
+      providerId: 'anthropic',
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+  });
+
+  const claude_3_sonnet_20240229 = await prisma.model.upsert({
+    where: { id: 'claude-3-sonnet-20240229' },
+    update: {
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+    create: {
+      id: 'claude-3-sonnet-20240229',
+      name: 'Claude 3 Sonnet',
+      description:
+        "Claude 3 Sonnet is anthropic's most balanced model between intelligence and speed, a great choice for enterprise workloads and scaled AI deployments",
+      url: 'https://docs.anthropic.com/en/docs/models-overview',
+      providerId: 'anthropic',
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+  });
+
+  const claude_3_haiku_20240307 = await prisma.model.upsert({
+    where: { id: 'claude-3-haiku-20240307' },
+    update: {
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+    create: {
+      id: 'claude-3-haiku-20240307',
+      name: 'Claude 3 Haiku',
+      description:
+        "Claude 3 Haiku is anthropic's fastest and most compact model, designed for near-instant responsiveness and seamless AI experiences that mimic human interactions",
+      url: 'https://docs.anthropic.com/en/docs/models-overview',
+      providerId: 'anthropic',
       features: {
         retrieval: false,
       } as Prisma.JsonObject,
