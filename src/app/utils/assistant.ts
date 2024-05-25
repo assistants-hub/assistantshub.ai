@@ -28,6 +28,7 @@ function hexToRgbA(hex: string, opacity: number = 1) {
     // @ts-ignore
     return (
       'rgba(' +
+      // @ts-ignore
       [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') +
       ',' +
       opacity +

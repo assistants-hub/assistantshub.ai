@@ -26,9 +26,9 @@ export const EditMessageLabel: React.FC = () => {
             <Label value='Input Message Label' />
           </div>
           <div className='grid max-w-4xl'>
-            {/* @ts-ignore */}
-            <DebouncedInput value={getInputMessageLabel(assistant)}
-              onDebounceTextChange={onDebounceTextChange}
+            <DebouncedInput
+              onDebounceTextChange={onDebounceTextChange as any}
+              value={getInputMessageLabel(assistant)}
             />
           </div>
         </div>

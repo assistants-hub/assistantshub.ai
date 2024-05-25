@@ -1,4 +1,4 @@
-import { Button, TextInput } from 'flowbite-react';
+import { Button, TextInput, Tooltip } from 'flowbite-react';
 import React, { useContext, useEffect, useRef } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import { useChatContext } from '@/app/assistants/[id]/chat/useChatContext';
@@ -6,14 +6,13 @@ import {
   getInputMessageLabel,
   getPrimaryBackgroundColor,
   getPrimaryColor,
-  getPrimaryTextColor,
-  getSecondaryColor,
 } from '@/app/utils/assistant';
 import { ChatPageHeader } from '@/app/assistants/[id]/chat/ChatPageHeader';
 import { Message } from '@/app/types/message';
 import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
 import ChatMessageStreaming from '@/app/assistants/[id]/chat/ChatMessageStreaming';
 import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
+import { HiOutlinePencilAlt } from 'react-icons/hi';
 
 export default function ChatPage() {
   const { assistant } = useContext(AssistantContext);
@@ -28,6 +27,7 @@ export default function ChatPage() {
     streamText,
     messages,
     sendMessage,
+    createNewThread,
   } = useChatContext();
 
   useEffect(() => {
@@ -88,7 +88,19 @@ export default function ChatPage() {
         ) : (
           <></>
         )}
-        <div className='items-top flex space-x-2'>
+        <div className='items-top flex'>
+          <Tooltip content='New Conversation'>
+            <Button
+              as='span'
+              className='inline-flex cursor-pointer justify-center border-transparent bg-transparent'
+              style={{
+                color: getPrimaryColor(assistant),
+              }}
+              onClick={createNewThread}
+            >
+              <HiOutlinePencilAlt size='22' />
+            </Button>
+          </Tooltip>
           <TextInput
             className='block w-full rounded-lg border bg-white text-sm text-gray-900 dark:text-white dark:placeholder-gray-400'
             placeholder={getInputMessageLabel(assistant)}
@@ -105,24 +117,26 @@ export default function ChatPage() {
               setTypedMessage(event.target.value);
             }}
           ></TextInput>
-          <Button
-            as='span'
-            className='inline-flex cursor-pointer justify-center border-transparent bg-transparent'
-            style={{
-              color: getPrimaryColor(assistant),
-            }}
-            onClick={sendMessage}
-          >
-            <svg
-              className='h-5 w-5 rotate-90 rtl:-rotate-90'
-              aria-hidden='true'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='currentColor'
-              viewBox='0 0 18 20'
+          <Tooltip content='Send Message'>
+            <Button
+              as='span'
+              className='inline-flex cursor-pointer justify-center border-transparent bg-transparent'
+              style={{
+                color: getPrimaryColor(assistant),
+              }}
+              onClick={sendMessage}
             >
-              <path d='m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z' />
-            </svg>
-          </Button>
+              <svg
+                className='h-5 w-5 rotate-90 rtl:-rotate-90'
+                aria-hidden='true'
+                xmlns='http://www.w3.org/2000/svg'
+                fill='currentColor'
+                viewBox='0 0 18 20'
+              >
+                <path d='m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z' />
+              </svg>
+            </Button>
+          </Tooltip>
         </div>
       </div>
     </div>

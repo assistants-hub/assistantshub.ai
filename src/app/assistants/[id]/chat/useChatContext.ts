@@ -2,7 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 import { Message } from '@/app/types/message';
 import { getInitialPrompt } from '@/app/utils/assistant';
 import { getFingerprint } from '@thumbmarkjs/thumbmarkjs';
-import { getItemWithExpiry, setItemWithExpiry } from '@/app/utils/store';
+import {
+  getItemWithExpiry,
+  removeItem,
+  setItemWithExpiry,
+} from '@/app/utils/store';
 import {
   createMessage,
   createRun,
@@ -11,6 +15,7 @@ import {
 } from '@/app/assistants/[id]/client';
 import { streamAsyncIterator } from '@/app/utils/streamAsyncIterator';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
+import { toast } from 'react-hot-toast';
 
 export const useChatContext = () => {
   const { assistant } = useContext(AssistantContext);
@@ -22,24 +27,28 @@ export const useChatContext = () => {
   const [currentMessage, setCurrentMessage] = useState<Message | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [fingerprint, setFingerprint] = useState('');
+  const [reset, setReset] = useState(true);
 
   useEffect(() => {
-    setMessages([
-      {
-        created_at: Date.now() / 1000,
-        role: 'assistant',
-        content: [
-          {
-            type: 'text',
-            text: {
-              value: getInitialPrompt(assistant),
-              annotations: [],
+    if (reset) {
+      setMessages([
+        {
+          created_at: Date.now() / 1000,
+          role: 'assistant',
+          content: [
+            {
+              type: 'text',
+              text: {
+                value: getInitialPrompt(assistant),
+                annotations: [],
+              },
             },
-          },
-        ],
-      },
-    ]);
-  }, [assistant]);
+          ],
+        },
+      ]);
+      setReset(false);
+    }
+  }, [assistant, reset]);
 
   useEffect(() => {
     getFingerprint()
@@ -126,15 +135,21 @@ export const useChatContext = () => {
     );
     setMessageStatus('completed');
     const newMessages: Message[] = threadMessages.data;
+    setStreamText('');
     if (newMessages.length > 0) {
-      setStreamText('');
       setMessages([...messages, ...newMessages]);
     } else {
       // Something wrong happened here, no new messages, but we just streamed text
-      console.log(
-        'TODO: No new messages, but we just streamed text, check this'
-      );
-      //TODO: There should be a way to handle this error
+      try {
+        const response = JSON.parse(messageBuffer);
+        if (response.message) {
+          console.log(response.message);
+          toast.error(response.message);
+        }
+      } catch (error) {
+        console.log(messageBuffer);
+        console.error(error);
+      }
     }
   };
 
@@ -165,6 +180,15 @@ export const useChatContext = () => {
     return `ai.assistantshub.assistant.${assistant.id}.thread`;
   };
 
+  const createNewThread = () => {
+    removeItem(getAssistantThreadStorageKey());
+    setTypedMessage('');
+    setMessageStatus('');
+    setCurrentThread(null);
+    setMessages([]);
+    setReset(!reset);
+  };
+
   return {
     typedMessage,
     setTypedMessage,
@@ -181,5 +205,6 @@ export const useChatContext = () => {
     fingerprint,
     setFingerprint,
     sendMessage,
+    createNewThread,
   };
 };
