@@ -53,6 +53,7 @@ export const useChatContext = () => {
   useEffect(() => {
     getFingerprint()
       .then((fingerprint) => {
+        // @ts-ignore
         setFingerprint(fingerprint);
       })
       .catch((error) => {

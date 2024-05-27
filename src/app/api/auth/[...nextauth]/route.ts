@@ -43,6 +43,7 @@ if (process.env.ENABLE_EMAIL_PROVIDER === 'true') {
   const emailProvider = EmailProvider({
     server: {
       host: process.env.EMAIL_SERVER_HOST,
+      // @ts-ignore
       port: process.env.EMAIL_SERVER_PORT,
       auth: {
         user: process.env.EMAIL_SERVER_USER,
@@ -75,6 +76,8 @@ if (process.env.ENABLE_GOOGLE_PROVIDER === 'true') {
 
   providers.push(googleProvider);
 }
+
+
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
