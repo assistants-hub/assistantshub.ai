@@ -27,9 +27,10 @@ if (process.env.ENABLE_CREDENTIALS_PROVIDER === 'true') {
       ) {
         return {
           id: 1,
-          name: 'J Smith',
+          name: 'Admin User',
           email:
             process.env.CREDENTIALS_APPROVED_USERNAME + '@assistantshub.ai',
+          role: 'admin',
         };
       }
       return null;
@@ -76,8 +77,6 @@ if (process.env.ENABLE_GOOGLE_PROVIDER === 'true') {
 
   providers.push(googleProvider);
 }
-
-
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
