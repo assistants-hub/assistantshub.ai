@@ -199,6 +199,9 @@ model Authenticator {
 model System {
   id               String   @id @default(cuid())
   currentStep      Int      @default(0)
+  name             String?
+  description      String?
+  csrfToken        String?
   adminUserCreated Boolean
   authProviders    Json?
   modelProviders   Json?

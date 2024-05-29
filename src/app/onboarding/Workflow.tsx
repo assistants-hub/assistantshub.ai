@@ -54,8 +54,8 @@ export default function Workflow() {
     },
     {
       step: 2,
-      title: 'Authentication',
-      subtitle: 'Configure authentication providers',
+      title: 'User Authentication',
+      subtitle: 'Setup authentication providers',
     },
     {
       step: 3,
@@ -65,7 +65,7 @@ export default function Workflow() {
     {
       step: 4,
       title: 'Other Settings',
-      subtitle: 'Configure storage for documents & images',
+      subtitle: 'Miscellaneous settings',
     },
     {
       step: 5,
@@ -91,7 +91,8 @@ export default function Workflow() {
           <ol className='w-full items-center justify-center space-y-4 pt-2 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse'>
             {steps.map((step) => {
               return (
-                <li key={step.step} 
+                <li
+                  key={step.step}
                   className={
                     step.step === currentStep
                       ? 'flex items-center space-x-2.5 text-blue-600 dark:text-blue-500 rtl:space-x-reverse'

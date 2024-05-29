@@ -118,6 +118,7 @@ export async function POST(req: NextRequest, res: Response) {
     headers[key] = value;
   });
 
+  // @ts-ignore
   const busboy = new Busboy({ headers: headers });
   let file = {};
   let uploadedFile: any;

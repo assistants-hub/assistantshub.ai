@@ -1,6 +1,6 @@
 import { ChatProps } from '@/app/assistants/[id]/chat/ChatProps';
 import { getImageHash } from '@/app/utils/hash';
-import Markdown from 'marked-react';
+import Markdown from 'react-markdown';
 import Image from 'next/image';
 import React, { useContext, useEffect } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';

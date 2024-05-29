@@ -2,7 +2,7 @@ import { StepProps } from '@/app/onboarding/StepProps';
 import { useEffect } from 'react';
 import Confetti from 'react-confetti';
 
-function drawStar(ctx:any) {
+function drawStar(ctx: any) {
   const numPoints = 5;
   const outerRadius = 15;
   const innerRadius = outerRadius / 2;

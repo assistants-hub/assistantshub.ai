@@ -1,6 +1,6 @@
 'use client';
 
-import Markdown from 'marked-react';
+import Markdown from 'react-markdown';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import React, { useContext, useEffect } from 'react';

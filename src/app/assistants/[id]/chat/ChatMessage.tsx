@@ -3,7 +3,7 @@ import { getImageHash } from '@/app/utils/hash';
 import { HiOutlineUserCircle, HiUserCircle } from 'react-icons/hi';
 import { formatRelativeUnixTime } from '@/app/utils/date';
 import { Message } from '@/app/types/message';
-import Markdown from 'marked-react';
+import Markdown from 'react-markdown';
 import Image from 'next/image';
 import { useContext } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
