@@ -54,23 +54,13 @@ export default function Workflow() {
     },
     {
       step: 2,
-      title: 'User Authentication',
-      subtitle: 'Setup authentication providers',
+      title: 'Admin Credentials',
+      subtitle: 'Setup administrator account',
     },
     {
       step: 3,
-      title: 'Model Providers',
-      subtitle: 'Setup LLM providers',
-    },
-    {
-      step: 4,
-      title: 'Other Settings',
-      subtitle: 'Miscellaneous settings',
-    },
-    {
-      step: 5,
-      title: 'Done',
-      subtitle: "You're all set!",
+      title: 'Get Started',
+      subtitle: "Let's login and continue",
     },
   ];
 
