@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/api/utils/prisma';
-import { getToken } from 'next-auth/jwt';
 import OpenAI from 'openai';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
@@ -55,14 +55,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
 }
 
 export async function PATCH(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
+  const session = await getSession();
 
   const id = getId(req);
 
-  if (token) {
+  if (session?.user) {
     let organization = await prisma.organization.findFirst({
       where: {
-        owner: token.sub,
+        owner: session?.user.sub,
         ownerType: 'personal',
       },
     });
@@ -89,7 +89,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
 
         if (
           !assistant ||
-          assistant.organizationOwner !== token.sub ||
+          assistant.organizationOwner !== session?.user.sub ||
           assistant.organizationOwnerType !== 'personal'
         ) {
           return Response.json({ message: 'Unauthorized' }, { status: 401 });
@@ -131,7 +131,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
           },
           update: {
             id: updateResponse.id,
-            organizationOwner: token.sub,
+            organizationOwner: session?.user.sub,
             organizationOwnerType: 'personal',
             object: updateResponse as any,
             avatar: avatar,
@@ -142,7 +142,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
           },
           create: {
             id: updateResponse.id,
-            organizationOwner: token.sub,
+            organizationOwner: session?.user.sub,
             organizationOwnerType: 'personal',
             object: updateResponse as any,
             avatar: avatar,
@@ -170,14 +170,14 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
 }
 
 export async function DELETE(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
+  const session = await getSession();
 
   const id = getId(req);
 
-  if (token) {
+  if (session?.user) {
     let organization = await prisma.organization.findFirst({
       where: {
-        owner: token.sub,
+        owner: session?.user.sub,
         ownerType: 'personal',
       },
     });
@@ -199,7 +199,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
 
         if (
           !assistant ||
-          assistant.organizationOwner !== token.sub ||
+          assistant.organizationOwner !== session?.user.sub ||
           assistant.organizationOwnerType !== 'personal'
         ) {
           return Response.json({ message: 'Unauthorized' }, { status: 401 });

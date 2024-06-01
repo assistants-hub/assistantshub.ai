@@ -1,19 +1,24 @@
 'use client';
 
 import { Button } from 'flowbite-react';
-import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
 export const SignIn = function (
   props: React.ComponentPropsWithRef<typeof Button>
 ) {
+  const router = useRouter();
+
   return (
     <Button
       outline
       gradientDuoTone='purpleToBlue'
       size='sm'
-      onClick={() => {
-        signIn(undefined, { callbackUrl: '/assistants' });
-      }}
+      onClick={
+        () => {
+          router.push('/api/auth/login');
+        }
+      }
     >
       Sign In
     </Button>

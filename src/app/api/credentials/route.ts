@@ -1,15 +1,15 @@
 import OpenAI from 'openai';
-import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/api/utils/prisma';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
-  if (token) {
+  const session = await getSession();
+  if (session?.user) {
     // Signed in
     let organization = await prisma.organization.findFirst({
       where: {
-        owner: token.sub,
+        owner: session?.user.sub,
       },
     });
 
@@ -24,11 +24,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });
   }
-}
+};
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
-  if (token && token.sub) {
+  const session = await getSession();
+  if (session && session?.user.sub) {
     const body = await req.json();
 
     if (body.openAiApiKey) {
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       await prisma.organization.upsert({
         where: {
           owner_ownerType: {
-            owner: token.sub,
+            owner: session?.user.sub,
             ownerType: 'personal',
           },
         },
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           groqCloudApiKey: body.groqCloudApiKey,
         },
         create: {
-          owner: token.sub,
+          owner: session?.user.sub,
           openAIApiKey: body.openAiApiKey,
           googleAIStudioKey: body.googleAIStudioKey,
           groqCloudApiKey: body.groqCloudApiKey,
@@ -84,4 +84,4 @@ export async function POST(req: NextRequest, res: NextResponse) {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });
   }
-}
+};

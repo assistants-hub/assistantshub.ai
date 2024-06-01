@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 import {
   DeleteObjectCommand,
   GetObjectCommand,
@@ -9,6 +8,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import path from 'path';
 import OpenAI from 'openai';
 import prisma from '@/app/api/utils/prisma';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
@@ -32,8 +32,7 @@ const getAssistant = async (id: string) => {
   });
 };
 
-const validateIncomingToken = async (req: NextRequest, assistant: any) => {
-  const token = await getToken({ req });
+const validateIncomingToken = async (token:any, assistant: any) => {
   return !(token === null || assistant.organization.owner !== token.sub);
 };
 
@@ -51,6 +50,7 @@ const createPresignedGet = async (
   });
 
   try {
+    // @ts-ignore
     return await getSignedUrl(s3Client, command, { expiresIn: expires });
   } catch (err) {
     console.error('Error creating presigned URL:', err);
@@ -69,6 +69,7 @@ async function deleteFileFromS3(file: string): Promise<any> {
   });
 
   try {
+    // @ts-ignore
     return await s3Client.send(deleteCommand as any);
   } catch (error) {
     console.error('Failed to delete file from S3:', error);
@@ -88,8 +89,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
   }
 
   let fileId = getFileId(req);
+  let session = await getSession();
 
-  if (!(await validateIncomingToken(req, assistant))) {
+  if (!(await validateIncomingToken(session?.user, assistant))) {
     return Response.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
@@ -125,8 +127,9 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
   }
 
   let fileId = getFileId(req);
+  let session = await getSession();
 
-  if (!(await validateIncomingToken(req, assistant))) {
+  if (!(await validateIncomingToken(session?.user, assistant))) {
     return Response.json({ message: 'Unauthorized' }, { status: 401 });
   }
 

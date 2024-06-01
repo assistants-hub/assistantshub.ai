@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 import prisma from '@/app/api/utils/prisma';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
@@ -8,9 +8,9 @@ const getId = (req: Request) => {
 };
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
+  const session = await getSession();
 
-  if (token) {
+  if (session?.user) {
     try {
       let assistantId = getId(req);
 
@@ -38,4 +38,4 @@ export async function GET(req: NextRequest, res: NextResponse) {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });
   }
-}
+};

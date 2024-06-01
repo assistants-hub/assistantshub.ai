@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 import OpenAI from 'openai';
 import { ulid } from 'ulidx';
 import prisma from '@/app/api/utils/prisma';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
+  const session = await getSession();
 
-  if (token) {
+  if (session?.user) {
     let assistants = await prisma.assistant.findMany({
       where: {
-        organizationOwner: token.sub,
+        organizationOwner: session?.user.sub,
         organizationOwnerType: 'personal',
       },
       select: {
@@ -37,12 +37,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
 }
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
+  const session = await getSession();
 
-  if (token) {
+  if (session?.user) {
     let organization = await prisma.organization.findFirst({
       where: {
-        owner: token.sub,
+        owner: session?.user.sub,
         ownerType: 'personal',
       },
     });
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           },
           update: {
             id: createResponse.id,
-            organizationOwner: token.sub,
+            organizationOwner: session?.user.sub,
             organizationOwnerType: 'personal',
             object: createResponse as any,
             modelId: modelId,
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             id: createResponse.id,
             modelId: modelId,
             modelProviderId: modelProviderId,
-            organizationOwner: token.sub,
+            organizationOwner: session?.user.sub,
             organizationOwnerType: 'personal',
             object: createResponse as any,
           },

@@ -1,4 +1,6 @@
-import { getServerSession } from 'next-auth/next';
+'use client';
+
+import { useUser } from '@auth0/nextjs-auth0/client';
 import { SignOut } from '@/components/signout';
 import { SignIn } from '@/components/signin';
 import {
@@ -9,30 +11,15 @@ import {
   NavbarCollapse,
   NavbarToggle,
   DarkThemeToggle,
-  DropdownItem,
 } from 'flowbite-react';
-import { headers } from 'next/headers';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-export const UserProfile = async () => {
+export const UserProfile = () => {
   // @ts-ignore
-  const session = await getServerSession(authOptions);
-  // const pathname = headers().get('next-url'); - see https://github.com/vercel/next.js/issues/43704#issuecomment-1462971600
+  const { user, error, isLoading } = useUser();
 
-  return !session ? (
-    <>
-      <NavbarToggle />
-      <NavbarCollapse className='rtl:space-x-reverse'>
-        <NavbarLink
-          href='https://docs.assistantshub.ai/'
-          className='justify-end'
-        >
-          <div className='pt-1 lg:text-lg'>Docs</div>
-        </NavbarLink>
-        <SignIn />
-      </NavbarCollapse>
-    </>
-  ) : (
+  if (isLoading) return <div>Loading...</div>;
+
+  return user ? (
     <>
       <NavbarToggle />
       <NavbarCollapse className='rtl:space-x-reverse'>
@@ -43,15 +30,15 @@ export const UserProfile = async () => {
             label={
               <Avatar
                 alt='User settings'
-                img={session?.user?.image ? session.user.image : undefined}
+                img={user?.picture ? user?.picture : undefined}
                 rounded
               />
             }
           >
             <DropdownHeader>
-              <span className='block text-sm'>{session?.user?.name}</span>
+              <span className='block text-sm'>{user?.name}</span>
               <span className='block truncate text-sm font-medium'>
-                {session?.user?.email}
+                {user?.email}
               </span>
             </DropdownHeader>
             <SignOut />
@@ -80,5 +67,18 @@ export const UserProfile = async () => {
         </NavbarLink>
       </NavbarCollapse>
     </>
+  ) : (
+  <>
+    <NavbarToggle />
+    <NavbarCollapse className='rtl:space-x-reverse'>
+      <NavbarLink
+        href='https://docs.assistantshub.ai/'
+        className='justify-end'
+      >
+        <div className='pt-1 lg:text-lg'>Docs</div>
+      </NavbarLink>
+      <SignIn />
+    </NavbarCollapse>
+  </>
   );
 };

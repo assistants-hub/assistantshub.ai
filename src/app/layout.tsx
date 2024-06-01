@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { flowbiteTheme } from './theme';
 import { Analytics } from '@vercel/analytics/react';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,7 +29,9 @@ export default function RootLayout({
         suppressHydrationWarning={process.env.NODE_ENV === 'development'}
       >
         <Flowbite theme={{ theme: flowbiteTheme }}>
-          {children}
+          <UserProvider>
+            {children}
+          </UserProvider>
           <Analytics />
         </Flowbite>
       </body>

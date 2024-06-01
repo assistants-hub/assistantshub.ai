@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'flowbite-react';
 import { redirect } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import CreateAssistant from '@/app/assistants/CreateAssistant';
 import {
   setCredentials,
@@ -11,15 +10,11 @@ import {
   useGetCredentials,
 } from '@/app/assistants/client';
 import ListAssistants from '@/app/assistants/ListAssistants';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function GetStarted() {
-  const { status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      // The user is not authenticated, handle it here.
-      redirect('api/auth/signin');
-    },
-  });
+  const { user, error, isLoading } = useUser();
+
   const [blocked, setBlocked] = useState(true);
   const [assistantCreated, setAssistantCreated] = useState(false);
   const { credentialsLoading, credentials, credentialsEmpty } =
@@ -42,7 +37,7 @@ export default function GetStarted() {
 
   return (
     <>
-      {status === 'loading' ||
+      {isLoading ||
       blocked ||
       credentialsLoading ||
       assistantsLoading ? (
