@@ -35,7 +35,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       if (body.openAiApiKey.toLowerCase() === 'use-default') {
         body.openAiApiKey = process.env.OPENAI_API_KEY;
         body.googleAIStudioKey = process.env.GOOGLE_AI_STUDIO_API_KEY;
-        body.groqCloudAPIKey = process.env.GROQ_CLOUD_API_KEY;
+        body.groqCloudApiKey = process.env.GROQ_CLOUD_API_KEY;
         body.anthropicApiKey = process.env.ANTHROPIC_API_KEY;
       }
 
