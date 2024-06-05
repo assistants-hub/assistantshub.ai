@@ -157,8 +157,7 @@ pnpm install
 Visit http://localhost:3001 in your browser to see your AI assistant in action.
 
 7. Logging into your local instance.
-   - By default the local instance is configured to use Credentials based authentication.
-   - You can login using CREDENTIALS_APPROVED_USERNAME and CREDENTIALS_APPROVED_PASSWORD in your .env file.
+   - You can configure Auth0 by creating a temporary tenant and following instructions mentioned in [Auth0 Next.js Documentation](https://auth0.com/docs/quickstart/webapp/nextjs/01-login)
 
 ## Contributing
 

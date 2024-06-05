@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  nextjs:
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: assistantshub
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+    environment:
+      - POSTGRES_PRISMA_URL=postgresql://postgres:password@db:5432/assistantshub?schema=public
+    env_file:
+      - .env.docker
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "
+      npm run generate && 
+      npm run migrate &&
+      npm run seed &&
+      npm run start
+      "
+
+  db:
+    image: timescale/timescaledb:latest-pg16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: assistantshub
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 8s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  pgdata:

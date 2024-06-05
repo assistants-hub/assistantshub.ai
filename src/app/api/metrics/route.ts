@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 import prisma from '@/app/api/utils/prisma';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
+  const session = await getSession();
 
   let assistantId = req.headers.get('X-Assistant-Id');
   let metricName = req.nextUrl.searchParams.get('metric');
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   let startDateTime = req.nextUrl.searchParams.get('startDateTime');
   let endDateTime = req.nextUrl.searchParams.get('endDateTime');
 
-  if (token) {
+  if (session) {
     //TODO: check if the assistant belongs to the token
     let results =
       await prisma.$queryRawUnsafe(`SELECT time_bucket('${timeBucket}', time) AS x,

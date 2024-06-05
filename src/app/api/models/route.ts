@@ -1,11 +1,11 @@
-import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/api/utils/prisma';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 // Note: We should not cache the models list as it may change frequently for different organizations
 export async function GET(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
-  if (token) {
+  const session = await getSession();
+  if (session?.user) {
     let providers = await prisma.modelProvider.findMany();
 
     let models = await prisma.model.findMany({

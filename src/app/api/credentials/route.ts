@@ -1,15 +1,15 @@
 import OpenAI from 'openai';
-import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/api/utils/prisma';
+import { getSession } from '@auth0/nextjs-auth0';
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
-  if (token) {
+  const session = await getSession();
+  if (session?.user) {
     // Signed in
     let organization = await prisma.organization.findFirst({
       where: {
-        owner: token.sub,
+        owner: session?.user.sub,
       },
     });
 
@@ -24,18 +24,19 @@ export async function GET(req: NextRequest, res: NextResponse) {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });
   }
-}
+};
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
-  if (token && token.sub) {
+  const session = await getSession();
+  if (session && session?.user.sub) {
     const body = await req.json();
 
     if (body.openAiApiKey) {
       if (body.openAiApiKey.toLowerCase() === 'use-default') {
         body.openAiApiKey = process.env.OPENAI_API_KEY;
-        body.googleAIStudioKey = process.env.GOOGLE_AI_STUDIO_KEY;
-        body.groqCloudAPIKey = process.env.GROQ_CLOUD_API_KEY;
+        body.googleAIStudioKey = process.env.GOOGLE_AI_STUDIO_API_KEY;
+        body.groqCloudApiKey = process.env.GROQ_CLOUD_API_KEY;
+        body.anthropicApiKey = process.env.ANTHROPIC_API_KEY;
       }
 
       // Validate the Open API Key
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       await prisma.organization.upsert({
         where: {
           owner_ownerType: {
-            owner: token.sub,
+            owner: session?.user.sub,
             ownerType: 'personal',
           },
         },
@@ -62,12 +63,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
           openAIApiKey: body.openAiApiKey,
           googleAIStudioKey: body.googleAIStudioKey,
           groqCloudApiKey: body.groqCloudApiKey,
+          anthropicApiKey: body.anthropicApiKey
         },
         create: {
-          owner: token.sub,
+          owner: session?.user.sub,
           openAIApiKey: body.openAiApiKey,
           googleAIStudioKey: body.googleAIStudioKey,
           groqCloudApiKey: body.groqCloudApiKey,
+          anthropicApiKey: body.anthropicApiKey
         },
       });
       return Response.json(
@@ -84,4 +87,4 @@ export async function POST(req: NextRequest, res: NextResponse) {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });
   }
-}
+};

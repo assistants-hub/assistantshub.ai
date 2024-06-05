@@ -1,6 +1,6 @@
-import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/api/utils/prisma';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
@@ -9,8 +9,8 @@ const getId = (req: Request) => {
 
 // Note: We should not cache the models list as it may change frequently for different organizations
 export async function GET(req: NextRequest, res: NextResponse) {
-  const token = await getToken({ req });
-  if (token) {
+  const session = await getSession();
+  if (session?.user) {
     let id = getId(req);
     let model = await prisma.model.findFirst({
       where: {

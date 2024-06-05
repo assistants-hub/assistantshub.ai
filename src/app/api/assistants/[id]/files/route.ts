@@ -4,12 +4,12 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 // @ts-ignore
 import Busboy from '@fastify/busboy';
 import { Readable } from 'node:stream';
-import { getToken } from 'next-auth/jwt';
 import prisma from '@/app/api/utils/prisma';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 // Utility function to convert ReadableStream to Node.js Stream
 function toNodeReadable(readable: any) {
@@ -43,12 +43,12 @@ const getRequestedFolder = (req: Request) => {
   return requestedFolder;
 };
 
-const validateIncomingToken = async (req: NextRequest, assistant: any) => {
-  const token = await getToken({ req });
-  return !(token === null || assistant.organization.owner !== token.sub);
+const validateIncomingToken = async (user:any, assistant: any) => {
+  return !(user === null || assistant.organization.owner !== user.sub);
 };
 
 export async function POST(req: NextRequest, res: Response) {
+  const session = await getSession();
   let assistantId = getId(req);
   let assistant = await getAssistant(assistantId);
   if (!assistant) {
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest, res: Response) {
     );
   }
 
-  if (!(await validateIncomingToken(req, assistant))) {
+  if (!(await validateIncomingToken(session?.user, assistant))) {
     return Response.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest, res: Response) {
     headers[key] = value;
   });
 
-  const busboy = new Busboy({ headers: headers });
+  const busboy = new Busboy({ headers: headers } as any);
   let file = {};
   let uploadedFile: any;
   busboy.on(
@@ -172,8 +172,9 @@ export async function POST(req: NextRequest, res: Response) {
             Bucket: process.env.AWS_S3_BUCKET,
             Key: uploadedFile.filename,
             Body: readStream,
-          });
+          } as any);
 
+          // @ts-ignore
           const awsResponse = await client.send(uploadCommand as any);
           let fileResponse: any = {};
           if (assistant?.modelProviderId === 'openai') {
@@ -223,7 +224,8 @@ export async function POST(req: NextRequest, res: Response) {
   });
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest, res: NextResponse) {
+  const session = await getSession();
   let assistantId = getId(req);
   let assistant = await getAssistant(assistantId);
   if (!assistant) {
@@ -233,7 +235,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  if (!(await validateIncomingToken(req, assistant))) {
+  if (!(await validateIncomingToken(session?.user, assistant))) {
     return Response.json({ message: 'Unauthorized' }, { status: 401 });
   }
 

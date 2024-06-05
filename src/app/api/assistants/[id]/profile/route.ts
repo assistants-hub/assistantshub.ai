@@ -1,14 +1,14 @@
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 import prisma from '@/app/api/utils/prisma';
+import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
   return url.pathname.split('/').splice(-2, 1)[0];
 };
 
-export async function POST(req: NextRequest): Promise<NextResponse> {
+export async function POST(req: NextRequest, res: NextResponse): Promise<NextResponse> {
   const body = (await req.json()) as HandleUploadBody;
 
   let id = getId(req);
@@ -25,12 +25,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // Generate a client token for the browser to upload the file
         // ⚠️ Authenticate and authorize users before generating the token.
         // Otherwise, you're allowing anonymous uploads.
-        const token = await getToken({ req });
+        const session = await getSession();
 
-        if (token) {
+        if (session) {
           let organization = await prisma.organization.findFirst({
             where: {
-              owner: token.sub,
+              owner: session?.user.sub,
               ownerType: 'personal',
             },
           });
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
               if (
                 !assistant ||
-                assistant.organizationOwner !== token.sub ||
+                assistant.organizationOwner !== session?.user.sub ||
                 assistant.organizationOwnerType !== 'personal'
               ) {
                 throw new Error('Unauthenticated');
