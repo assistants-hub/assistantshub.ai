@@ -10,20 +10,22 @@ import {
   NavbarLink,
   NavbarCollapse,
   NavbarToggle,
-  DarkThemeToggle,
+  DarkThemeToggle, Spinner,
 } from 'flowbite-react';
 
 export const UserProfile = () => {
   // @ts-ignore
   const { user, error, isLoading } = useUser();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className="text-right">
+    <Spinner aria-label="Right-aligned spinner example" />
+  </div>;
 
   return user ? (
     <>
       <NavbarToggle />
-      <NavbarCollapse className='rtl:space-x-reverse'>
-        <div className='order-last flex pb-2 pl-2 pt-2 md:pl-10'>
+      <NavbarCollapse className="rtl:space-x-reverse">
+      <div className='order-last flex pb-2 pl-2 pt-2 md:pl-10'>
           <Dropdown
             arrowIcon={false}
             inline
