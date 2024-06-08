@@ -1,17 +1,12 @@
 import { Flowbite, ThemeModeScript } from 'flowbite-react';
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { flowbiteTheme } from './theme';
 import { Analytics } from '@vercel/analytics/react';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const inter = Inter({ subsets: ['latin'] });
-
-export const metadata: Metadata = {
-  title: 'Assistants Hub',
-  description: 'Administration Portal for Deploying Assistants',
-};
 
 export default function RootLayout({
   children,
@@ -51,6 +46,7 @@ export default function RootLayout({
         {children}
       </UserProvider>
       <Analytics />
+      <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID} />
     </Flowbite>
     </body>
     </html>
