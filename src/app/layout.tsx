@@ -46,7 +46,7 @@ export default function RootLayout({
         {children}
       </UserProvider>
       <Analytics />
-      <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID} />
+      <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID ? process.env.GOOGLE_ANALYTICS_ID : ''} />
     </Flowbite>
     </body>
     </html>
