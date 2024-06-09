@@ -1,10 +1,19 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Badge, Button, Card } from 'flowbite-react';
+import { Badge, Button, Card, Dropdown, DropdownItem } from 'flowbite-react';
 import { useGetAssistants } from '@/app/assistants/client';
 import Image from 'next/image';
-import { HiPlus } from 'react-icons/hi';
+import {
+  HiChartBar,
+  HiChatAlt2,
+  HiCog,
+  HiColorSwatch,
+  HiFolder,
+  HiLink,
+  HiPlus,
+  HiPuzzle,
+} from 'react-icons/hi';
 import CreateAssistantModal from '@/app/assistants/CreateAssistantModal';
 import { getImageHash } from '@/app/utils/hash';
 import Link from 'next/link';
@@ -44,7 +53,7 @@ export default function ListAssistants() {
             assistants.map((assistant) => {
               return (
                 <Card className='max-w-sm' key={assistant.id}>
-                  <div className='flex flex-col items-center pb-10'>
+                  <div className='pb flex flex-col items-center'>
                     <Image
                       width={296}
                       height={296}
@@ -71,20 +80,49 @@ export default function ListAssistants() {
                       {assistant.description}
                     </span>
                     <div className='mt-4 flex space-x-3 lg:mt-6'>
-                      <Button gradientDuoTone='greenToBlue'>
-                        <Link
-                          href={'/assistants/' + assistant.id + '/customize'}
+                      <Link href={`/link/${assistant.id}`} target='_blank'>
+                        <Button gradientDuoTone='greenToBlue'>
+                          <HiLink className='mr-2 h-5 w-5' /> Go to Assistant
+                        </Button>
+                      </Link>
+                      <Dropdown label='Options' color={'light'} placement='top'>
+                        <DropdownItem
+                          icon={HiChartBar}
+                          href={`/assistants/${assistant.id}/analytics`}
+                        >
+                          Analytics
+                        </DropdownItem>
+                        <DropdownItem
+                          icon={HiChatAlt2}
+                          href={`/assistants/${assistant.id}/conversations`}
+                        >
+                          Conversations
+                        </DropdownItem>
+                        <DropdownItem
+                          icon={HiFolder}
+                          href={`/assistants/${assistant.id}/documents`}
+                        >
+                          Documents
+                        </DropdownItem>
+                        <DropdownItem
+                          icon={HiColorSwatch}
+                          href={`/assistants/${assistant.id}/customize`}
                         >
                           Customize
-                        </Link>
-                      </Button>
-                      <Button color={'light'} onClick={() => {}}>
-                        <Link
-                          href={'/assistants/' + assistant.id + '/settings'}
+                        </DropdownItem>
+                        <DropdownItem
+                          icon={HiPuzzle}
+                          href={`/assistants/${assistant.id}/integrate`}
+                        >
+                          Integrate
+                        </DropdownItem>
+                        <DropdownItem
+                          icon={HiCog}
+                          href={`/assistants/${assistant.id}/settings`}
                         >
                           Settings
-                        </Link>
-                      </Button>
+                        </DropdownItem>
+                      </Dropdown>
                     </div>
                   </div>
                 </Card>
