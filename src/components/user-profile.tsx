@@ -10,22 +10,26 @@ import {
   NavbarLink,
   NavbarCollapse,
   NavbarToggle,
-  DarkThemeToggle, Spinner,
+  DarkThemeToggle,
+  Spinner,
 } from 'flowbite-react';
 
 export const UserProfile = () => {
   // @ts-ignore
   const { user, error, isLoading } = useUser();
 
-  if (isLoading) return <div className="text-right">
-    <Spinner aria-label="Right-aligned spinner example" />
-  </div>;
+  if (isLoading)
+    return (
+      <div className='text-right'>
+        <Spinner aria-label='Right-aligned spinner example' />
+      </div>
+    );
 
   return user ? (
     <>
       <NavbarToggle />
-      <NavbarCollapse className="rtl:space-x-reverse">
-      <div className='order-last flex pb-2 pl-2 pt-2 md:pl-10'>
+      <NavbarCollapse className='rtl:space-x-reverse'>
+        <div className='order-last flex pb-2 pl-2 pt-2 md:pl-10'>
           <Dropdown
             arrowIcon={false}
             inline
@@ -70,17 +74,17 @@ export const UserProfile = () => {
       </NavbarCollapse>
     </>
   ) : (
-  <>
-    <NavbarToggle />
-    <NavbarCollapse className='rtl:space-x-reverse'>
-      <NavbarLink
-        href='https://docs.assistantshub.ai/'
-        className='justify-end'
-      >
-        <div className='pt-1 lg:text-lg'>Docs</div>
-      </NavbarLink>
-      <SignIn />
-    </NavbarCollapse>
-  </>
+    <>
+      <NavbarToggle />
+      <NavbarCollapse className='rtl:space-x-reverse'>
+        <NavbarLink
+          href='https://docs.assistantshub.ai/'
+          className='justify-end'
+        >
+          <div className='pt-1 lg:text-lg'>Docs</div>
+        </NavbarLink>
+        <SignIn />
+      </NavbarCollapse>
+    </>
   );
 };

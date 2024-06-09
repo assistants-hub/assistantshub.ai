@@ -38,4 +38,4 @@ export async function GET(req: NextRequest, res: NextResponse) {
     // Not Signed in
     return Response.json({ message: 'Unauthenticated' }, { status: 401 });
   }
-};
+}

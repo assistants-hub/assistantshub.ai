@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  GenerateContentStreamResult,
-  GoogleGenerativeAI,
-} from '@google/generative-ai';
+import { GenerateContentStreamResult } from '@google/generative-ai';
 import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
 import prisma from '@/app/api/utils/prisma';
+import { getGoogleGenerativeAI } from '@/app/api/utils/gemini';
 
 const getGoogleGenAIObjectForAssistant = async (req: NextRequest) => {
   let assistantId = req.headers.get('X-Assistant-Id');
@@ -29,18 +27,13 @@ const getGoogleGenAIObjectForAssistant = async (req: NextRequest) => {
   if (!assistant) {
     throw new Error('Assistant does not exist');
   }
-  let googleAIStudioKey = assistant.organization?.googleAIStudioKey;
-
-  if (!googleAIStudioKey) {
-    throw new Error('Google AI Studio Key is required');
-  }
 
   let modelId = assistant.modelId;
   if (!modelId) {
     throw new Error('Model ID is required');
   }
 
-  let genAI = new GoogleGenerativeAI(googleAIStudioKey);
+  let genAI = getGoogleGenerativeAI(assistant);
   return genAI.getGenerativeModel({
     model: modelId,
     systemInstruction: {

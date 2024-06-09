@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/api/utils/prisma';
 import OpenAI from 'openai';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { getOpenAI } from '@/app/api/utils/openai';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
@@ -115,9 +116,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
         let updateResponse = null;
         if (assistant.modelProviderId === 'openai') {
           body.model = modelId;
-          const openai = new OpenAI({
-            apiKey: organization.openAIApiKey,
-          });
+          const openai = getOpenAI(assistant);
 
           updateResponse = await openai.beta.assistants.update(id, body);
         } else {
@@ -207,9 +206,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
 
         let deleteResponse: any = { id: assistant.id };
         if (assistant.modelProviderId === 'openai') {
-          const openai = new OpenAI({
-            apiKey: organization.openAIApiKey,
-          });
+          const openai = getOpenAI(assistant);
 
           deleteResponse = await openai.beta.assistants.del(id);
         }

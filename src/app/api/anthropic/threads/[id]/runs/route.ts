@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
 import prisma from '@/app/api/utils/prisma';
-import Anthropic from '@anthropic-ai/sdk';
+import { getAnthropic } from '@/app/api/utils/anthropic';
 
 const getAnthropicObjectForAssistant = async (req: NextRequest) => {
   let assistantId = req.headers.get('X-Assistant-Id');
@@ -23,9 +23,7 @@ const getAnthropicObjectForAssistant = async (req: NextRequest) => {
     throw new Error('Assistant does not exist');
   }
 
-  return new Anthropic({
-    apiKey: assistant?.organization?.anthropicApiKey,
-  });
+  return getAnthropic(assistant);
 };
 
 const getId = (req: Request) => {

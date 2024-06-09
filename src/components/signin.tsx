@@ -14,11 +14,9 @@ export const SignIn = function (
       outline
       gradientDuoTone='purpleToBlue'
       size='sm'
-      onClick={
-        () => {
-          router.push('/api/auth/login');
-        }
-      }
+      onClick={() => {
+        router.push('/api/auth/login');
+      }}
     >
       Sign In
     </Button>

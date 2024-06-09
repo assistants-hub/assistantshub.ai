@@ -8,7 +8,10 @@ const getId = (req: Request) => {
   return url.pathname.split('/').splice(-2, 1)[0];
 };
 
-export async function POST(req: NextRequest, res: NextResponse): Promise<NextResponse> {
+export async function POST(
+  req: NextRequest,
+  res: NextResponse
+): Promise<NextResponse> {
   const body = (await req.json()) as HandleUploadBody;
 
   let id = getId(req);
