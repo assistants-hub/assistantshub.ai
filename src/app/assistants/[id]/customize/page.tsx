@@ -18,7 +18,7 @@ export default function Customize() {
   const [openModal, setOpenModal] = useState(false);
 
   return assistant.id ? (
-    <div className='max-w-screen flex flex-col gap-4'>
+    <div className='max-w-screen ml-5 mt-5 flex flex-col gap-4'>
       <h3 className='text-3xl font-bold dark:text-white'>Customize</h3>
       <p className={'pb-4 text-sm text-gray-400'}>
         Adjust the look and feel of your assistant to match your preferences

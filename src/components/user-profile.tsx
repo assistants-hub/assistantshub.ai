@@ -12,7 +12,9 @@ import {
   NavbarToggle,
   DarkThemeToggle,
   Spinner,
+  DropdownItem,
 } from 'flowbite-react';
+import { HiCog, HiLogout, HiUser } from 'react-icons/hi';
 
 export const UserProfile = () => {
   // @ts-ignore
@@ -47,6 +49,9 @@ export const UserProfile = () => {
                 {user?.email}
               </span>
             </DropdownHeader>
+            <DropdownItem icon={HiCog} href={'/settings'}>
+              Settings
+            </DropdownItem>
             <SignOut />
           </Dropdown>
         </div>
@@ -67,9 +72,6 @@ export const UserProfile = () => {
           className='justify-end'
         >
           <div className='pt-2 lg:text-lg'>Help</div>
-        </NavbarLink>
-        <NavbarLink className='justify-end'>
-          <DarkThemeToggle />
         </NavbarLink>
       </NavbarCollapse>
     </>

@@ -23,7 +23,7 @@ export default function Documents() {
   }, []);
 
   return (
-    <div className='stack items-center justify-center'>
+    <div className='stack ml-5 mt-5 items-center justify-center'>
       <h3 className='pb-4 text-3xl font-bold dark:text-white'>Documents</h3>
       {loading ? (
         <div className='bg-grey flex h-[calc(100vh-120px)] items-center justify-center '>

@@ -36,7 +36,7 @@ export default function ListAssistants() {
   }, [assistantCreated]);
 
   return (
-    <div className='flex grid min-h-[calc(100vh-160px)] grid-cols-1 p-10'>
+    <div className='flex min-h-[calc(100vh-160px)] flex-col p-10 '>
       <div>
         <Button
           className='float-right'
@@ -46,28 +46,23 @@ export default function ListAssistants() {
           <HiPlus className='mr-2 h-5 w-5' /> Create Assistant
         </Button>
       </div>
-      <div className='bg-grey flex items-start justify-center'>
+      <div className='bg-grey flex flex-auto items-start justify-start'>
         <div className='grid grid-cols-1 gap-4 p-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xl:gap-16 2xl:grid-cols-4'>
           {assistants &&
             assistants.length &&
             assistants.map((assistant) => {
               return (
-                <Card className='max-w-sm' key={assistant.id}>
+                <Card
+                  imgSrc={
+                    assistant.profile
+                      ? assistant.profile
+                      : '/images/people/' + getImageHash(assistant.id) + '.jpg'
+                  }
+                  className='min-w-max max-w-md'
+                  horizontal
+                  key={assistant.id}
+                >
                   <div className='pb flex flex-col items-center'>
-                    <Image
-                      width={296}
-                      height={296}
-                      src={
-                        assistant.profile
-                          ? assistant.profile
-                          : '/images/people/' +
-                            getImageHash(assistant.id) +
-                            '.jpg'
-                      }
-                      alt='Assistant'
-                      className='mb-3 rounded-e-lg rounded-s-xl shadow-lg'
-                      style={{ width: '100%', height: 'auto' }}
-                    />
                     <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
                       {assistant.name}
                     </h5>
@@ -82,10 +77,10 @@ export default function ListAssistants() {
                     <div className='mt-4 flex space-x-3 lg:mt-6'>
                       <Link href={`/link/${assistant.id}`} target='_blank'>
                         <Button gradientDuoTone='greenToBlue'>
-                          <HiLink className='mr-2 h-5 w-5' /> Go to Assistant
+                          <HiChatAlt2 className='mr-1 h-5 w-5' /> Try Assistant
                         </Button>
                       </Link>
-                      <Dropdown label='Options' color={'light'} placement='top'>
+                      <Dropdown label='Go to' color={'light'} placement='top'>
                         <DropdownItem
                           icon={HiChartBar}
                           href={`/assistants/${assistant.id}/analytics`}

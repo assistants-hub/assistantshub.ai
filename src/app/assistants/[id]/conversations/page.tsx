@@ -19,7 +19,7 @@ export default function Conversations() {
 
   return assistant.id ? (
     !threadsLoading ? (
-      <div className='max-w-screen flex max-h-full flex-col gap-4'>
+      <div className='max-w-screen ml-5 mt-5 flex max-h-full flex-col gap-4'>
         <h3 className='text-3xl font-bold dark:text-white'>Conversations</h3>
         <p className={'pb-4 text-sm text-gray-400'}>
           Logs of your assistant&apos;s conversations are available below
