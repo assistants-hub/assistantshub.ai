@@ -1,0 +1,26 @@
+# Allow all bots to crawl the site
+User-agent: *
+Disallow:
+
+# Block access to private directories and files
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /server/
+Disallow: /private/
+
+# Block specific file types from being crawled
+Disallow: /*.map$
+Disallow: /*.json$
+
+# Block access to Next.js specific routes
+Disallow: /_error
+Disallow: /_document
+Disallow: /_app
+
+# Allow Googlebot to crawl everything
+User-agent: Googlebot
+Disallow:
+
+# Sitemap location
+Sitemap: https://yourdomain.com/sitemap.xml
