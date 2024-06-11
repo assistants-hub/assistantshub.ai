@@ -3,6 +3,13 @@ export interface ModelProvider {
   name: string;
 }
 
+export interface ModelProviderKey {
+  id: string;
+  name?: string;
+  key?: string;
+  modelProviderId?: string;
+}
+
 export interface Model {
   id: string;
   name: string;

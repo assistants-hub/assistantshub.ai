@@ -16,15 +16,15 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
     setKeys([...keys, { id: ulid() }]);
   };
 
-  const handleDeleteKey = function (id:string) {
-    setKeys(keys.filter((object:any) => object.id !== id));
+  const handleDeleteKey = function (id: string) {
+    setKeys(keys.filter((object: any) => object.id !== id));
   };
 
   return (
     <div className={'stack space-y-1'}>
       <></>
       {keys.length ? (
-        keys.map((key:any) => (
+        keys.map((key: any) => (
           <div id={key.id} key={key.id} className={'overflow-y-auto'}>
             <div className='grid grid-cols-12 gap-3 pt-1'>
               <div className='col-span-3'>
