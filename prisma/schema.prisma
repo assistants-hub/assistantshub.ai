@@ -29,16 +29,12 @@ model Model {
 }
 
 model Organization {
-  owner             String
-  ownerType         String      @default("personal")
-  openAIApiKey      String
-  googleAIStudioKey String      @default("")
-  groqCloudApiKey   String      @default("")
-  anthropicApiKey   String      @default("")
-  limitAssistants   Int         @default(2)
-  created_at        DateTime    @default(now())
-  updated_at        DateTime    @updatedAt
-  Assistant         Assistant[]
+  owner           String
+  ownerType       String      @default("personal")
+  limitAssistants Int         @default(2)
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+  Assistant       Assistant[]
 
   @@id([owner, ownerType])
 }

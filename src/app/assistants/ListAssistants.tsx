@@ -66,7 +66,7 @@ export default function ListAssistants() {
                       ? assistant.profile
                       : '/images/people/' + getImageHash(assistant.id) + '.jpg'
                   }
-                  className='xs:max-w-72 sm:min-w-max sm:max-w-sm'
+                  className='xs:max-w-72 sm:min-w-max sm:max-w-xs'
                   horizontal
                   key={assistant.id}
                 >
