@@ -22,7 +22,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
 
     if (organization) {
       try {
-        let assistant = await prisma.modelProviderKey.findFirst({
+        let modelProviderKey = await prisma.modelProviderKey.findFirst({
           where: {
             id: id,
           },
@@ -36,9 +36,9 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
         });
 
         if (
-          !assistant ||
-          assistant.organizationOwner !== session?.user.sub ||
-          assistant.organizationOwnerType !== 'personal'
+          !modelProviderKey ||
+          modelProviderKey.organizationOwner !== session?.user.sub ||
+          modelProviderKey.organizationOwnerType !== 'personal'
         ) {
           return Response.json({ message: 'Unauthorized' }, { status: 401 });
         }

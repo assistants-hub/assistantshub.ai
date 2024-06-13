@@ -1,9 +1,14 @@
-import { Button, Label, TextInput } from 'flowbite-react';
-import { HiKey, HiPlus, HiTrash } from 'react-icons/hi';
+import { Button, Label, Modal, TextInput } from 'flowbite-react';
+import {
+  HiKey,
+  HiOutlineExclamationCircle,
+  HiPlus,
+  HiTrash,
+} from 'react-icons/hi';
 import { ulid } from 'ulidx';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ModelProviderKey } from '@/app/types/model';
-import { createOrUpdateKey } from '@/app/settings/client';
+import { createOrUpdateKey, removeKeyWithId } from '@/app/settings/client';
 import { toast } from 'react-hot-toast';
 
 export interface ModelProviderKeysProps {
@@ -15,6 +20,9 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
   const [keys, setKeys] = useState<ModelProviderKey[]>(props.keys);
   const [saveKey, setSaveKey] = useState<ModelProviderKey | null>(null);
   const [dirtyKey, setDirtyKey] = useState<ModelProviderKey | null>(null);
+  const [selectedKey, setSelectedKey] = useState<ModelProviderKey | null>(null);
+  const [deleteKey, setDeleteKey] = useState<ModelProviderKey | null>(null);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {}, [keys]);
 
@@ -32,7 +40,7 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
           } else {
             toast.error(response?.message, { duration: 4000 });
           }
-        } catch (error:any) {
+        } catch (error: any) {
           toast.error(error.message, { duration: 4000 });
         }
         keys.forEach((iterationKey) => {
@@ -48,11 +56,52 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
     }
   }, [saveKey]);
 
+  useEffect(() => {
+    if (deleteKey && deleteKey.deleting) {
+      const removeKey = async () => {
+        try {
+          if (deleteKey.disabled) {
+            const [status, response] = await removeKeyWithId(deleteKey.id);
+            if (status === 200) {
+              toast.success(
+                'API Key ' + deleteKey.name + ' deleted successfully.',
+                {
+                  duration: 4000,
+                }
+              );
+
+              const indexToRemove = keys.findIndex(
+                (key) => key.id === deleteKey.id
+              );
+              if (indexToRemove !== -1) {
+                keys.splice(indexToRemove, 1);
+              }
+            } else {
+              toast.error(response?.message, { duration: 4000 });
+            }
+          } else {
+            const indexToRemove = keys.findIndex(
+              (key) => key.id === deleteKey.id
+            );
+            if (indexToRemove !== -1) {
+              keys.splice(indexToRemove, 1);
+            }
+          }
+        } catch (error: any) {
+          toast.error(error.message, { duration: 4000 });
+        }
+        setOpenModal(false);
+      };
+
+      removeKey();
+    }
+  }, [deleteKey]);
+
   const handleAddKey = function () {
     setKeys([...keys, { id: ulid(), name: '', key: '', saving: false }]);
   };
 
-  const handleSaveKey = function (key:ModelProviderKey) {
+  const handleSaveKey = function (key: ModelProviderKey) {
     keys.forEach((iterationKey) => {
       if (iterationKey.id === key.id) {
         iterationKey.modelProviderId = props.modelProvider;
@@ -62,7 +111,7 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
     });
   };
 
-  const onNameChange = function (event:any, key:ModelProviderKey) {
+  const onNameChange = function (event: any, key: ModelProviderKey) {
     keys.forEach((iterationKey) => {
       if (iterationKey.id === key.id) {
         iterationKey.name = event.target.value;
@@ -72,7 +121,7 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
     });
   };
 
-  const onKeyChange = function (event:any, key:ModelProviderKey) {
+  const onKeyChange = function (event: any, key: ModelProviderKey) {
     keys.forEach((iterationKey) => {
       if (iterationKey.id == key.id) {
         iterationKey.key = event.target.value;
@@ -82,8 +131,13 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
     });
   };
 
-  const handleDeleteKey = function (id: string) {
-    setKeys(keys.filter((object: any) => object.id !== id));
+  const handleDeleteKey = function () {
+    keys.forEach((iterationKey) => {
+      if (selectedKey && iterationKey.id === selectedKey.id) {
+        iterationKey.deleting = true;
+        setDeleteKey(iterationKey);
+      }
+    });
   };
 
   return (
@@ -140,7 +194,10 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
                 <Button
                   size='md'
                   color={'gray'}
-                  onClick={() => handleDeleteKey(key.id)}
+                  onClick={() => {
+                    setSelectedKey(key);
+                    setOpenModal(true);
+                  }}
                 >
                   <HiTrash className='h-5 w-5' />
                 </Button>
@@ -164,6 +221,36 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
           Add API Key
         </Button>
       </div>
+      <Modal
+        show={openModal}
+        size='md'
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className='text-center'>
+            <HiOutlineExclamationCircle className='mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200' />
+            <h3 className='mb-5 text-lg font-normal text-gray-500 dark:text-gray-400'>
+              Are you sure you want to delete{' '}
+              <a className='font-bold'>{selectedKey && selectedKey.name}</a> API
+              key for{' '}
+              <a className='font-bold'>
+                {selectedKey && selectedKey.modelProviderId}
+              </a>{' '}
+              ?
+            </h3>
+            <div className='flex justify-center gap-4'>
+              <Button color='failure' onClick={handleDeleteKey}>
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color='gray' onClick={() => setOpenModal(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

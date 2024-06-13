@@ -10,6 +10,7 @@ export interface ModelProviderKey {
   modelProviderId?: string;
   saving?: boolean;
   dirty?: boolean;
+  deleting?: boolean;
   disabled?: boolean;
 }
 

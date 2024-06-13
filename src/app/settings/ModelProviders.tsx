@@ -9,10 +9,9 @@ import React, { useEffect } from 'react';
 export function ModelProviders() {
   let { keysLoading, keys, keysEmpty, mutate } = useGetModelProviderKeys();
 
-  useEffect(() => {
-  }, [keys]);
+  useEffect(() => {}, [keys]);
 
-  function getKeysForModelProvider(provider:string) {
+  function getKeysForModelProvider(provider: string) {
     let filtered = keys.filter((item) => item.modelProviderId === provider);
     filtered.forEach((item: any) => {
       item.disabled = true;

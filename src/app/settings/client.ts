@@ -44,3 +44,15 @@ export async function createOrUpdateKey(key: ModelProviderKey) {
 
   return [response.status, await response.json()];
 }
+
+export async function removeKeyWithId(id: string) {
+  let response = await fetch('/api/settings/keys/' + id, {
+    method: 'DELETE',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return [response.status, await response.json()];
+}
