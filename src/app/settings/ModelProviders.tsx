@@ -10,8 +10,16 @@ export function ModelProviders() {
   let { keysLoading, keys, keysEmpty, mutate } = useGetModelProviderKeys();
 
   useEffect(() => {
-    console.log('keys', keys);
   }, [keys]);
+
+  function getKeysForModelProvider(provider:string) {
+    let filtered = keys.filter((item) => item.modelProviderId === provider);
+    filtered.forEach((item: any) => {
+      item.disabled = true;
+    });
+
+    return filtered;
+  }
 
   return (
     <>
@@ -34,7 +42,10 @@ export function ModelProviders() {
               </div>
             </Accordion.Title>
             <Accordion.Content>
-              <ModelProviderKeys modelProvider={'openai'} />
+              <ModelProviderKeys
+                modelProvider={'openai'}
+                keys={getKeysForModelProvider('openai')}
+              />
             </Accordion.Content>
           </Accordion.Panel>
           <Accordion.Panel>
@@ -50,7 +61,10 @@ export function ModelProviders() {
               </div>
             </Accordion.Title>
             <Accordion.Content>
-              <ModelProviderKeys modelProvider={'google'} />
+              <ModelProviderKeys
+                modelProvider={'google'}
+                keys={getKeysForModelProvider('google')}
+              />
             </Accordion.Content>
           </Accordion.Panel>
           <Accordion.Panel>
@@ -66,7 +80,10 @@ export function ModelProviders() {
               </div>
             </Accordion.Title>
             <Accordion.Content>
-              <ModelProviderKeys modelProvider={'groq'} />
+              <ModelProviderKeys
+                modelProvider={'groq'}
+                keys={getKeysForModelProvider('groq')}
+              />
             </Accordion.Content>
           </Accordion.Panel>
           <Accordion.Panel>
@@ -82,7 +99,10 @@ export function ModelProviders() {
               </div>
             </Accordion.Title>
             <Accordion.Content>
-              <ModelProviderKeys modelProvider={'anthropic'} />
+              <ModelProviderKeys
+                modelProvider={'anthropic'}
+                keys={getKeysForModelProvider('anthropic')}
+              />
             </Accordion.Content>
           </Accordion.Panel>
         </Accordion>

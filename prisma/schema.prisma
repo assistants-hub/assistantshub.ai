@@ -51,6 +51,8 @@ model ModelProviderKey {
   organizationOwnerType String?
   organization          Organization? @relation(fields: [organizationOwner, organizationOwnerType], references: [owner, ownerType])
   Assistant             Assistant[]
+  created_at            DateTime      @default(now())
+  updated_at            DateTime      @updatedAt
 }
 
 model Assistant {

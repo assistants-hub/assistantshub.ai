@@ -26,3 +26,21 @@ export function useGetModelProviderKeys() {
     [data, error, isLoading, isValidating, mutate]
   );
 }
+
+export async function createOrUpdateKey(key: ModelProviderKey) {
+  let response = await fetch('/api/settings/keys', {
+    method: 'POST',
+    headers: {
+      accept: 'application.json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id: key.id,
+      name: key.name,
+      key: key.key,
+      modelProviderId: key.modelProviderId,
+    }),
+  });
+
+  return [response.status, await response.json()];
+}

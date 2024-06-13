@@ -8,6 +8,9 @@ export interface ModelProviderKey {
   name?: string;
   key?: string;
   modelProviderId?: string;
+  saving?: boolean;
+  dirty?: boolean;
+  disabled?: boolean;
 }
 
 export interface Model {
