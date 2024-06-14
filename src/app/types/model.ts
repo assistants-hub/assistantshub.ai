@@ -23,4 +23,5 @@ export interface Model {
   features?: {
     retrieval: boolean;
   };
+  keys: ModelProviderKey[];
 }

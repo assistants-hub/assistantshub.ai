@@ -12,6 +12,7 @@ import {
 } from 'flowbite-react';
 import { createAssistant, useGetModels } from '@/app/assistants/client';
 import { toast } from 'react-hot-toast';
+import Link from 'next/link';
 
 export interface CreateAssistantProps {
   open: boolean;
@@ -24,6 +25,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [model, setModel] = useState('');
+  const [apiKey, setAPIKey] = useState('');
   const [modelDescription, setModelDescription] = useState('');
   const [instructions, setInstructions] = useState('');
   const [functionTool, setFunctionTool] = useState(false);
@@ -75,8 +77,8 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
   return (
     <Modal show={props.open} size={'3xl'} onClose={() => props.setOpen(false)}>
       <Modal.Header>Create Assistant</Modal.Header>
-      <Modal.Body>
-        <div className='space-y-6 p-6'>
+      <Modal.Body className='flex h-full max-h-full flex-col overflow-y-scroll'>
+        <div className={'space-y-4 p-3'}>
           <div className='flex max-w-3xl flex-col gap-4'>
             <div>
               <div className='mb-2 block'>
@@ -120,40 +122,93 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
               }}
             />
           </div>
-          <div className='max-w-3xl'>
-            <div className='mb-2 block'>
-              <Label htmlFor='modelProvider' value='Model Provider' />
+          <div className={'grid max-w-3xl grid-cols-2 gap-4'}>
+            <div className='col-span-1 max-w-3xl'>
+              <div className='mb-2 block'>
+                <Label htmlFor='modelProvider' value='Model Provider' />
+              </div>
+              {modelsLoading ? (
+                <>
+                  <Spinner aria-label='Loading model provider..' size='sm' />
+                  <span className='pl-3'>
+                    Loading available model providers...
+                  </span>
+                </>
+              ) : (
+                <Select
+                  id='modelProvider'
+                  required
+                  value={modelProvider}
+                  onChange={(e) => {
+                    setModelProvider(e.target.value);
+                    let selectedModel = models.models.filter((model) => {
+                      return model.provider.id === e.target.value;
+                    });
+                    setModelDescription(selectedModel[0].description);
+                  }}
+                >
+                  {models &&
+                    models.providers.map((provider, index) => {
+                      return (
+                        <option key={index} value={provider.id}>
+                          {provider.name}
+                        </option>
+                      );
+                    })}
+                </Select>
+              )}
             </div>
-            {modelsLoading ? (
-              <>
-                <Spinner aria-label='Loading model provider..' size='sm' />
-                <span className='pl-3'>
-                  Loading available model providers...
-                </span>
-              </>
-            ) : (
-              <Select
-                id='modelProvider'
-                required
-                value={modelProvider}
-                onChange={(e) => {
-                  setModelProvider(e.target.value);
-                  let selectedModel = models.models.filter((model) => {
-                    return model.provider.id === e.target.value;
-                  });
-                  setModelDescription(selectedModel[0].description);
-                }}
-              >
-                {models &&
-                  models.providers.map((provider, index) => {
-                    return (
-                      <option key={index} value={provider.id}>
-                        {provider.name}
-                      </option>
-                    );
-                  })}
-              </Select>
-            )}
+            <div className='col-span-1 max-w-3xl'>
+              <div className='mb-2 block'>
+                <Label htmlFor='modelAPIKey' value='API Key' />
+              </div>
+              {modelsLoading ? (
+                <>
+                  <Spinner aria-label='API Key' size='sm' />
+                  <span className='pl-3'>Loading available models...</span>
+                </>
+              ) : (
+                <>
+                  <Select
+                    id='apiKey'
+                    required
+                    value={apiKey}
+                    onChange={(e) => {
+                      setAPIKey(e.target.value);
+                      let apiKey = models.models.filter((model) => {
+                        return model.id === e.target.value;
+                      });
+                    }}
+                  >
+                    {models &&
+                      models.models
+                        .filter((index) => {
+                          return index.provider.id === modelProvider;
+                        })[0]
+                        .keys.map((key, index) => {
+                          return (
+                            <option key={index} value={key.name}>
+                              {key.name}
+                            </option>
+                          );
+                        })}
+                    <option key={'default'} value={'default'}>
+                      &#128272; Assistants Hub&apos;s API Keys
+                    </option>
+                  </Select>
+                  <div className={'mt-2 text-xs text-gray-500'}>
+                    To add or modify API Keys, use{' '}
+                    <Link
+                      className={'text-blue-500'}
+                      href={'/settings'}
+                      target={'_blank'}
+                    >
+                      settings page.
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
           <div className='max-w-3xl'>
             <div className='mb-2 block'>
@@ -194,7 +249,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
                         );
                       })}
                 </Select>
-                <div className={'mt-2 text-sm text-gray-500'}>
+                <div className={'mt-2 text-xs text-gray-500'}>
                   {modelDescription}
                 </div>
               </>
