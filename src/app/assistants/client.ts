@@ -35,6 +35,7 @@ export async function createAssistant(assistant: Assistant) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      modelProviderKeyId: assistant.modelProviderKeyId,
       modelProviderId: assistant.modelProviderId,
       modelId: assistant.modelId,
       name: assistant.name,

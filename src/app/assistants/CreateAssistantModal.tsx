@@ -47,12 +47,26 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
       setModel(selectedModel);
     }
 
+    let selectedKeyId = undefined;
+    if (apiKey) {
+      let selectedKey = models.models
+        .filter((model) => {
+          return model.id === selectedModel;
+        })[0]
+        .keys.filter((key) => {
+          return key.name === apiKey;
+        })[0];
+
+      selectedKeyId = selectedKey?.id;
+    }
+
     let assistant = {
       name: name,
       description: description,
       instructions: instructions,
       modelId: selectedModel,
       modelProviderId: modelProvider,
+      modelProviderKeyId: selectedKeyId,
       //TODO: Add tools to assistant type
     };
 
@@ -192,7 +206,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
                             </option>
                           );
                         })}
-                    <option key={'default'} value={'default'}>
+                    <option key={'default'} value={''}>
                       &#128272; Assistants Hub&apos;s API Keys
                     </option>
                   </Select>

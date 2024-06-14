@@ -29,7 +29,7 @@ export default function ListAssistants() {
   useEffect(() => {
     if (assistantCreated) {
       assistantsLoading = true;
-      mutate([...assistants, assistantCreated]).then(() => {
+      mutate().then(() => {
         assistantsLoading = false;
       });
     }
@@ -58,7 +58,7 @@ export default function ListAssistants() {
         >
           {assistants &&
             assistants.length &&
-            assistants.map((assistant) => {
+            assistants.map((assistant, index) => {
               return (
                 <Card
                   imgSrc={
@@ -68,7 +68,7 @@ export default function ListAssistants() {
                   }
                   className='xs:max-w-72 sm:min-w-max sm:max-w-xs'
                   horizontal
-                  key={assistant.id}
+                  key={index}
                 >
                   <div className='pb flex flex-col items-center'>
                     <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
