@@ -42,18 +42,18 @@ export default function Settings() {
         Adjust the original configuration of your assistant here
       </p>
       <div>
-        <Table className='flex-auto self-center'>
+        <Table className='flex flex-auto items-center justify-center self-center'>
           <Table.Body className='divide-y'>
-            <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
+            <Table.Row className='bg-white'>
               <EditAssistant assistant={assistant} />
             </Table.Row>
-            <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-              <td className='flex max-w-3xl flex-col gap-4'>
+            <Table.Row className='bg-white'>
+              <div className='flex max-w-7xl flex-col gap-4'>
                 <h1 className='p-2 pl-5 text-2xl font-bold'>Danger Zone</h1>
-              </td>
+              </div>
             </Table.Row>
-            <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-              <Table.Cell className='flex flex-row p-5 font-medium text-gray-900 dark:text-white'>
+            <Table.Row className='bg-white'>
+              <Table.Cell className='flex max-w-7xl flex-row gap-4 p-5 font-medium text-gray-900 dark:text-white'>
                 <div>
                   <h2 className='p2 text-lg text-gray-800'>
                     Delete this assistant

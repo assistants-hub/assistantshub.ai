@@ -22,6 +22,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       object: true,
       modelId: true,
       modelProviderId: true,
+      modelProviderKey: true,
       avatar: true,
       profile: true,
       theme: true,
@@ -34,6 +35,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
       { status: 404 }
     );
   }
+
+  console.log(assistant.modelProviderKey);
 
   // Inject customization properties into the assistant object
   if (assistant.object) {
@@ -50,6 +53,17 @@ export async function GET(req: NextRequest, res: NextResponse) {
         assistant.object.model;
     // @ts-ignore
     assistant.object.modelProviderId = assistant.modelProviderId;
+    // @ts-ignore
+    assistant.object.modelProviderKeyId = assistant.modelProviderKey
+      ? assistant.modelProviderKey.id
+      : null;
+    // @ts-ignore
+    assistant.object.modelProviderKey = assistant.modelProviderKey
+      ? {
+          id: assistant.modelProviderKey.id,
+          name: assistant.modelProviderKey.name,
+        }
+      : null;
   }
 
   return Response.json(assistant.object, { status: 200 });

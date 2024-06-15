@@ -73,7 +73,7 @@ export default function EditAssistant(props: EditAssistantProps) {
   return (
     <td>
       <div className='space-y-6 p-6'>
-        <div className='flex max-w-3xl flex-col gap-4'>
+        <div className='flex max-w-7xl flex-col gap-4'>
           <div>
             <div className='mb-2 block'>
               <Label htmlFor='Assistant Name' value='Name' />
@@ -118,34 +118,63 @@ export default function EditAssistant(props: EditAssistantProps) {
             }}
           />
         </div>
-        <div className='max-w-3xl'>
-          <div className='mb-2 block'>
-            <Label htmlFor='provider' value='Model Provider' />
+        <div className='grid max-w-3xl grid-cols-2 gap-4'>
+          <div className='col-span-1'>
+            <div className='mb-2 block'>
+              <Label htmlFor='provider' value='Model Provider' />
+            </div>
+            {modelsLoading ? (
+              <>
+                <Spinner aria-label='Loading model provider..' size='sm' />
+                <span className='pl-3'>
+                  Loading available model providers...
+                </span>
+              </>
+            ) : (
+              <Select
+                id='modelProvider'
+                required
+                disabled={true}
+                value={modelProvider}
+                onChange={(e) => {
+                  setModelProvider(e.target.value);
+                }}
+              >
+                {models.providers.map((provider, index) => {
+                  return (
+                    <option key={index} value={provider.id}>
+                      {provider.name}
+                    </option>
+                  );
+                })}
+              </Select>
+            )}
           </div>
-          {modelsLoading ? (
-            <>
-              <Spinner aria-label='Loading model provider..' size='sm' />
-              <span className='pl-3'>Loading available model providers...</span>
-            </>
-          ) : (
-            <Select
-              id='modelProvider'
-              required
-              disabled={true}
-              value={modelProvider}
-              onChange={(e) => {
-                setModelProvider(e.target.value);
-              }}
-            >
-              {models.providers.map((provider, index) => {
-                return (
-                  <option key={index} value={provider.id}>
-                    {provider.name}
+          <div className='col-span-1'>
+            <div className='mb-2 block'>
+              <Label htmlFor='providerKey' value='API Key' />
+            </div>
+            {modelsLoading ? (
+              <>
+                <Spinner aria-label='Loading model provider..' size='sm' />
+                <span className='pl-3'>
+                  Loading available model provider keys...
+                </span>
+              </>
+            ) : (
+              <Select id='modelProviderKey' required disabled={true}>
+                {props.assistant.modelProviderKey ? (
+                  <option key={0} value={props.assistant.modelProviderKey.id}>
+                    {props.assistant.modelProviderKey.name}
                   </option>
-                );
-              })}
-            </Select>
-          )}
+                ) : (
+                  <option key={'default'} value={''}>
+                    &#128272; Assistants Hub&apos;s API Keys
+                  </option>
+                )}
+              </Select>
+            )}
+          </div>
         </div>
         <div className='max-w-3xl'>
           <div className='mb-2 block'>
