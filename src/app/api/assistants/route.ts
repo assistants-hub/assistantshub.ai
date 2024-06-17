@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
 import { ulid } from 'ulidx';
 import prisma from '@/app/api/utils/prisma';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
 import { getOpenAIForOrganization } from '@/app/api/utils/openai';
 
 export async function GET(req: NextRequest, res: NextResponse) {

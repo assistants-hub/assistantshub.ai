@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/api/utils/prisma';
-import OpenAI from 'openai';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
 import { getOpenAI } from '@/app/api/utils/openai';
 
 const getId = (req: Request) => {
@@ -99,6 +98,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
             organizationOwnerType: true,
             modelId: true,
             modelProviderId: true,
+            modelProviderKey: true
           },
         });
 
@@ -207,6 +207,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
             organizationOwner: true,
             organizationOwnerType: true,
             modelProviderId: true,
+            modelProviderKey: true
           },
         });
 

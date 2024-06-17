@@ -7,7 +7,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import path from 'path';
 import prisma from '@/app/api/utils/prisma';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
 import { getOpenAI } from '@/app/api/utils/openai';
 
 const getId = (req: Request) => {

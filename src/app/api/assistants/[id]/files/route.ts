@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Busboy from '@fastify/busboy';
 import { Readable } from 'node:stream';
 import prisma from '@/app/api/utils/prisma';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
 import { getOpenAI } from '@/app/api/utils/openai';
 
 // Utility function to convert ReadableStream to Node.js Stream
@@ -30,6 +30,7 @@ const getAssistant = async (id: string) => {
     include: {
       organization: true,
       Folder: true,
+      modelProviderKey: true
     },
   });
 };

@@ -21,6 +21,7 @@ const getGoogleGenAIObjectForAssistant = async (req: NextRequest) => {
       organization: true,
       modelId: true,
       object: true,
+      modelProviderKey: true
     },
   });
 

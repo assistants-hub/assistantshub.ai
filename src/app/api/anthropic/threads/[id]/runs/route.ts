@@ -16,6 +16,7 @@ const getAnthropicObjectForAssistant = async (req: NextRequest) => {
       organization: true,
       modelId: true,
       object: true,
+      modelProviderKey: true
     },
   });
 

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
-import { Groq } from 'groq-sdk';
 import prisma from '@/app/api/utils/prisma';
 import { getGroq } from '@/app/api/utils/groq';
 
@@ -17,6 +16,7 @@ const getGroqObjectForAssistant = async (req: NextRequest) => {
       organization: true,
       modelId: true,
       object: true,
+      modelProviderKey: true
     },
   });
 
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
       select: {
         modelId: true,
-        object: true,
+        object: true
       },
     });
 

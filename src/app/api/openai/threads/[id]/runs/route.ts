@@ -4,7 +4,6 @@ import { Stream } from 'openai/streaming';
 import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
 import { getOpenAIObjectForAssistant } from '@/app/api/openai/util';
-import prisma from '@/app/api/utils/prisma';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
