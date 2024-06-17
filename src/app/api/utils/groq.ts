@@ -5,6 +5,10 @@ export function getGroq(assistant: any): Groq {
     ? process.env.GROQ_CLOUD_API_KEY
     : null;
 
+  if (assistant.modelProviderKey) {
+    groqAPIKey = assistant.modelProviderKey.key['apiKey'];
+  }
+
   if (!groqAPIKey) {
     throw new Error('Groq API key is missing');
   }

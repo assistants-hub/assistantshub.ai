@@ -98,7 +98,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
             organizationOwnerType: true,
             modelId: true,
             modelProviderId: true,
-            modelProviderKey: true
+            modelProviderKey: true,
           },
         });
 
@@ -207,7 +207,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
             organizationOwner: true,
             organizationOwnerType: true,
             modelProviderId: true,
-            modelProviderKey: true
+            modelProviderKey: true,
           },
         });
 

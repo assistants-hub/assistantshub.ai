@@ -5,6 +5,10 @@ export function getGoogleGenerativeAI(assistant: any): GoogleGenerativeAI {
     ? process.env.GOOGLE_AI_STUDIO_API_KEY
     : null;
 
+  if (assistant.modelProviderKey) {
+    googleAIStudioAPIKey = assistant.modelProviderKey.key['apiKey'];
+  }
+
   if (!googleAIStudioAPIKey) {
     throw new Error('Google AI Studio API key is missing');
   }

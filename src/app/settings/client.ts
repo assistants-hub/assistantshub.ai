@@ -37,7 +37,7 @@ export async function createOrUpdateKey(key: ModelProviderKey) {
     body: JSON.stringify({
       id: key.id,
       name: key.name,
-      key: key.key,
+      key: { apiKey: key.key },
       modelProviderId: key.modelProviderId,
     }),
   });

@@ -30,7 +30,7 @@ const getAssistant = async (id: string) => {
     include: {
       organization: true,
       Folder: true,
-      modelProviderKey: true
+      modelProviderKey: true,
     },
   });
 };

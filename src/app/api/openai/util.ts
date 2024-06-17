@@ -12,7 +12,7 @@ export const getOpenAIObjectForAssistant = async (req: NextRequest) => {
     },
     include: {
       organization: true,
-      modelProviderKey: true
+      modelProviderKey: true,
     },
   });
 

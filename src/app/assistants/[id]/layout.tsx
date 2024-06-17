@@ -6,7 +6,9 @@ import { Button, Spinner } from 'flowbite-react';
 import SideNavigation from '@/app/assistants/[id]/SideNavigation';
 import { Assistant } from '@/app/types/assistant';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
-import { HiChevronDoubleLeft, HiMenuAlt2 } from 'react-icons/hi';
+import { HiMenuAlt2 } from 'react-icons/hi';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { redirect } from 'next/navigation';
 
 export default function AssistantsLayout({
   children,
@@ -22,6 +24,7 @@ export default function AssistantsLayout({
   const [sideBarCss, setSideBarCss] = useState(
     'fixed left-0 z-40 w-64 transition-transform -translate-x-full sm:translate-x-0'
   );
+  const { user, error, isLoading } = useUser();
 
   useEffect(() => {
     if (assistantResponse) {
@@ -29,6 +32,12 @@ export default function AssistantsLayout({
       setLoading(false);
     }
   }, [assistantResponse]);
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      redirect('/');
+    }
+  }, [isLoading]);
 
   useEffect(() => {}, [sideBarCss]);
 

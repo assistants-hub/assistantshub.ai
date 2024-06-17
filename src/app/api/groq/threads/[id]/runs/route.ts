@@ -16,7 +16,7 @@ const getGroqObjectForAssistant = async (req: NextRequest) => {
       organization: true,
       modelId: true,
       object: true,
-      modelProviderKey: true
+      modelProviderKey: true,
     },
   });
 
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
       select: {
         modelId: true,
-        object: true
+        object: true,
       },
     });
 

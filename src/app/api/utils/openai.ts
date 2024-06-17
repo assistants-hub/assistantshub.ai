@@ -5,6 +5,10 @@ export function getOpenAI(assistant: any): OpenAI {
     ? process.env.OPENAI_API_KEY
     : null;
 
+  if (assistant.modelProviderKey) {
+    openAIAPIKey = assistant.modelProviderKey.key['apiKey'];
+  }
+
   if (!openAIAPIKey) {
     throw new Error('OpenAI API key is missing');
   }

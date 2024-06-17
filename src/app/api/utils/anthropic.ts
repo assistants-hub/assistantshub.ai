@@ -5,6 +5,10 @@ export function getAnthropic(assistant: any): Anthropic {
     ? process.env.ANTHROPIC_API_KEY
     : null;
 
+  if (assistant.modelProviderKey) {
+    anthropicAPIKey = assistant.modelProviderKey.key['apiKey'];
+  }
+
   if (!anthropicAPIKey) {
     throw new Error('Anthropic API key is missing');
   }

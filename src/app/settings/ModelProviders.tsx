@@ -5,19 +5,30 @@ import Image from 'next/image';
 import ModelProviderKeys from '@/app/settings/ModelProviderKeys';
 import { useGetModelProviderKeys } from '@/app/settings/client';
 import React, { useEffect } from 'react';
+import { redirect } from 'next/navigation';
 
 export function ModelProviders() {
-  let { keysLoading, keys, keysEmpty, mutate } = useGetModelProviderKeys();
+  let { keysLoading, keys, keysEmpty, mutate, keysError } =
+    useGetModelProviderKeys();
 
-  useEffect(() => {}, [keys]);
+  useEffect(() => {
+    // @ts-ignore
+    if (keys && keys.message) {
+      redirect('/');
+    }
+  }, [keys]);
 
   function getKeysForModelProvider(provider: string) {
-    let filtered = keys.filter((item) => item.modelProviderId === provider);
-    filtered.forEach((item: any) => {
-      item.disabled = true;
-    });
+    if (keys && keys.length) {
+      let filtered = keys.filter((item) => item.modelProviderId === provider);
+      filtered.forEach((item: any) => {
+        item.disabled = true;
+      });
 
-    return filtered;
+      return filtered;
+    } else {
+      return [];
+    }
   }
 
   return (
@@ -26,7 +37,7 @@ export function ModelProviders() {
         <div className='bg-grey flex items-center justify-center '>
           <Spinner />
         </div>
-      ) : (
+      ) : !keysError ? (
         <Accordion collapseAll>
           <Accordion.Panel>
             <Accordion.Title>
@@ -105,6 +116,8 @@ export function ModelProviders() {
             </Accordion.Content>
           </Accordion.Panel>
         </Accordion>
+      ) : (
+        <></>
       )}
     </>
   );
