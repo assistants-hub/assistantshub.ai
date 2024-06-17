@@ -1,7 +1,6 @@
 import useSWR from 'swr';
 import { useMemo } from 'react';
 import { Model, ModelProvider } from '@/app/types/model';
-import { Credential } from '@/app/types/credential';
 import { Assistant } from '@/app/types/assistant';
 import { fetcher } from '@/app/utils/fetcher';
 
@@ -28,42 +27,6 @@ export function useGetModels() {
   );
 }
 
-export function useGetCredentials() {
-  const { data, isLoading, error, isValidating } = useSWR(
-    '/api/credentials',
-    fetcher,
-    {
-      revalidateIfStale: true,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
-
-  return useMemo(
-    () => ({
-      credentials: data as Credential[],
-      credentialsLoading: isLoading,
-      credentialsError: error,
-      credentialsValidating: isValidating,
-      credentialsEmpty: !isLoading && !data?.length,
-    }),
-    [data, error, isLoading, isValidating]
-  );
-}
-
-export async function setCredentials(openAiApiKey: string) {
-  let response = await fetch('/api/credentials', {
-    method: 'POST',
-    headers: {
-      accept: 'application.json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ openAiApiKey: openAiApiKey }),
-  });
-
-  return [response.status, await response.json()];
-}
-
 export async function createAssistant(assistant: Assistant) {
   let response = await fetch('/api/assistants', {
     method: 'POST',
@@ -72,6 +35,7 @@ export async function createAssistant(assistant: Assistant) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      modelProviderKeyId: assistant.modelProviderKeyId,
       modelProviderId: assistant.modelProviderId,
       modelId: assistant.modelId,
       name: assistant.name,

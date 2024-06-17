@@ -9,7 +9,9 @@ export interface DebouncedInputProps {
   onDebounceTextChange?: (text: string) => void;
 }
 
-export const DebouncedInput: React.FC<DebouncedInputProps> = (props: DebouncedInputProps) => {
+export const DebouncedInput: React.FC<DebouncedInputProps> = (
+  props: DebouncedInputProps
+) => {
   const [text, setText] = useState<string>(props.value ? props.value : '');
   const [loading, setLoading] = useState<boolean>(false);
   const debouncedText = useDebounce<string>(text, 300); // 300ms delay

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
 import { ulid } from 'ulidx';
 import prisma from '@/app/api/utils/prisma';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
+import { getOpenAIForOrganization } from '@/app/api/utils/openai';
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const session = await getSession();
@@ -56,12 +56,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
       let modelProviderId = body.modelProviderId;
       delete body.modelProviderId;
 
+      let modelProviderKeyId = body.modelProviderKeyId;
+      delete body.modelProviderKeyId;
+
       try {
         let createResponse = null;
         if (modelProviderId === 'openai') {
-          const openai = new OpenAI({
-            apiKey: organization.openAIApiKey,
-          });
+          const openai = getOpenAIForOrganization(organization);
 
           body.model = modelId;
 
@@ -83,11 +84,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
             object: createResponse as any,
             modelId: modelId,
             modelProviderId: modelProviderId,
+            modelProviderKeyId: modelProviderKeyId,
           },
           create: {
             id: createResponse.id,
             modelId: modelId,
             modelProviderId: modelProviderId,
+            modelProviderKeyId: modelProviderKeyId,
             organizationOwner: session?.user.sub,
             organizationOwnerType: 'personal',
             object: createResponse as any,

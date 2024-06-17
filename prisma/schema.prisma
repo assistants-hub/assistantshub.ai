@@ -11,10 +11,11 @@ datasource db {
 }
 
 model ModelProvider {
-  id        String      @id
-  name      String
-  Model     Model[]
-  Assistant Assistant[]
+  id               String             @id
+  name             String
+  Model            Model[]
+  Assistant        Assistant[]
+  ModelProviderKey ModelProviderKey[]
 }
 
 model Model {
@@ -29,38 +30,51 @@ model Model {
 }
 
 model Organization {
-  owner             String
-  ownerType         String      @default("personal")
-  openAIApiKey      String
-  googleAIStudioKey String      @default("")
-  groqCloudApiKey   String      @default("")
-  anthropicApiKey   String      @default("")
-  limitAssistants   Int         @default(2)
-  created_at        DateTime    @default(now())
-  updated_at        DateTime    @updatedAt
-  Assistant         Assistant[]
+  owner            String
+  ownerType        String             @default("personal")
+  limitAssistants  Int                @default(2)
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  Assistant        Assistant[]
+  ModelProviderKey ModelProviderKey[]
 
   @@id([owner, ownerType])
 }
 
+model ModelProviderKey {
+  id                    String        @id @default(cuid())
+  name                  String
+  key                   Json?
+  modelProviderId       String
+  modelProvider         ModelProvider @relation(fields: [modelProviderId], references: [id])
+  organizationOwner     String?
+  organizationOwnerType String?
+  organization          Organization? @relation(fields: [organizationOwner, organizationOwnerType], references: [owner, ownerType])
+  Assistant             Assistant[]
+  created_at            DateTime      @default(now())
+  updated_at            DateTime      @updatedAt
+}
+
 model Assistant {
-  id                    String         @id
+  id                    String            @id
   modelId               String?
-  model                 Model?         @relation(fields: [modelId], references: [id])
+  model                 Model?            @relation(fields: [modelId], references: [id])
   modelProviderId       String?
-  modelProvider         ModelProvider? @relation(fields: [modelProviderId], references: [id])
+  modelProvider         ModelProvider?    @relation(fields: [modelProviderId], references: [id])
   object                Json?
   organizationOwner     String?
   organizationOwnerType String?
-  organization          Organization?  @relation(fields: [organizationOwner, organizationOwnerType], references: [owner, ownerType])
+  organization          Organization?     @relation(fields: [organizationOwner, organizationOwnerType], references: [owner, ownerType])
   avatar                String?
   profile               String?
   theme                 Json?
-  created_at            DateTime       @default(now())
-  updated_at            DateTime       @updatedAt
+  created_at            DateTime          @default(now())
+  updated_at            DateTime          @updatedAt
   Thread                Thread[]
   Folder                Folder[]
   File                  File[]
+  modelProviderKeyId    String?
+  modelProviderKey      ModelProviderKey? @relation(fields: [modelProviderKeyId], references: [id])
 }
 
 model Thread {

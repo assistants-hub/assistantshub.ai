@@ -9,7 +9,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Busboy from '@fastify/busboy';
 import { Readable } from 'node:stream';
 import prisma from '@/app/api/utils/prisma';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
+import { getOpenAI } from '@/app/api/utils/openai';
 
 // Utility function to convert ReadableStream to Node.js Stream
 function toNodeReadable(readable: any) {
@@ -29,6 +30,7 @@ const getAssistant = async (id: string) => {
     include: {
       organization: true,
       Folder: true,
+      modelProviderKey: true,
     },
   });
 };
@@ -43,7 +45,7 @@ const getRequestedFolder = (req: Request) => {
   return requestedFolder;
 };
 
-const validateIncomingToken = async (user:any, assistant: any) => {
+const validateIncomingToken = async (user: any, assistant: any) => {
   return !(user === null || assistant.organization.owner !== user.sub);
 };
 
@@ -74,9 +76,7 @@ export async function POST(req: NextRequest, res: Response) {
   // No folders exist, create a default folder
   if (!assistant.Folder || !assistant.Folder.length) {
     let folderId = ulid();
-    let openai = new OpenAI({
-      apiKey: assistant?.organization?.openAIApiKey,
-    });
+    let openai = getOpenAI(assistant);
 
     let createStoreResponse = {};
     if (assistant.modelProviderId === 'openai') {
@@ -178,9 +178,7 @@ export async function POST(req: NextRequest, res: Response) {
           const awsResponse = await client.send(uploadCommand as any);
           let fileResponse: any = {};
           if (assistant?.modelProviderId === 'openai') {
-            let openai = new OpenAI({
-              apiKey: assistant?.organization?.openAIApiKey,
-            });
+            let openai = getOpenAI(assistant);
             fileResponse = await openai.files.create({
               file: fs.createReadStream(uploadedFile.filePath),
               purpose: 'assistants',
@@ -264,9 +262,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       // @ts-ignore
       if (!['completed', 'cancelled', 'failed'].includes(file.object.status)) {
         updates = true;
-        let openai = new OpenAI({
-          apiKey: assistant?.organization?.openAIApiKey,
-        });
+        let openai = getOpenAI(assistant);
 
         let vectorStoreFileResponse =
           // @ts-ignore

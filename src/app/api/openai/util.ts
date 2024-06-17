@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
-import OpenAI from 'openai';
 import prisma from '@/app/api/utils/prisma';
+import { getOpenAI } from '@/app/api/utils/openai';
 
 export const getOpenAIObjectForAssistant = async (req: NextRequest) => {
   let assistantId = req.headers.get('X-Assistant-Id');
@@ -12,6 +12,7 @@ export const getOpenAIObjectForAssistant = async (req: NextRequest) => {
     },
     include: {
       organization: true,
+      modelProviderKey: true,
     },
   });
 
@@ -19,7 +20,5 @@ export const getOpenAIObjectForAssistant = async (req: NextRequest) => {
     throw new Error('Assistant does not exist');
   }
 
-  return new OpenAI({
-    apiKey: assistant?.organization?.openAIApiKey,
-  });
+  return getOpenAI(assistant);
 };

@@ -6,9 +6,9 @@ import {
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import path from 'path';
-import OpenAI from 'openai';
 import prisma from '@/app/api/utils/prisma';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
+import { getOpenAI } from '@/app/api/utils/openai';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
@@ -32,7 +32,7 @@ const getAssistant = async (id: string) => {
   });
 };
 
-const validateIncomingToken = async (token:any, assistant: any) => {
+const validateIncomingToken = async (token: any, assistant: any) => {
   return !(token === null || assistant.organization.owner !== token.sub);
 };
 
@@ -151,9 +151,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
     }
 
     if (assistant?.modelProviderId === 'openai') {
-      let openai = new OpenAI({
-        apiKey: assistant?.organization?.openAIApiKey,
-      });
+      let openai = getOpenAI(assistant);
       try {
         // 1. Remove file from Vector Store
         // @ts-ignore

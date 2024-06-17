@@ -10,22 +10,28 @@ import {
   NavbarLink,
   NavbarCollapse,
   NavbarToggle,
-  DarkThemeToggle, Spinner,
+  DarkThemeToggle,
+  Spinner,
+  DropdownItem,
 } from 'flowbite-react';
+import { HiCog, HiLogout, HiUser } from 'react-icons/hi';
 
 export const UserProfile = () => {
   // @ts-ignore
   const { user, error, isLoading } = useUser();
 
-  if (isLoading) return <div className="text-right">
-    <Spinner aria-label="Right-aligned spinner example" />
-  </div>;
+  if (isLoading)
+    return (
+      <div className='text-right'>
+        <Spinner aria-label='Right-aligned spinner example' />
+      </div>
+    );
 
   return user ? (
     <>
       <NavbarToggle />
-      <NavbarCollapse className="rtl:space-x-reverse">
-      <div className='order-last flex pb-2 pl-2 pt-2 md:pl-10'>
+      <NavbarCollapse className='rtl:space-x-reverse'>
+        <div className='order-last flex pb-2 pl-2 pt-2 md:pl-10'>
           <Dropdown
             arrowIcon={false}
             inline
@@ -43,6 +49,9 @@ export const UserProfile = () => {
                 {user?.email}
               </span>
             </DropdownHeader>
+            <DropdownItem icon={HiCog} href={'/settings'}>
+              Settings
+            </DropdownItem>
             <SignOut />
           </Dropdown>
         </div>
@@ -64,23 +73,20 @@ export const UserProfile = () => {
         >
           <div className='pt-2 lg:text-lg'>Help</div>
         </NavbarLink>
-        <NavbarLink className='justify-end'>
-          <DarkThemeToggle />
-        </NavbarLink>
       </NavbarCollapse>
     </>
   ) : (
-  <>
-    <NavbarToggle />
-    <NavbarCollapse className='rtl:space-x-reverse'>
-      <NavbarLink
-        href='https://docs.assistantshub.ai/'
-        className='justify-end'
-      >
-        <div className='pt-1 lg:text-lg'>Docs</div>
-      </NavbarLink>
-      <SignIn />
-    </NavbarCollapse>
-  </>
+    <>
+      <NavbarToggle />
+      <NavbarCollapse className='rtl:space-x-reverse'>
+        <NavbarLink
+          href='https://docs.assistantshub.ai/'
+          className='justify-end'
+        >
+          <div className='pt-1 lg:text-lg'>Docs</div>
+        </NavbarLink>
+        <SignIn />
+      </NavbarCollapse>
+    </>
   );
 };

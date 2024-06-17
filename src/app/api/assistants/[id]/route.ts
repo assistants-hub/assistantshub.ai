@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/api/utils/prisma';
-import OpenAI from 'openai';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { getSession } from '@auth0/nextjs-auth0';
+import { getOpenAI } from '@/app/api/utils/openai';
 
 const getId = (req: Request) => {
   const url = new URL(req.url);
@@ -21,6 +21,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       object: true,
       modelId: true,
       modelProviderId: true,
+      modelProviderKey: true,
       avatar: true,
       profile: true,
       theme: true,
@@ -33,6 +34,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
       { status: 404 }
     );
   }
+
+  console.log(assistant.modelProviderKey);
 
   // Inject customization properties into the assistant object
   if (assistant.object) {
@@ -49,6 +52,17 @@ export async function GET(req: NextRequest, res: NextResponse) {
         assistant.object.model;
     // @ts-ignore
     assistant.object.modelProviderId = assistant.modelProviderId;
+    // @ts-ignore
+    assistant.object.modelProviderKeyId = assistant.modelProviderKey
+      ? assistant.modelProviderKey.id
+      : null;
+    // @ts-ignore
+    assistant.object.modelProviderKey = assistant.modelProviderKey
+      ? {
+          id: assistant.modelProviderKey.id,
+          name: assistant.modelProviderKey.name,
+        }
+      : null;
   }
 
   return Response.json(assistant.object, { status: 200 });
@@ -84,6 +98,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
             organizationOwnerType: true,
             modelId: true,
             modelProviderId: true,
+            modelProviderKey: true,
           },
         });
 
@@ -115,9 +130,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
         let updateResponse = null;
         if (assistant.modelProviderId === 'openai') {
           body.model = modelId;
-          const openai = new OpenAI({
-            apiKey: organization.openAIApiKey,
-          });
+          const openai = getOpenAI(assistant);
 
           updateResponse = await openai.beta.assistants.update(id, body);
         } else {
@@ -194,6 +207,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
             organizationOwner: true,
             organizationOwnerType: true,
             modelProviderId: true,
+            modelProviderKey: true,
           },
         });
 
@@ -207,9 +221,7 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
 
         let deleteResponse: any = { id: assistant.id };
         if (assistant.modelProviderId === 'openai') {
-          const openai = new OpenAI({
-            apiKey: organization.openAIApiKey,
-          });
+          const openai = getOpenAI(assistant);
 
           deleteResponse = await openai.beta.assistants.del(id);
         }

@@ -20,6 +20,11 @@ export interface Assistant {
   tools?: Tool[];
   modelId?: string;
   modelProviderId?: string;
+  modelProviderKeyId?: string;
+  modelProviderKey?: {
+    id: string;
+    name: string;
+  };
   file_ids?: string[];
   metadata?: Record<string, string>;
   avatar?: string | null;

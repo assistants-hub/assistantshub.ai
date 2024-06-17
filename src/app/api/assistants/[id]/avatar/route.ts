@@ -3,13 +3,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/api/utils/prisma';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 
-
 const getId = (req: Request) => {
   const url = new URL(req.url);
   return url.pathname.split('/').splice(-2, 1)[0];
 };
 
-export async function POST (req: NextRequest, res: NextResponse): Promise<NextResponse> {
+export async function POST(
+  req: NextRequest,
+  res: NextResponse
+): Promise<NextResponse> {
   const body = (await req.json()) as HandleUploadBody;
 
   let id = getId(req);

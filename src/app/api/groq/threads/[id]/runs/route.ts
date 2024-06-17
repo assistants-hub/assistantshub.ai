@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ulid } from 'ulidx';
 import { createMessage } from '@/app/api/utils/messages';
-import { Groq } from 'groq-sdk';
 import prisma from '@/app/api/utils/prisma';
+import { getGroq } from '@/app/api/utils/groq';
 
 const getGroqObjectForAssistant = async (req: NextRequest) => {
   let assistantId = req.headers.get('X-Assistant-Id');
@@ -16,6 +16,7 @@ const getGroqObjectForAssistant = async (req: NextRequest) => {
       organization: true,
       modelId: true,
       object: true,
+      modelProviderKey: true,
     },
   });
 
@@ -23,9 +24,7 @@ const getGroqObjectForAssistant = async (req: NextRequest) => {
     throw new Error('Assistant does not exist');
   }
 
-  return new Groq({
-    apiKey: assistant?.organization?.groqCloudApiKey,
-  });
+  return getGroq(assistant);
 };
 
 const getId = (req: Request) => {

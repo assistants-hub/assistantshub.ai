@@ -2,10 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { updateAssistant, useGetAssistant } from '@/app/assistants/[id]/client';
-import { Spinner } from 'flowbite-react';
+import { Button, Spinner } from 'flowbite-react';
 import SideNavigation from '@/app/assistants/[id]/SideNavigation';
 import { Assistant } from '@/app/types/assistant';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
+import { HiMenuAlt2 } from 'react-icons/hi';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { redirect } from 'next/navigation';
 
 export default function AssistantsLayout({
   children,
@@ -18,6 +21,10 @@ export default function AssistantsLayout({
     useGetAssistant(params.id);
   const [loading, setLoading] = useState(true);
   const [assistant, setAssistant] = useState<Assistant>(assistantResponse);
+  const [sideBarCss, setSideBarCss] = useState(
+    'fixed left-0 z-40 w-64 transition-transform -translate-x-full sm:translate-x-0'
+  );
+  const { user, error, isLoading } = useUser();
 
   useEffect(() => {
     if (assistantResponse) {
@@ -26,9 +33,29 @@ export default function AssistantsLayout({
     }
   }, [assistantResponse]);
 
+  useEffect(() => {
+    if (!isLoading && !user) {
+      redirect('/');
+    }
+  }, [isLoading]);
+
+  useEffect(() => {}, [sideBarCss]);
+
   const changeAssistant = async (assistant: Assistant) => {
     setAssistant(assistant);
     await updateAssistant(assistant);
+  };
+
+  const handleToggleSideBar = () => {
+    if (sideBarCss.includes('sm:translate-x-0')) {
+      setSideBarCss(
+        'float left-0 z-40 w-64 transition-transform sm:translate-x-full'
+      );
+    } else {
+      setSideBarCss(
+        'fixed left-0 z-40 w-64 transition-transform -translate-x-full sm:translate-x-0'
+      );
+    }
   };
 
   return (
@@ -38,22 +65,27 @@ export default function AssistantsLayout({
           <Spinner />
         </div>
       ) : (
-        <div className='grid min-h-[calc(100vh-100px)] grid-cols-12 justify-center'>
+        <div className='min-h-[calc(100vh-100px)] justify-center'>
           <AssistantContext.Provider
             value={{ assistant, setAssistant: changeAssistant }}
           >
-            <div
-              className={
-                'col-span-12 m-2 items-center justify-center sm:col-span-4 md:col-span-4 xl:col-span-3'
-              }
+            <Button
+              outline
+              pill
+              color={'light'}
+              onClick={handleToggleSideBar}
+              className='m-2 sm:hidden'
+            >
+              <HiMenuAlt2 className='h-5 w-5' />
+            </Button>
+            <aside
+              id='logo-sidebar'
+              className={sideBarCss}
+              aria-label='Sidebar'
             >
               <SideNavigation />
-            </div>
-            <div
-              className={
-                'col-span-12 m-4 items-center justify-center sm:col-span-8 md:col-span-8 xl:col-span-9'
-              }
-            >
+            </aside>
+            <div className={'m-4 items-center justify-center sm:ml-64'}>
               {children}
             </div>
           </AssistantContext.Provider>

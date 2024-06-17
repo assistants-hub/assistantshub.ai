@@ -20,7 +20,7 @@ export default function Customize() {
   });
 
   return assistant.id ? (
-    <div className='max-w-screen flex flex-col gap-4'>
+    <div className='max-w-screen ml-5 mt-5 flex flex-col gap-4'>
       <h3 className='text-3xl font-bold dark:text-white'>Integrate</h3>
       <p className={'pb-4 text-sm text-gray-400'}>
         Use the below link direct users to your assistant or embed codes to
