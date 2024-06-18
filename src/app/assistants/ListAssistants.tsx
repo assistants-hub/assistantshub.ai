@@ -79,7 +79,7 @@ export default function ListAssistants() {
                         <Badge color='info'>{assistant.modelId}</Badge>
                       </div>
                     </span>
-                    <span className='pt-4 max-w-sm max-h-15 overflow-y-hidden text-sm text-gray-500 dark:text-gray-400 text-center'>
+                    <span className='pt-4 max-w-xs max-h-15 overflow-y-hidden text-sm text-gray-500 dark:text-gray-400 text-center'>
                       {assistant.description}
                     </span>
                     <div className='mt-4 grid items-center justify-center gap-2 xs:grid-cols-1 sm:grid-cols-2 lg:mt-6'>
