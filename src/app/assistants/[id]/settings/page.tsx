@@ -92,7 +92,7 @@ export default function Settings() {
               <Table.Cell className='flex max-w-7xl flex-row gap-4 p-5 font-medium text-gray-900 dark:text-white'>
                 <div className='p2 flex max-w-md flex-col items-start'>
                   <h2 className='p2 text-lg text-gray-700'>
-                    Available for Everyone
+                    Public (Available for Everyone)
                   </h2>
                   <h3 className='p2 text-gray-400'>
                     When enabled this assistant will be available on the store.

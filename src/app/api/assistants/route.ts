@@ -27,6 +27,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
         assistant.object.profile = assistant.profile;
         // @ts-ignore
         assistant.object.modelId = assistant.modelId;
+        // @ts-ignore
+        assistant.object.published = assistant.published;
       }
       return assistant.object;
     });
