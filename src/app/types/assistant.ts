@@ -30,4 +30,5 @@ export interface Assistant {
   avatar?: string | null;
   profile?: string | null;
   theme?: AssistantTheme | null;
+  published?: boolean;
 }

@@ -8,6 +8,7 @@ import {
   HiCog,
   HiChartBar,
   HiPuzzle,
+  HiShoppingBag,
 } from 'react-icons/hi';
 import { Assistant } from '@/app/types/assistant';
 import Image from 'next/image';
@@ -33,19 +34,29 @@ export default function SideNavigation() {
           aria-label='Sidebar'
           className='z-40 flex flex-auto items-center justify-center bg-gray-50'
         >
-          <Sidebar.Items className='w-54 bg-gray-50'>
+          <Sidebar.Items className='bg-gray-50'>
             <Sidebar.ItemGroup>
               <Card
                 key={assistant.id}
-                imgSrc={
-                  assistant.profile
-                    ? assistant.profile
-                    : '/images/people/' + getImageHash(assistant.id) + '.jpg'
-                }
                 className={'bg-gray-50'}
+                imgSrc={'/images/backgrounds/1.jpg'}
               >
-                <div className='flex flex-col items-center'>
-                  <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
+                <Avatar
+                  img={
+                    assistant.avatar
+                      ? assistant.avatar
+                      : '/images/people/avatar/' +
+                        getImageHash(assistant.id) +
+                        '.jpg'
+                  }
+                  alt='avatar'
+                  size='xl'
+                  color='success'
+                  rounded
+                  className={'pb-1'}
+                />
+                <div className='flex flex-col items-center justify-center'>
+                  <h5 className='mb-1 text-center text-lg font-medium text-gray-900 dark:text-white'>
                     {assistant.name}
                   </h5>
                   <span className='text-sm text-gray-500 dark:text-gray-400'>

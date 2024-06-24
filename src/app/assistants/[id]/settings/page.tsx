@@ -1,9 +1,12 @@
 'use client';
 
-import { Button, Modal, Table } from 'flowbite-react';
-import React, { useContext, useState } from 'react';
+import { Button, Modal, Table, ToggleSwitch } from 'flowbite-react';
+import React, { useCallback, useContext, useState } from 'react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { deleteAssistant } from '@/app/assistants/[id]/client';
+import {
+  deleteAssistant,
+  updateVisibilityStatus,
+} from '@/app/assistants/[id]/client';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import EditAssistant from '@/app/assistants/[id]/settings/EditAssistant';
@@ -12,8 +15,36 @@ import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 export default function Settings() {
   const [openModal, setOpenModal] = useState(false);
   const { assistant } = useContext(AssistantContext);
+  console.log(assistant.published);
+  const [publish, setPublish] = useState(
+    assistant.published ? assistant.published : false
+  );
 
   const { push } = useRouter();
+
+  const toggleVisibility = async () => {
+    let visibility = !publish;
+    if (assistant && assistant.id) {
+      let [status, response] = await updateVisibilityStatus(assistant.id);
+      if (status === 200) {
+        let message =
+          'Assistant ' + assistant.name + ' now available in store.';
+
+        if (!visibility) {
+          message = 'Assistant ' + assistant.name + ' removed from store.';
+        }
+        setPublish(visibility);
+
+        toast.success(message, {
+          duration: 4000,
+        });
+      } else {
+        toast.error('Assistant ' + assistant.name + ' could not be deleted.', {
+          duration: 4000,
+        });
+      }
+    }
+  };
 
   const handleAssistantDelete = async () => {
     if (assistant && assistant.id) {
@@ -42,20 +73,45 @@ export default function Settings() {
         Adjust the original configuration of your assistant here
       </p>
       <div>
-        <Table className='flex flex-auto items-center justify-center self-center'>
+        <Table className='flex flex-auto items-center justify-start self-center'>
           <Table.Body className='divide-y'>
+            <Table.Row className='bg-white'>
+              <div className='flex max-w-7xl flex-col gap-4'>
+                <h1 className='p-2 pl-5 text-xl font-bold'>General Settings</h1>
+              </div>
+            </Table.Row>
             <Table.Row className='bg-white'>
               <EditAssistant assistant={assistant} />
             </Table.Row>
             <Table.Row className='bg-white'>
               <div className='flex max-w-7xl flex-col gap-4'>
-                <h1 className='p-2 pl-5 text-2xl font-bold'>Danger Zone</h1>
+                <h1 className='p-2 pl-5 text-xl font-bold'>Store</h1>
+              </div>
+            </Table.Row>
+            <Table.Row className='bg-white'>
+              <Table.Cell className='flex max-w-7xl flex-row gap-4 p-5 font-medium text-gray-900 dark:text-white'>
+                <div className='p2 flex max-w-md flex-col items-start'>
+                  <h2 className='p2 text-lg text-gray-700'>
+                    Public (Available for Everyone)
+                  </h2>
+                  <h3 className='p2 text-gray-400'>
+                    When enabled this assistant will be available on the store.
+                  </h3>
+                </div>
+                <div className='p2 ml-auto flex max-w-md items-center justify-center'>
+                  <ToggleSwitch checked={publish} onChange={toggleVisibility} />
+                </div>
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row className='bg-white'>
+              <div className='flex max-w-7xl flex-col gap-4'>
+                <h1 className='p-2 pl-5 text-xl font-bold'>Danger Zone</h1>
               </div>
             </Table.Row>
             <Table.Row className='bg-white'>
               <Table.Cell className='flex max-w-7xl flex-row gap-4 p-5 font-medium text-gray-900 dark:text-white'>
                 <div>
-                  <h2 className='p2 text-lg text-gray-800'>
+                  <h2 className='p2 text-lg text-gray-700'>
                     Delete this assistant
                   </h2>
                   <h3 className='p2 text-gray-400'>
@@ -63,14 +119,15 @@ export default function Settings() {
                     Please be certain.
                   </h3>
                 </div>
-                <Button
-                  className='ml-auto'
-                  outline
-                  gradientDuoTone='pinkToOrange'
-                  onClick={() => setOpenModal(true)}
-                >
-                  Delete
-                </Button>
+                <div className='p2 ml-auto flex max-w-md items-center justify-center pl-10'>
+                  <Button
+                    outline
+                    gradientDuoTone='pinkToOrange'
+                    onClick={() => setOpenModal(true)}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </Table.Cell>
             </Table.Row>
           </Table.Body>
