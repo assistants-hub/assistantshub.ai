@@ -18,6 +18,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         object: true,
         profile: true,
         modelId: true,
+        published: true,
       },
     });
     let assistantsCollection = assistants.map((assistant) => {
@@ -94,6 +95,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             organizationOwner: session?.user.sub,
             organizationOwnerType: 'personal',
             object: createResponse as any,
+            published: true,
           },
         });
 

@@ -73,6 +73,7 @@ model Assistant {
   Thread                Thread[]
   Folder                Folder[]
   File                  File[]
+  published             Boolean?          @default(false)
   modelProviderKeyId    String?
   modelProviderKey      ModelProviderKey? @relation(fields: [modelProviderKeyId], references: [id])
 }

@@ -8,6 +8,7 @@ import {
   HiCog,
   HiChartBar,
   HiPuzzle,
+  HiShoppingBag,
 } from 'react-icons/hi';
 import { Assistant } from '@/app/types/assistant';
 import Image from 'next/image';

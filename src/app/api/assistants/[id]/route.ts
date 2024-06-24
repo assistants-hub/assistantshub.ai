@@ -24,6 +24,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       modelProviderKey: true,
       avatar: true,
       profile: true,
+      published: true,
       theme: true,
     },
   });
@@ -34,8 +35,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
       { status: 404 }
     );
   }
-
-  console.log(assistant.modelProviderKey);
 
   // Inject customization properties into the assistant object
   if (assistant.object) {
@@ -63,6 +62,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
           name: assistant.modelProviderKey.name,
         }
       : null;
+    // @ts-ignore
+    assistant.object.published = assistant.published;
   }
 
   return Response.json(assistant.object, { status: 200 });
