@@ -26,6 +26,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       profile: true,
       published: true,
       theme: true,
+      authenticatedUsersOnly: true,
     },
   });
 
@@ -64,6 +65,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
       : null;
     // @ts-ignore
     assistant.object.published = assistant.published;
+    // @ts-ignore
+    assistant.object.authenticatedUsersOnly = assistant.authenticatedUsersOnly;
   }
 
   return Response.json(assistant.object, { status: 200 });

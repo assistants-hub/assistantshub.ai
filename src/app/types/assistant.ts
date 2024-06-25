@@ -31,4 +31,5 @@ export interface Assistant {
   profile?: string | null;
   theme?: AssistantTheme | null;
   published?: boolean;
+  authenticatedUsersOnly?: boolean;
 }

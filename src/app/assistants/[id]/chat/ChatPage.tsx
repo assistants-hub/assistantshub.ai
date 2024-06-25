@@ -42,7 +42,10 @@ export default function ChatPage() {
   }, [streamText]);
 
   return (
-    <div key='1' className='flex h-screen flex-col'>
+    <div
+      key='1'
+      className='flex h-[calc(100vh-5rem)] max-h-full max-w-full flex-col'
+    >
       <div
         className={'flex space-y-4 pb-2 pt-1 '}
         style={{

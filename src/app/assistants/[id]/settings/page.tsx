@@ -5,6 +5,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import {
   deleteAssistant,
+  updateAuthenticationRequirement,
   updateVisibilityStatus,
 } from '@/app/assistants/[id]/client';
 import { toast } from 'react-hot-toast';
@@ -15,12 +16,46 @@ import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 export default function Settings() {
   const [openModal, setOpenModal] = useState(false);
   const { assistant } = useContext(AssistantContext);
-  console.log(assistant.published);
+
   const [publish, setPublish] = useState(
     assistant.published ? assistant.published : false
   );
 
+  const [authenticationRequired, setAuthenticationRequired] = useState(
+    assistant.authenticatedUsersOnly ? assistant.authenticatedUsersOnly : true
+  );
+
   const { push } = useRouter();
+
+  const toggleAuthenticationRequirement = async () => {
+    let shouldAuth = !authenticationRequired;
+    if (assistant && assistant.id) {
+      let [status, response] = await updateAuthenticationRequirement(
+        assistant.id
+      );
+      if (status === 200) {
+        let message =
+          'Assistant ' +
+          assistant.name +
+          ' now requires users to be authenticated.';
+
+        if (!shouldAuth) {
+          message =
+            'Assistant ' + assistant.name + ' now supports anonymous users.';
+        }
+        // @ts-ignore
+        setAuthenticationRequired(shouldAuth);
+
+        toast.success(message, {
+          duration: 4000,
+        });
+      } else {
+        toast.error('Assistant ' + assistant.name + ' could not be updated.', {
+          duration: 4000,
+        });
+      }
+    }
+  };
 
   const toggleVisibility = async () => {
     let visibility = !publish;
@@ -28,10 +63,11 @@ export default function Settings() {
       let [status, response] = await updateVisibilityStatus(assistant.id);
       if (status === 200) {
         let message =
-          'Assistant ' + assistant.name + ' now available in store.';
+          'Assistant ' + assistant.name + ' now available in marketplace.';
 
         if (!visibility) {
-          message = 'Assistant ' + assistant.name + ' removed from store.';
+          message =
+            'Assistant ' + assistant.name + ' removed from marketplace.';
         }
         setPublish(visibility);
 
@@ -39,7 +75,7 @@ export default function Settings() {
           duration: 4000,
         });
       } else {
-        toast.error('Assistant ' + assistant.name + ' could not be deleted.', {
+        toast.error('Assistant ' + assistant.name + ' could not be updated.', {
           duration: 4000,
         });
       }
@@ -85,17 +121,35 @@ export default function Settings() {
             </Table.Row>
             <Table.Row className='bg-white'>
               <div className='flex max-w-7xl flex-col gap-4'>
-                <h1 className='p-2 pl-5 text-xl font-bold'>Store</h1>
+                <h1 className='p-2 pl-5 text-xl font-bold'>Access Controls</h1>
               </div>
             </Table.Row>
             <Table.Row className='bg-white'>
               <Table.Cell className='flex max-w-7xl flex-row gap-4 p-5 font-medium text-gray-900 dark:text-white'>
                 <div className='p2 flex max-w-md flex-col items-start'>
                   <h2 className='p2 text-lg text-gray-700'>
-                    Public (Available for Everyone)
+                    Requires Authentication
                   </h2>
-                  <h3 className='p2 text-gray-400'>
-                    When enabled this assistant will be available on the store.
+                  <h3 className='p2 text-xs text-gray-400'>
+                    When enabled this assistant will require users to
+                    authenticate.
+                  </h3>
+                </div>
+                <div className='p2 ml-auto flex max-w-md items-center justify-center'>
+                  <ToggleSwitch
+                    checked={authenticationRequired}
+                    onChange={toggleAuthenticationRequirement}
+                  />
+                </div>
+              </Table.Cell>
+              <Table.Cell className='flex max-w-7xl flex-row gap-4 p-5 font-medium text-gray-900 dark:text-white'>
+                <div className='p2 flex max-w-md flex-col items-start'>
+                  <h2 className='p2 text-lg text-gray-700'>
+                    Publish in Marketplace
+                  </h2>
+                  <h3 className='p2 text-xs text-gray-400'>
+                    When enabled this assistant will be visible on the
+                    marketplace.
                   </h3>
                 </div>
                 <div className='p2 ml-auto flex max-w-md items-center justify-center'>
@@ -114,7 +168,7 @@ export default function Settings() {
                   <h2 className='p2 text-lg text-gray-700'>
                     Delete this assistant
                   </h2>
-                  <h3 className='p2 text-gray-400'>
+                  <h3 className='p2 text-xs text-gray-400'>
                     Once you delete this assistant, there is no going back.
                     Please be certain.
                   </h3>

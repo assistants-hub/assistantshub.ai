@@ -53,7 +53,7 @@ export default function ListAssistants() {
           <HiPlus className='mr-2 h-5 w-5' /> Create Assistant
         </Button>
       </div>
-      <div className='bg-grey m-5 mt-10 flex grid flex-auto items-start justify-center'>
+      <div className='bg-grey mb-5 mt-10 mt-5 flex grid flex-auto items-start justify-center'>
         <div
           className='4xl:grid-cols-4 grid
                              grid-cols-1
@@ -67,8 +67,14 @@ export default function ListAssistants() {
             assistants.length &&
             assistants.map((assistant, index) => {
               return (
-                <div className={'flex max-w-xs'} key={index}>
-                  <Card imgSrc={'/images/backgrounds/1.jpg'}>
+                <div
+                  className={'max-w-xs bg-gray-100 tracking-tight'}
+                  key={index}
+                >
+                  <Card
+                    imgSrc={'/images/backgrounds/1.jpg'}
+                    className={'bg-gray-80'}
+                  >
                     <Avatar
                       img={
                         assistant.avatar
@@ -88,7 +94,7 @@ export default function ListAssistants() {
                         {assistant.name}
                       </h5>
                       <span className='text-sm text-gray-500 dark:text-gray-400'>
-                        <div className='flex self-center'>
+                        <div className='flex gap-1 self-center'>
                           <Badge color='gray'>{assistant.modelId}</Badge>
                           <Badge color={assistant.published ? 'green' : 'red'}>
                             {assistant.published ? 'Public' : 'Private'}
@@ -98,9 +104,13 @@ export default function ListAssistants() {
                       <span className='max-h-12 min-h-12 max-w-xs overflow-y-hidden pt-4 text-center text-sm text-xs text-gray-500 dark:text-gray-400'>
                         {assistant.description}
                       </span>
-                      <div className='mt-4 grid items-center justify-center gap-2 xs:grid-cols-1 sm:grid-cols-2 lg:mt-6'>
+                      <div className='mt-4 flex items-center justify-center gap-1'>
                         <Link href={`/link/${assistant.id}`} target='_blank'>
-                          <Button gradientDuoTone='greenToBlue'>
+                          <Button
+                            gradientDuoTone='greenToBlue'
+                            className={'mr-2 w-[150px]'}
+                          >
+                            <HiChatAlt2 className={'h-5 w-5'} />
                             Try Assistant
                           </Button>
                         </Link>
