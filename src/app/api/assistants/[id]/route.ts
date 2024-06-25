@@ -37,6 +37,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
     );
   }
 
+  if (assistant.authenticatedUsersOnly) {
+    // Validate that the user is logged in when this condition is applied
+    const session = await getSession();
+    if (!session?.user) {
+      return Response.json({ message: 'Unauthenticated' }, { status: 401 });
+    }
+  }
+
   // Inject customization properties into the assistant object
   if (assistant.object) {
     // @ts-ignore

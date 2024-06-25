@@ -1,6 +1,5 @@
 'use client';
 
-import ChatPopup from '@/app/assistants/[id]/chat/ChatPopup';
 import { Avatar, Dropdown, Spinner, Button } from 'flowbite-react';
 import { getImageHash } from '@/app/utils/hash';
 import { updateAssistant, useGetAssistant } from '@/app/assistants/[id]/client';
@@ -8,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { Assistant } from '@/app/types/assistant';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import ChatPopupFrame from '@/app/assistants/[id]/chat/ChatPopupFrame';
+import { useRouter } from 'next/navigation';
 
 export interface ChatAgentProps {
   assistant_id: string;
@@ -25,9 +25,15 @@ export default function ChatAgent(props: ChatAgentProps) {
   const [loading, setLoading] = useState(true);
   const [assistant, setAssistant] = useState<Assistant>(assistantResponse);
 
+  const { push } = useRouter();
+
   useEffect(() => {
     if (assistantResponse) {
       setAssistant(assistantResponse);
+      // @ts-ignore
+      if (assistantResponse && assistantResponse.message) {
+        push('/api/auth/login?returnTo=/embed/' + props.assistant_id);
+      }
       setLoading(false);
     }
   }, [assistantLoading]);
@@ -95,12 +101,14 @@ export default function ChatAgent(props: ChatAgentProps) {
                 getAssistantAvatar()
               )}
             </Button>
-          ) : (
+          ) : assistant.id ? (
             <AssistantContext.Provider
               value={{ assistant, setAssistant: changeAssistant }}
             >
               <ChatPopupFrame hide={!showPopup} setHide={hidePopup} />
             </AssistantContext.Provider>
+          ) : (
+            <>Redirecting...</>
           )}
         </div>
       </div>

@@ -1,8 +1,6 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import ChatWindow from '@/app/assistants/[id]/chat/ChatWindow';
-import ChatPage from '@/app/assistants/[id]/chat/ChatPage';
 import ChatPageContextWrapper from '@/app/assistants/[id]/chat/ChatPageContextWrapper';
 
 export interface ChatComponentProps {

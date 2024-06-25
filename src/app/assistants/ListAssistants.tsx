@@ -17,7 +17,9 @@ import {
   HiCog,
   HiColorSwatch,
   HiFolder,
+  HiGlobeAlt,
   HiLink,
+  HiOutlineLockClosed,
   HiPlus,
   HiPuzzle,
 } from 'react-icons/hi';
@@ -90,6 +92,11 @@ export default function ListAssistants() {
                       className={'pb-1'}
                     />
                     <div className='flex flex-col items-center'>
+                      {assistant.authenticatedUsersOnly ? (
+                        <HiOutlineLockClosed />
+                      ) : (
+                        <HiGlobeAlt />
+                      )}
                       <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
                         {assistant.name}
                       </h5>
@@ -97,7 +104,7 @@ export default function ListAssistants() {
                         <div className='flex gap-1 self-center'>
                           <Badge color='gray'>{assistant.modelId}</Badge>
                           <Badge color={assistant.published ? 'green' : 'red'}>
-                            {assistant.published ? 'Public' : 'Private'}
+                            {assistant.published ? 'Listed' : 'Private'}
                           </Badge>
                         </div>
                       </span>
