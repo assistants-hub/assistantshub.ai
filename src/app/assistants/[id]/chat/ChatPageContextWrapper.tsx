@@ -1,5 +1,5 @@
 import { useGetAssistant } from '@/app/assistants/[id]/client';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Assistant } from '@/app/types/assistant';
 import ChatPage from '@/app/assistants/[id]/chat/ChatPage';
 import { Spinner } from 'flowbite-react';

@@ -15,6 +15,7 @@ import {
   DropdownItem,
 } from 'flowbite-react';
 import { HiCog, HiLogout, HiUser } from 'react-icons/hi';
+import UserDropdown from '@/components/user-dropdown';
 
 export const UserProfile = () => {
   // @ts-ignore
@@ -31,30 +32,7 @@ export const UserProfile = () => {
     <>
       <NavbarToggle />
       <NavbarCollapse className='rtl:space-x-reverse'>
-        <div className='order-last flex pb-2 pl-2 pt-2 md:pl-10'>
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <Avatar
-                alt='User settings'
-                img={user?.picture ? user?.picture : undefined}
-                rounded
-              />
-            }
-          >
-            <DropdownHeader>
-              <span className='block text-sm'>{user?.name}</span>
-              <span className='block truncate text-sm font-medium'>
-                {user?.email}
-              </span>
-            </DropdownHeader>
-            <DropdownItem icon={HiCog} href={'/settings'}>
-              Settings
-            </DropdownItem>
-            <SignOut />
-          </Dropdown>
-        </div>
+        <UserDropdown user={user} />
         <NavbarLink href='/'>
           <div className='pt-2 lg:text-lg'>Home</div>
         </NavbarLink>

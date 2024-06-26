@@ -46,14 +46,7 @@ export default function ChatPage() {
       key='1'
       className='flex h-[calc(100vh-5rem)] max-h-full max-w-full flex-col'
     >
-      <div
-        className={'flex space-y-4 pb-2 pt-1 '}
-        style={{
-          backgroundColor: getPrimaryBackgroundColor(assistant),
-        }}
-      >
-        <ChatPageHeader />
-      </div>
+      <ChatPageHeader />
       <div className='flex-grow space-y-4 overflow-auto p-4 py-0 pt-0'>
         <div className='mx-auto flex max-w-2xl flex-col rounded-b rounded-t-none'>
           <div className={'max-w-2xl overflow-y-auto'}>
