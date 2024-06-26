@@ -328,6 +328,26 @@ async function main() {
       } as Prisma.JsonObject,
     },
   });
+
+  const claude_3_5_sonnet_20240620 = await prisma.model.upsert({
+    where: { id: 'claude-3-5-sonnet-20240620' },
+    update: {
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+    create: {
+      id: 'claude-3-5-sonnet-20240620',
+      name: 'Claude 3.5 Sonnet',
+      description:
+        "Claude 3.5 Sonnet is anthropic's most intelligent model with highest level of intelligence and capability",
+      url: 'https://docs.anthropic.com/en/docs/about-claude/models',
+      providerId: 'anthropic',
+      features: {
+        retrieval: false,
+      } as Prisma.JsonObject,
+    },
+  });
 }
 
 main()
