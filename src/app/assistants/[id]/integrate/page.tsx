@@ -9,7 +9,7 @@ import ChatAgentContextWrapper from '@/app/assistants/[id]/chat/ChatAgentContext
 import { Button, Table } from 'flowbite-react';
 import ChatWindowContextWrapper from '@/app/assistants/[id]/chat/ChatWindowContextWrapper';
 import ChatPopupContextWrapper from '@/app/assistants/[id]/chat/ChatPopupContextWrapper';
-import { HiLibrary, HiLink, HiPlus } from 'react-icons/hi';
+import { HiChatAlt2, HiLibrary, HiLink, HiPlus } from 'react-icons/hi';
 import Link from 'next/link';
 
 export default function Customize() {
@@ -37,10 +37,11 @@ export default function Customize() {
                 <div className='bg-white'>
                   <Link href={`/link/${assistant.id}`} target='_blank'>
                     <Button
-                      className='float-right'
-                      gradientDuoTone='purpleToBlue'
+                      gradientDuoTone='greenToBlue'
+                      className={'float-right mr-2 w-[150px]'}
                     >
-                      <HiLink className='mr-2 h-5 w-5' /> Go to Assistant
+                      <HiChatAlt2 className={'h-5 w-5'} />
+                      Try Assistant
                     </Button>
                   </Link>
                 </div>
@@ -109,7 +110,7 @@ export default function Customize() {
                 </div>
               </Table.Cell>
               <Table.Cell className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-                <div className='bg-white'>
+                <div className='max-h-[900px] bg-white'>
                   <ChatPopupContextWrapper />
                 </div>
               </Table.Cell>
