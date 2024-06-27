@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { getImageHash } from '@/app/utils/hash';
 import React, { useContext } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
+import Link from 'next/link';
 
 export default function SideNavigation() {
   const { assistant } = useContext(AssistantContext);
@@ -67,6 +68,16 @@ export default function SideNavigation() {
                   <span className='pt-4 text-xs text-gray-500 dark:text-gray-400'>
                     {assistant.description}
                   </span>
+                  <Link href={`/link/${assistant.id}`} target='_blank'>
+                    <Button
+                      size={'sm'}
+                      gradientDuoTone='greenToBlue'
+                      className={'float-right mt-3 mr-2 w-[150px]'}
+                    >
+                      <HiChatAlt2 className={'h-5 w-5'} />
+                      Try Assistant
+                    </Button>
+                  </Link>
                 </div>
               </Card>
             </Sidebar.ItemGroup>

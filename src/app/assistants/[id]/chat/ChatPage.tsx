@@ -13,6 +13,7 @@ import ChatMessage from '@/app/assistants/[id]/chat/ChatMessage';
 import ChatMessageStreaming from '@/app/assistants/[id]/chat/ChatMessageStreaming';
 import ChatTyping from '@/app/assistants/[id]/chat/ChatTyping';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
+import ChatConversationStarters from '@/app/assistants/[id]/chat/ChatConversationStarters';
 
 export interface ChatPageProps {
   short?: boolean;
@@ -32,6 +33,7 @@ export default function ChatPage(props: ChatPageProps) {
     messages,
     sendMessage,
     createNewThread,
+    sendConversationStarter
   } = useChatContext();
 
   useEffect(() => {
@@ -65,6 +67,9 @@ export default function ChatPage(props: ChatPageProps) {
               {messages.map((message: Message, index) => {
                 return <ChatMessage key={index} message={message} />;
               })}
+              {
+                messages.length === 1 ? <ChatConversationStarters onClick={sendConversationStarter}/> : null
+              }
               {streamText ? (
                 <>
                   <ChatMessageStreaming

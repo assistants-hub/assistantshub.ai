@@ -184,6 +184,26 @@ export const useChatContext = () => {
     setMessageStatus('in_progress' as string);
   };
 
+  const sendConversationStarter = async (prompt:string) => {
+    let message: Message = {
+      created_at: Date.now() / 1000,
+      role: 'user',
+      content: [
+        {
+          type: 'text',
+          text: {
+            value: prompt,
+            annotations: [],
+          },
+        },
+      ],
+    };
+    setCurrentMessage(message);
+    setMessages([...messages, message]);
+    setTypedMessage('');
+    setMessageStatus('in_progress' as string);
+  };
+
   const getAssistantThreadStorageKey = () => {
     return `ai.assistantshub.assistant.${assistant.id}.thread`;
   };
@@ -214,5 +234,6 @@ export const useChatContext = () => {
     setFingerprint,
     sendMessage,
     createNewThread,
+    sendConversationStarter
   };
 };

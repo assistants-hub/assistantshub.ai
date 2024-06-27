@@ -15,6 +15,7 @@ import {
 } from '@/app/utils/assistant';
 import { useChatContext } from '@/app/assistants/[id]/chat/useChatContext';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
+import ChatConversationStarters from '@/app/assistants/[id]/chat/ChatConversationStarters';
 
 export interface ChatPopupProps extends ChatProps {
   hide: boolean;
@@ -38,6 +39,7 @@ export default function ChatPopup(props: ChatPopupProps) {
     setMessages,
     sendMessage,
     createNewThread,
+    sendConversationStarter
   } = useChatContext();
 
   useEffect(() => {
@@ -78,6 +80,9 @@ export default function ChatPopup(props: ChatPopupProps) {
                   {messages.map((message: Message, index) => {
                     return <ChatMessage key={index} message={message} />;
                   })}
+                  {
+                    messages.length === 1 ? <ChatConversationStarters onClick={sendConversationStarter}/> : null
+                  }
                   {streamText ? (
                     <>
                       <ChatMessageStreaming
