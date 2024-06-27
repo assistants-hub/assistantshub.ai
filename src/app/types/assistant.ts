@@ -9,6 +9,7 @@ export interface AssistantTheme {
   secondaryTextColor?: string;
   initialPrompt?: string;
   messageLabel?: string;
+  conversationStarters?: string[];
 }
 
 export interface Assistant {

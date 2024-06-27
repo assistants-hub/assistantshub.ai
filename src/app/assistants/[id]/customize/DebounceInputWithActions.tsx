@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useDebounce } from '@/app/utils/useDebounce';
-import { Spinner, TextInput } from 'flowbite-react';
-import { HiCheck } from 'react-icons/hi';
+import { Button, Spinner, TextInput } from 'flowbite-react';
+import { HiCheck, HiTrash } from 'react-icons/hi';
 
-export interface DebouncedInputProps {
+export interface DebouncedInputWithActionsProps {
   value?: string;
   placeholder?: string;
   onDebounceTextChange?: (text: string) => void;
+  onDebounceTextDelete?: (text: string) => void;
 }
 
-export const DebouncedInput: React.FC<DebouncedInputProps> = (
-  props: DebouncedInputProps
-) => {
+export const DebouncedInputWithActions: React.FC<
+  DebouncedInputWithActionsProps
+> = (props: DebouncedInputWithActionsProps) => {
   const [text, setText] = useState<string>(props.value ? props.value : '');
   const [loading, setLoading] = useState<boolean>(false);
   const debouncedText = useDebounce<string>(text, 300); // 300ms delay
@@ -28,15 +29,15 @@ export const DebouncedInput: React.FC<DebouncedInputProps> = (
   }, [debouncedText]); // Only re-run if debouncedText changes
 
   return (
-    <div className='grid grid-cols-6'>
+    <div className='grid grid-cols-12'>
       <TextInput
         value={text}
         sizing='md'
-        className='col-span-5'
+        className='col-span-10'
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setText(e.target.value)
         }
-        placeholder={props.placeholder ? props.placeholder : 'Type here...'}
+        placeholder={props.placeholder ? props.placeholder : ''}
       />
       <div className='col-span-1 ml-3 mt-2 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'>
         {loading ? (
@@ -45,8 +46,17 @@ export const DebouncedInput: React.FC<DebouncedInputProps> = (
           <HiCheck className='h-5 w-5' />
         )}
       </div>
+      <Button
+        size='sm'
+        color={'gray'}
+        disabled={!prompt}
+        onClick={props.onDebounceTextDelete as any}
+        className={'col-span-1 border-0 pb-1'}
+      >
+        <HiTrash className='h-5 w-5' color={'gray'} />
+      </Button>
     </div>
   );
 };
 
-export default DebouncedInput;
+export default DebouncedInputWithActions;

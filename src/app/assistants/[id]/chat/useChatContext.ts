@@ -31,21 +31,29 @@ export const useChatContext = () => {
 
   useEffect(() => {
     if (reset) {
-      setMessages([
-        {
-          created_at: Date.now() / 1000,
-          role: 'assistant',
-          content: [
-            {
-              type: 'text',
-              text: {
-                value: getInitialPrompt(assistant),
-                annotations: [],
+      let initialPrompt = getInitialPrompt(assistant);
+      let initialMessages:any = [];
+
+      // Hide the initial prompt if there is none set
+      if (initialPrompt && initialPrompt.trim()) {
+        initialMessages = [
+          {
+            created_at: Date.now() / 1000,
+            role: 'assistant',
+            content: [
+              {
+                type: 'text',
+                text: {
+                  value: getInitialPrompt(assistant),
+                  annotations: [],
+                },
               },
-            },
-          ],
-        },
-      ]);
+            ],
+          },
+        ];
+      }
+
+      setMessages(initialMessages);
       setReset(false);
     }
   }, [assistant, reset]);

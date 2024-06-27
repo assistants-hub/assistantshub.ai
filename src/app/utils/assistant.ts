@@ -86,3 +86,11 @@ export function getInputMessageLabel(assistant: Assistant) {
 
   return 'Your message...';
 }
+
+export function getInitialConversationStarter(assistant: Assistant) {
+  if (assistant.theme && assistant.theme.conversationStarters) {
+    return assistant.theme.conversationStarters;
+  }
+
+  return [];
+}
