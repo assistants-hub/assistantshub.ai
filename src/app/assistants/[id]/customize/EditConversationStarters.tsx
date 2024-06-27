@@ -1,23 +1,18 @@
 import { Button, Label, Modal, TextInput } from 'flowbite-react';
 import React, { useContext, useEffect, useState } from 'react';
-import DebouncedInput from '@/app/assistants/[id]/customize/DebounceInput';
 import { getInitialConversationStarter } from '@/app/utils/assistant';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import { ulid } from 'ulidx';
 import { HiCheck, HiPlus, HiTrash } from 'react-icons/hi';
 import DebouncedInputWithActions from '@/app/assistants/[id]/customize/DebounceInputWithActions';
-
-export interface ConversationStarter {
-  id: string;
-  prompt: string;
-}
+import { ConversationStarter } from '@/app/types/assistant';
 
 export const EditConversationStarters: React.FC = () => {
   const { assistant, setAssistant } = useContext(AssistantContext);
 
   const [conversationStarters, setConversationStarters] = useState<
     ConversationStarter[]
-  >([]);
+  >(getInitialConversationStarter(assistant));
   const [saveConversationStarter, setSaveConversationStarter] =
     useState<ConversationStarter | null>(null);
   const [dirtyConversationStarter, setdirtyConversationStarter] =
@@ -28,8 +23,14 @@ export const EditConversationStarters: React.FC = () => {
     useState<ConversationStarter | null>(null);
 
   useEffect(() => {
-    console.log('changed');
-    console.log(conversationStarters);
+    // Save it to the assistant
+    setAssistant({
+      ...assistant,
+      theme: {
+        ...assistant.theme,
+        conversationStarters: conversationStarters,
+      },
+    });
   }, [conversationStarters]);
 
   useEffect(() => {}, [dirtyConversationStarter]);
@@ -38,14 +39,13 @@ export const EditConversationStarters: React.FC = () => {
 
   useEffect(() => {
     if (deleteConversationStarter) {
-      // TODO: Remove through API
       const indexToRemove = conversationStarters.findIndex(
         (key) => key.id === deleteConversationStarter.id
       );
       if (indexToRemove !== -1) {
         conversationStarters.splice(indexToRemove, 1);
       }
-      setConversationStarters(conversationStarters);
+      setConversationStarters([...conversationStarters]);
       setDeleteConversationStarter(null);
     }
   }, [deleteConversationStarter]);
@@ -57,16 +57,19 @@ export const EditConversationStarters: React.FC = () => {
     ]);
   };
 
-  const handleSaveConversationStarter = function () {};
+  const handleSaveConversationStarter = function (id: string, text: string) {
+    conversationStarters.forEach((starter) => {
+      if (starter.id === id) {
+        starter.prompt = text;
+      }
+    });
 
-  const onConversationStarterChange = function (event: any) {
-    conversationStarters.forEach((iterationConversationStarter) => {});
+    setConversationStarters([...conversationStarters]);
   };
 
   const handleDeleteConversationStarter = function (id: string) {
     conversationStarters.forEach((iterationConversationStarter) => {
       if (iterationConversationStarter.id === id) {
-        console.log(iterationConversationStarter);
         setDeleteConversationStarter(iterationConversationStarter);
       }
     });
@@ -83,7 +86,9 @@ export const EditConversationStarters: React.FC = () => {
             <div key={index} className={'overflow-y-auto'}>
               <div className='gap-2 pt-5'>
                 <DebouncedInputWithActions
-                  onDebounceTextChange={onConversationStarterChange as any}
+                  onDebounceTextChange={(text) =>
+                    handleSaveConversationStarter(starter.id, text)
+                  }
                   onDebounceTextDelete={() => {
                     handleDeleteConversationStarter(starter.id);
                   }}

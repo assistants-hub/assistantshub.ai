@@ -2,6 +2,11 @@ export interface Tool {
   type: string;
 }
 
+export interface ConversationStarter {
+  id: string;
+  prompt: string;
+}
+
 export interface AssistantTheme {
   primaryColor?: string;
   secondaryColor?: string;
@@ -9,7 +14,7 @@ export interface AssistantTheme {
   secondaryTextColor?: string;
   initialPrompt?: string;
   messageLabel?: string;
-  conversationStarters?: string[];
+  conversationStarters?: ConversationStarter[];
 }
 
 export interface Assistant {

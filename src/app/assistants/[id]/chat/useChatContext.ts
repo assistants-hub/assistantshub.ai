@@ -32,7 +32,7 @@ export const useChatContext = () => {
   useEffect(() => {
     if (reset) {
       let initialPrompt = getInitialPrompt(assistant);
-      let initialMessages:any = [];
+      let initialMessages: any = [];
 
       // Hide the initial prompt if there is none set
       if (initialPrompt && initialPrompt.trim()) {

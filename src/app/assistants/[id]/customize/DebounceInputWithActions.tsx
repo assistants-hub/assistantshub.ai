@@ -7,7 +7,7 @@ export interface DebouncedInputWithActionsProps {
   value?: string;
   placeholder?: string;
   onDebounceTextChange?: (text: string) => void;
-  onDebounceTextDelete?: (text: string) => void;
+  onDebounceTextDelete?: () => void;
 }
 
 export const DebouncedInputWithActions: React.FC<
