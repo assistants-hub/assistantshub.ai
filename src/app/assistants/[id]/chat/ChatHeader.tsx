@@ -28,7 +28,9 @@ export default function ChatHeader(props: ChatHeaderProps) {
       >
         <div className='grid grid-cols-5'>
           <div className='col-span-4'>
-            <p className='flex justify-start ml-5 max-w-md text-xl leading-relaxed'>{assistant.name}</p>
+            <p className='ml-5 flex max-w-md justify-start text-xl leading-relaxed'>
+              {assistant.name}
+            </p>
           </div>
           <div className='col-span-1'>
             {!props.minimize && props.setMinimize ? (
@@ -54,7 +56,8 @@ export default function ChatHeader(props: ChatHeaderProps) {
         </div>
         <div
           className={
-            'flex justify-start ml-5 text-xs ' + `text-[${getSecondaryTextColor(assistant)}]`
+            'ml-5 flex justify-start text-xs ' +
+            `text-[${getSecondaryTextColor(assistant)}]`
           }
         >
           {assistant.description}

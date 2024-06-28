@@ -39,7 +39,7 @@ export default function ChatPopup(props: ChatPopupProps) {
     setMessages,
     sendMessage,
     createNewThread,
-    sendConversationStarter
+    sendConversationStarter,
   } = useChatContext();
 
   useEffect(() => {
@@ -80,9 +80,11 @@ export default function ChatPopup(props: ChatPopupProps) {
                   {messages.map((message: Message, index) => {
                     return <ChatMessage key={index} message={message} />;
                   })}
-                  {
-                    messages.length === 1 ? <ChatConversationStarters onClick={sendConversationStarter}/> : null
-                  }
+                  {messages.length === 1 ? (
+                    <ChatConversationStarters
+                      onClick={sendConversationStarter}
+                    />
+                  ) : null}
                   {streamText ? (
                     <>
                       <ChatMessageStreaming

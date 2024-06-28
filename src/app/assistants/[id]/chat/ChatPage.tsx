@@ -33,7 +33,7 @@ export default function ChatPage(props: ChatPageProps) {
     messages,
     sendMessage,
     createNewThread,
-    sendConversationStarter
+    sendConversationStarter,
   } = useChatContext();
 
   useEffect(() => {
@@ -67,9 +67,9 @@ export default function ChatPage(props: ChatPageProps) {
               {messages.map((message: Message, index) => {
                 return <ChatMessage key={index} message={message} />;
               })}
-              {
-                messages.length === 1 ? <ChatConversationStarters onClick={sendConversationStarter}/> : null
-              }
+              {messages.length === 1 ? (
+                <ChatConversationStarters onClick={sendConversationStarter} />
+              ) : null}
               {streamText ? (
                 <>
                   <ChatMessageStreaming

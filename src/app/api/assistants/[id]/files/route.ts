@@ -1,5 +1,4 @@
 import { ulid } from 'ulidx';
-import OpenAI from 'openai';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
