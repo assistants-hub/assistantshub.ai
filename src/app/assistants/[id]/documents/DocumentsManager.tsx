@@ -85,7 +85,7 @@ export default function DocumentsManager() {
         />
         <Button
           className='float-right'
-          gradientDuoTone='purpleToBlue'
+          gradientDuoTone='greenToBlue'
           onClick={() =>
             document.getElementById('dropzone-file-hidden')?.click()
           }

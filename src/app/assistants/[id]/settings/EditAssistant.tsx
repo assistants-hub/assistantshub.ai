@@ -235,7 +235,7 @@ export default function EditAssistant(props: EditAssistantProps) {
         </div>*/}
         <div>
           <Button
-            gradientDuoTone='purpleToBlue'
+            gradientDuoTone='greenToBlue'
             outline={true}
             onClick={handleEditAssistant}
             disabled={!name}

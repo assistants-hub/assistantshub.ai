@@ -295,7 +295,7 @@ export default function CreateAssistantModal(props: CreateAssistantProps) {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          gradientDuoTone='purpleToBlue'
+          gradientDuoTone='greenToBlue'
           onClick={handleCreateAssistant}
           disabled={!name}
           isProcessing={creatingAssistant}

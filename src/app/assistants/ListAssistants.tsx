@@ -49,7 +49,7 @@ export default function ListAssistants() {
       <div>
         <Button
           className='float-right'
-          gradientDuoTone='purpleToBlue'
+          gradientDuoTone='greenToBlue'
           onClick={() => setOpenCreateAssistantModal(true)}
         >
           <HiPlus className='mr-2 h-5 w-5' /> Create Assistant

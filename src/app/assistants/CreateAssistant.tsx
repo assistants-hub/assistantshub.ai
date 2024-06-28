@@ -28,7 +28,7 @@ export default function CreateAssistant() {
         </p>
         <p className='flex self-center'>
           <Button
-            gradientDuoTone='purpleToBlue'
+            gradientDuoTone='greenToBlue'
             onClick={() => setOpenCreateAssistantModal(true)}
           >
             Create Assistant

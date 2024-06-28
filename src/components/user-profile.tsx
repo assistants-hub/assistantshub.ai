@@ -34,22 +34,22 @@ export const UserProfile = () => {
       <NavbarCollapse className='rtl:space-x-reverse'>
         <UserDropdown user={user} />
         <NavbarLink href='/'>
-          <div className='pt-2 lg:text-lg'>Home</div>
+          <div className='pt-3 lg:text-lg'>Home</div>
         </NavbarLink>
         <NavbarLink href='/assistants' className='justify-end'>
-          <div className='pt-2 lg:text-lg'>Assistants</div>
+          <div className='pt-3 lg:text-lg'>My Assistants</div>
         </NavbarLink>
         <NavbarLink
           href='https://docs.assistantshub.ai/'
           className='justify-end'
         >
-          <div className='pt-2 lg:text-lg'>Docs</div>
+          <div className='pt-3 lg:text-lg'>Docs</div>
         </NavbarLink>
         <NavbarLink
           href='mailto:support@assistantshub.ai'
           className='justify-end'
         >
-          <div className='pt-2 lg:text-lg'>Help</div>
+          <div className='pt-3 lg:text-lg'>Help</div>
         </NavbarLink>
       </NavbarCollapse>
     </>
