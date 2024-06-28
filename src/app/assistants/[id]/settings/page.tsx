@@ -21,7 +21,9 @@ export default function Settings() {
     assistant.published ? assistant.published : false
   );
 
-  const [authenticationRequired, setAuthenticationRequired] = useState(assistant.authenticatedUsersOnly);
+  const [authenticationRequired, setAuthenticationRequired] = useState(
+    assistant.authenticatedUsersOnly !== undefined ? assistant.authenticatedUsersOnly : true
+  );
 
   const { push } = useRouter();
 
