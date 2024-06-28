@@ -16,6 +16,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       select: {
         id: true,
         object: true,
+        avatar: true,
         profile: true,
         modelId: true,
         published: true,
@@ -30,6 +31,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
         assistant.object.modelId = assistant.modelId;
         // @ts-ignore
         assistant.object.published = assistant.published;
+        // @ts-ignore
+        assistant.object.avatar = assistant.avatar;
         // @ts-ignore
         assistant.object.authenticatedUsersOnly =
           assistant.authenticatedUsersOnly;
