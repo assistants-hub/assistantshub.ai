@@ -1,5 +1,10 @@
-import { handleAuth, handleLogin } from '@auth0/nextjs-auth0';
-import { redirect } from 'next/navigation';
+import {
+  getSession,
+  handleAuth,
+  handleLogin,
+  handleProfile,
+} from '@auth0/nextjs-auth0';
+import prisma from '@/app/api/utils/prisma';
 
 export const GET = handleAuth({
   login: handleLogin((req) => {
@@ -17,5 +22,25 @@ export const GET = handleAuth({
     return {
       returnTo: returnUrl,
     };
+  }),
+  // @ts-ignore
+  profile: handleProfile(async (req) => {
+    // @ts-ignore
+    let session = await getSession(req);
+
+    // Create organization if not yet created for this user
+    const organization = await prisma.organization.upsert({
+      where: {
+        owner_ownerType: {
+          owner: session?.user.sub,
+          ownerType: 'personal',
+        },
+      },
+      update: {},
+      create: {
+        owner: session?.user.sub,
+        ownerType: 'personal',
+      },
+    });
   }),
 });

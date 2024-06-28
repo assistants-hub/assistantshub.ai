@@ -72,7 +72,7 @@ export default function SideNavigation() {
                     <Button
                       size={'sm'}
                       gradientDuoTone='greenToBlue'
-                      className={'float-right mt-3 mr-2 w-[150px]'}
+                      className={'float-right mr-2 mt-3 w-[150px]'}
                     >
                       <HiChatAlt2 className={'h-5 w-5'} />
                       Try Assistant

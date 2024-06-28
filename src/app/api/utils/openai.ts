@@ -19,7 +19,7 @@ export function getOpenAI(assistant: any): OpenAI {
   });
 }
 
-export async function getOpenAIWithKey(modelProviderKeyId:string) {
+export async function getOpenAIWithKey(modelProviderKeyId: string) {
   let openAIAPIKey = process.env.OPENAI_API_KEY
     ? process.env.OPENAI_API_KEY
     : null;
@@ -36,9 +36,9 @@ export async function getOpenAIWithKey(modelProviderKeyId:string) {
       },
     });
 
-    if(modelProviderKey && modelProviderKey.key) {
+    if (modelProviderKey && modelProviderKey.key) {
       // @ts-ignore
-      openAIAPIKey = modelProviderKey.key['apiKey']
+      openAIAPIKey = modelProviderKey.key['apiKey'];
     }
   }
 

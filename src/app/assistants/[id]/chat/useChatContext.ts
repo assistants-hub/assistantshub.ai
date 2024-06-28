@@ -184,7 +184,7 @@ export const useChatContext = () => {
     setMessageStatus('in_progress' as string);
   };
 
-  const sendConversationStarter = async (prompt:string) => {
+  const sendConversationStarter = async (prompt: string) => {
     let message: Message = {
       created_at: Date.now() / 1000,
       role: 'user',
@@ -234,6 +234,6 @@ export const useChatContext = () => {
     setFingerprint,
     sendMessage,
     createNewThread,
-    sendConversationStarter
+    sendConversationStarter,
   };
 };
