@@ -1,39 +1,45 @@
 'use client';
 
-import { Card, Dropdown } from 'flowbite-react';
+import { Card, Dropdown, Navbar, NavbarBrand } from 'flowbite-react';
 import Image from 'next/image';
 import { useContext } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import { getImageHash } from '@/app/utils/hash';
+import { UserProfile } from '@/components/user-profile';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import UserDropdown from '@/components/user-dropdown';
+import { getPrimaryBackgroundColor } from '@/app/utils/assistant';
 
 export function ChatPageHeader() {
   const { assistant } = useContext(AssistantContext);
 
+  const { user, error, isLoading } = useUser();
+
   return (
-    <div className='mx-auto my-auto flex flex-auto p-2 md:max-w-2xl'>
-      <div className='grid grid-cols-12 items-center'>
-        <div className='col-span-2'>
-          <Image
-            className='rounded-full'
-            src={
-              assistant.avatar
-                ? assistant.avatar
-                : '/images/people/avatar/' + getImageHash(assistant.id) + '.jpg'
-            }
-            width={64}
-            height={64}
-            alt='Assistant'
-          />
-        </div>
-        <div className='col-span-10 items-center justify-center pl-2'>
-          <p className='max-w-md text-xl font-semibold leading-relaxed'>
-            {assistant.name}
-          </p>
-          <p className='max-w-md text-sm leading-relaxed'>
-            {assistant.description}
-          </p>
-        </div>
-      </div>
-    </div>
+    <Navbar
+      fluid
+      rounded
+      style={{
+        backgroundColor: getPrimaryBackgroundColor(assistant),
+      }}
+    >
+      <Navbar.Brand href='https://flowbite-react.com' className={'gap-2'}>
+        <Image
+          className='rounded-full'
+          src={
+            assistant.avatar
+              ? assistant.avatar
+              : '/images/people/avatar/' + getImageHash(assistant.id) + '.jpg'
+          }
+          width={40}
+          height={40}
+          alt='Assistant'
+        />
+        <span className='self-center whitespace-nowrap text-lg font-semibold dark:text-white'>
+          {assistant.name}
+        </span>
+      </Navbar.Brand>
+      {user ? <UserDropdown user={user} /> : <></>}
+    </Navbar>
   );
 }

@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { Assistant } from '@/app/types/assistant';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import ChatPopupFrame from '@/app/assistants/[id]/chat/ChatPopupFrame';
+import { useRouter } from 'next/navigation';
 
 export interface ChatWindowProps {
   assistant_id: string;
@@ -25,9 +26,15 @@ export default function ChatWindow(props: ChatWindowProps) {
   const [loading, setLoading] = useState(true);
   const [assistant, setAssistant] = useState<Assistant>(assistantResponse);
 
+  const { push } = useRouter();
+
   useEffect(() => {
     if (assistantResponse) {
       setAssistant(assistantResponse);
+      // @ts-ignore
+      if (assistantResponse && assistantResponse.message) {
+        push('/api/auth/login?returnTo=/embed/' + props.assistant_id);
+      }
       setLoading(false);
     }
   }, [assistantLoading]);
@@ -47,7 +54,7 @@ export default function ChatWindow(props: ChatWindowProps) {
               aria-label='Loading assistant..'
               className={'self-center p-10'}
             />
-          ) : (
+          ) : assistant.id ? (
             <AssistantContext.Provider
               value={{ assistant, setAssistant: changeAssistant }}
             >
@@ -57,6 +64,8 @@ export default function ChatWindow(props: ChatWindowProps) {
                 <ChatPopupFrame hide={false} setHide={null} />
               )}
             </AssistantContext.Provider>
+          ) : (
+            <>Redirecting...</>
           )}
         </div>
       </div>

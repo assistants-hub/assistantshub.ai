@@ -86,11 +86,12 @@ The gemini-1.5-pro-latest model is a large-scale language model developed by Goo
 
 All models that support [Anthropic API](https://docs.anthropic.com/en/docs/models-overview) are supported by [Assistants Hub](https://assistantshub.ai).
 
-| Model Name      | Provider  | Streaming <br/>Responses | Documents                | Functions                |
-| --------------- | --------- | ------------------------ | ------------------------ | ------------------------ |
-| Claude 3 Opus   | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
-| Claude 3 Sonnet | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
-| Claude 3 Haiku  | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Model Name        | Provider  | Streaming <br/>Responses | Documents                | Functions                |
+|-------------------| --------- | ------------------------ | ------------------------ | ------------------------ |
+| Claude 3 Opus     | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Claude 3.5 Sonnet | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Claude 3 Sonnet   | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| Claude 3 Haiku    | Anthropic | :white_check_mark:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
 
 ### Gorq Cloud
 

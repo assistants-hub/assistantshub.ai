@@ -294,6 +294,21 @@ export async function updateVisibilityStatus(id: string | undefined) {
   return [response.status, await response.json()];
 }
 
+export async function updateAuthenticationRequirement(id: string | undefined) {
+  if (!id) {
+    return [400, { error: 'Assistant ID is required' }];
+  }
+
+  let response = await fetch('/api/assistants/' + id + '/authentication', {
+    method: 'PUT',
+    headers: {
+      accept: 'application.json',
+    },
+  });
+
+  return [response.status, await response.json()];
+}
+
 export async function uploadFile(assistantId: string, file: File) {
   const formData = new FormData();
   formData.append('file', file);

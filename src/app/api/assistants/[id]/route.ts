@@ -26,6 +26,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       profile: true,
       published: true,
       theme: true,
+      authenticatedUsersOnly: true,
     },
   });
 
@@ -34,6 +35,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
       { message: 'Assistant does not exist' },
       { status: 404 }
     );
+  }
+
+  if (assistant.authenticatedUsersOnly) {
+    // Validate that the user is logged in when this condition is applied
+    const session = await getSession();
+    if (!session?.user) {
+      return Response.json({ message: 'Unauthenticated' }, { status: 401 });
+    }
   }
 
   // Inject customization properties into the assistant object
@@ -64,6 +73,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
       : null;
     // @ts-ignore
     assistant.object.published = assistant.published;
+    // @ts-ignore
+    assistant.object.authenticatedUsersOnly = assistant.authenticatedUsersOnly;
   }
 
   return Response.json(assistant.object, { status: 200 });

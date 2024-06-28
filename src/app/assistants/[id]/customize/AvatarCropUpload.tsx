@@ -139,7 +139,7 @@ const AvatarCropUpload = () => {
   };
 
   return (
-    <div className='space-y-6 p-6'>
+    <div className='flex'>
       <div id='fileUpload' className='grid max-w-2xl grid-cols-3'>
         <div className={'col-span-2'}>
           <div className='mb-2 block'>

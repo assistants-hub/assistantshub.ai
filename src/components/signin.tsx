@@ -11,8 +11,7 @@ export const SignIn = function (
 
   return (
     <Button
-      outline
-      gradientDuoTone='purpleToBlue'
+      gradientDuoTone='greenToBlue'
       size='sm'
       onClick={() => {
         router.push('/api/auth/login');

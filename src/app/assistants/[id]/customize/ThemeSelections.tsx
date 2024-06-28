@@ -12,7 +12,7 @@ const ThemeSelections = () => {
   const { assistant, setAssistant } = useContext(AssistantContext);
 
   return (
-    <div className='p-6'>
+    <div className='p-1'>
       <div id='colors' className='grid max-w-2xl grid-cols-2'>
         <ColorPicker
           label='Primary Color'

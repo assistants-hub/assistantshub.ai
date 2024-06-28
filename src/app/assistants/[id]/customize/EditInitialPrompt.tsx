@@ -19,7 +19,7 @@ export const EditInitialPrompt: React.FC = () => {
   }
 
   return (
-    <div className='space-y-6 p-6'>
+    <div className='space-y-6'>
       <div id='fileUpload' className='grid max-w-4xl'>
         <div>
           <div className='mb-2 block'>

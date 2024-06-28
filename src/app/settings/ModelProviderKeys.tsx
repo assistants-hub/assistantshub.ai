@@ -178,7 +178,7 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
                 {!key.disabled ? (
                   <Button
                     size='md'
-                    gradientDuoTone='purpleToBlue'
+                    gradientDuoTone='greenToBlue'
                     disabled={!key.dirty}
                     isProcessing={key.saving}
                     onClick={(e) => {

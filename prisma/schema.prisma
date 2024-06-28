@@ -56,26 +56,27 @@ model ModelProviderKey {
 }
 
 model Assistant {
-  id                    String            @id
-  modelId               String?
-  model                 Model?            @relation(fields: [modelId], references: [id])
-  modelProviderId       String?
-  modelProvider         ModelProvider?    @relation(fields: [modelProviderId], references: [id])
-  object                Json?
-  organizationOwner     String?
-  organizationOwnerType String?
-  organization          Organization?     @relation(fields: [organizationOwner, organizationOwnerType], references: [owner, ownerType])
-  avatar                String?
-  profile               String?
-  theme                 Json?
-  created_at            DateTime          @default(now())
-  updated_at            DateTime          @updatedAt
-  Thread                Thread[]
-  Folder                Folder[]
-  File                  File[]
-  published             Boolean?          @default(false)
-  modelProviderKeyId    String?
-  modelProviderKey      ModelProviderKey? @relation(fields: [modelProviderKeyId], references: [id])
+  id                     String            @id
+  modelId                String?
+  model                  Model?            @relation(fields: [modelId], references: [id])
+  modelProviderId        String?
+  modelProvider          ModelProvider?    @relation(fields: [modelProviderId], references: [id])
+  object                 Json?
+  organizationOwner      String?
+  organizationOwnerType  String?
+  organization           Organization?     @relation(fields: [organizationOwner, organizationOwnerType], references: [owner, ownerType])
+  avatar                 String?
+  profile                String?
+  theme                  Json?
+  created_at             DateTime          @default(now())
+  updated_at             DateTime          @updatedAt
+  Thread                 Thread[]
+  Folder                 Folder[]
+  File                   File[]
+  published              Boolean?          @default(false)
+  authenticatedUsersOnly Boolean?          @default(true)
+  modelProviderKeyId     String?
+  modelProviderKey       ModelProviderKey? @relation(fields: [modelProviderKeyId], references: [id])
 }
 
 model Thread {

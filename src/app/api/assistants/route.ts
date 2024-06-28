@@ -19,6 +19,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         profile: true,
         modelId: true,
         published: true,
+        authenticatedUsersOnly: true,
       },
     });
     let assistantsCollection = assistants.map((assistant) => {
@@ -29,6 +30,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
         assistant.object.modelId = assistant.modelId;
         // @ts-ignore
         assistant.object.published = assistant.published;
+        // @ts-ignore
+        assistant.object.authenticatedUsersOnly =
+          assistant.authenticatedUsersOnly;
       }
       return assistant.object;
     });
