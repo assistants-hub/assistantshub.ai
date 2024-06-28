@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ulid } from 'ulidx';
 import prisma from '@/app/api/utils/prisma';
 import { getSession } from '@auth0/nextjs-auth0';
-import { getOpenAIForOrganization } from '@/app/api/utils/openai';
+import { getOpenAIWithKey } from '@/app/api/utils/openai';
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const session = await getSession();
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       try {
         let createResponse = null;
         if (modelProviderId === 'openai') {
-          const openai = getOpenAIForOrganization(organization);
+          const openai = await getOpenAIWithKey(modelProviderKeyId);
 
           body.model = modelId;
 
