@@ -12,7 +12,7 @@ export default function Settings() {
       <p className={'pb-4 text-sm text-gray-400'}>
         Global settings and configurations for use with Assistants
       </p>
-      <Tabs aria-label='Tabs with underline' style='underline'>
+      <Tabs aria-label='Tabs with underline'>
         <Tabs.Item active title='Model Providers' icon={HiChip}>
           <ModelProviders />
         </Tabs.Item>

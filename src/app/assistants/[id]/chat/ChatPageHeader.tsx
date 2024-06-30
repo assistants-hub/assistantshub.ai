@@ -5,9 +5,8 @@ import Image from 'next/image';
 import { useContext } from 'react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import { getImageHash } from '@/app/utils/hash';
-import { UserProfile } from '@/components/user-profile';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import UserDropdown from '@/components/user-dropdown';
+import UserDropdown from '@/components/UserDropdown';
 import { getPrimaryBackgroundColor } from '@/app/utils/assistant';
 
 export function ChatPageHeader() {

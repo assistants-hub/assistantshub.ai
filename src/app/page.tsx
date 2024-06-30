@@ -1,7 +1,7 @@
 import React from 'react';
-import { Header } from '@/components/header';
-import { PageFooter } from '@/components/footer';
-import Home from '@/components/home';
+import { Header } from '@/components/Header';
+import { PageFooter } from '@/components/Footer';
+import Home from '@/components/Home';
 import 'highlight.js/styles/github.css';
 
 export default function Landing() {

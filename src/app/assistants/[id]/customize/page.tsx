@@ -6,12 +6,10 @@ import { Button, Table } from 'flowbite-react';
 import AvatarCropUpload from '@/app/assistants/[id]/customize/AvatarCropUpload';
 import ProfileCropUpload from '@/app/assistants/[id]/customize/ProfileCropUpload';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
-import ChatPopup from '@/app/assistants/[id]/chat/ChatPopup';
 import ThemeSelections from '@/app/assistants/[id]/customize/ThemeSelections';
 import ResetToDefaultsAlert from '@/app/assistants/[id]/customize/ResetToDefaultsAlert';
 import { EditInitialPrompt } from '@/app/assistants/[id]/customize/EditInitialPrompt';
 import { EditMessageLabel } from '@/app/assistants/[id]/customize/EditMessageLabel';
-import ChatPopupFrame from '@/app/assistants/[id]/chat/ChatPopupFrame';
 import ChatPage from '@/app/assistants/[id]/chat/ChatPage';
 import { EditConversationStarters } from '@/app/assistants/[id]/customize/EditConversationStarters';
 

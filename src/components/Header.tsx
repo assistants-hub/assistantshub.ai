@@ -1,10 +1,10 @@
 import { Badge, Navbar, NavbarBrand, NavbarToggle } from 'flowbite-react';
 import Image from 'next/image';
-import { UserProfile } from '@/components/user-profile';
+import { UserProfile } from '@/components/UserProfile';
 
 export function Header() {
   return (
-    <Navbar fluid rounded>
+    <Navbar fluid rounded className={'border-b border-gray-200'}>
       <NavbarBrand href='https://www.assistantshub.ai'>
         <Image
           src='/logo.png'

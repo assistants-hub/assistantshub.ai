@@ -181,7 +181,7 @@ export default function ModelProviderKeys(props: ModelProviderKeysProps) {
                     gradientDuoTone='greenToBlue'
                     disabled={!key.dirty}
                     isProcessing={key.saving}
-                    onClick={(e) => {
+                    onClick={() => {
                       handleSaveKey(key);
                     }}
                   >

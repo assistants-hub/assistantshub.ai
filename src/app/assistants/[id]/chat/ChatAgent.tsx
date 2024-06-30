@@ -8,6 +8,7 @@ import { Assistant } from '@/app/types/assistant';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import ChatPopupFrame from '@/app/assistants/[id]/chat/ChatPopupFrame';
 import { useRouter } from 'next/navigation';
+import Unauthenticated from '@/components/Unauthenticated';
 
 export interface ChatAgentProps {
   assistant_id: string;
@@ -108,7 +109,7 @@ export default function ChatAgent(props: ChatAgentProps) {
               <ChatPopupFrame hide={!showPopup} setHide={hidePopup} />
             </AssistantContext.Provider>
           ) : (
-            <>Redirecting...</>
+            <Unauthenticated />
           )}
         </div>
       </div>
