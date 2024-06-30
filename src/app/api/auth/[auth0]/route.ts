@@ -2,6 +2,7 @@ import {
   getSession,
   handleAuth,
   handleLogin,
+  handleLogout,
   handleProfile,
 } from '@auth0/nextjs-auth0';
 import prisma from '@/app/api/utils/prisma';

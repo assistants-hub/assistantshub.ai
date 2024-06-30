@@ -25,7 +25,7 @@ export default function ChatConversationStarters(
               size={'md'}
               key={conversationStarter.id}
               className={'bg-gray-100 p-2 text-gray-500'}
-              onClick={(e:any) => {
+              onClick={(e: any) => {
                 props.onClick
                   ? props.onClick(conversationStarter.prompt)
                   : undefined;

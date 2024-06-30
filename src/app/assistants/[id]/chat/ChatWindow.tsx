@@ -8,7 +8,7 @@ import { Assistant } from '@/app/types/assistant';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import ChatPopupFrame from '@/app/assistants/[id]/chat/ChatPopupFrame';
 import { useRouter } from 'next/navigation';
-import Unauthenticated from '@/components/unauthenticated';
+import Unauthenticated from '@/components/Unauthenticated';
 
 export interface ChatWindowProps {
   assistant_id: string;

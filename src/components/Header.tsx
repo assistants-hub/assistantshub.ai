@@ -1,6 +1,6 @@
 import { Badge, Navbar, NavbarBrand, NavbarToggle } from 'flowbite-react';
 import Image from 'next/image';
-import { UserProfile } from '@/components/user-profile';
+import { UserProfile } from '@/components/UserProfile';
 
 export function Header() {
   return (

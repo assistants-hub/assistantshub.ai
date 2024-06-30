@@ -1,36 +1,18 @@
 'use client';
 
-import { Avatar, Badge, Button, Card, Sidebar } from 'flowbite-react';
+import { Badge, Sidebar } from 'flowbite-react';
 import {
   HiColorSwatch,
-  HiChatAlt2,
-  HiFolder,
   HiCog,
   HiChartBar,
-  HiPuzzle,
-  HiShoppingBag,
   HiChip,
   HiDatabase,
+  HiShoppingBag,
 } from 'react-icons/hi';
-import { Assistant } from '@/app/types/assistant';
-import Image from 'next/image';
-import { getImageHash } from '@/app/utils/hash';
-import React, { useContext } from 'react';
-import AssistantContext from '@/app/assistants/[id]/AssistantContext';
-import Link from 'next/link';
+import React from 'react';
 import { HiPuzzlePiece } from 'react-icons/hi2';
 
 export default function AdminSideNavigation() {
-  const { assistant } = useContext(AssistantContext);
-
-  const getAssistantComponentUrl = (
-    assistant: Assistant,
-    component: string
-  ) => {
-    if (!assistant) return '';
-    return `/assistants/${assistant.id}/${component}`;
-  };
-
   return (
     <div className='flex flex-auto' aria-label='Sidebar'>
       <Sidebar
@@ -38,9 +20,11 @@ export default function AdminSideNavigation() {
         className='z-40 flex flex-auto items-center justify-center'
       >
         <Sidebar.Items className='w-60 bg-gray-100'>
-          <Sidebar.Item className={'pt-5'}>
-            Administration
-          </Sidebar.Item>
+          <Sidebar.ItemGroup>
+            <Sidebar.Item className={'pt-5 text-xl font-bold'}>
+              Administration
+            </Sidebar.Item>
+          </Sidebar.ItemGroup>
           <Sidebar.ItemGroup>
             <Sidebar.Item href={'/admin/dashboard'} icon={HiChartBar}>
               Dashboard
@@ -51,13 +35,16 @@ export default function AdminSideNavigation() {
             <Sidebar.Item href={'/admin/theme'} icon={HiColorSwatch}>
               Theme
             </Sidebar.Item>
+            <Sidebar.Item href={'/admin/marketplace'} icon={HiShoppingBag}>
+              Marketplace
+            </Sidebar.Item>
             <Sidebar.Item href={'/admin/providers/model'} icon={HiChip}>
               Model Providers
             </Sidebar.Item>
             <Sidebar.Item href={'/admin/providers/data'} icon={HiDatabase}>
               Data Providers
             </Sidebar.Item>
-            <Sidebar.Item href={'/settings'} icon={HiCog}>
+            <Sidebar.Item href={'/admin/settings'} icon={HiCog}>
               Settings
             </Sidebar.Item>
           </Sidebar.ItemGroup>

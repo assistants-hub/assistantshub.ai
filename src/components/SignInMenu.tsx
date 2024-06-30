@@ -4,7 +4,7 @@ import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-export const SignIn = function (
+export const SignInMenu = function (
   props: React.ComponentPropsWithRef<typeof Button>
 ) {
   const router = useRouter();
