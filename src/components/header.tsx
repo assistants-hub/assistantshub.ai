@@ -4,7 +4,7 @@ import { UserProfile } from '@/components/user-profile';
 
 export function Header() {
   return (
-    <Navbar fluid rounded>
+    <Navbar fluid rounded className={'border-b border-gray-200'}>
       <NavbarBrand href='https://www.assistantshub.ai'>
         <Image
           src='/logo.png'

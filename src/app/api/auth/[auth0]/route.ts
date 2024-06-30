@@ -28,19 +28,21 @@ export const GET = handleAuth({
     // @ts-ignore
     let session = await getSession(req);
 
-    // Create organization if not yet created for this user
-    const organization = await prisma.organization.upsert({
-      where: {
-        owner_ownerType: {
+    if (session?.user?.sub) {
+      // Create organization if not yet created for this user
+      const organization = await prisma.organization.upsert({
+        where: {
+          owner_ownerType: {
+            owner: session?.user.sub,
+            ownerType: 'personal',
+          },
+        },
+        update: {},
+        create: {
           owner: session?.user.sub,
           ownerType: 'personal',
         },
-      },
-      update: {},
-      create: {
-        owner: session?.user.sub,
-        ownerType: 'personal',
-      },
-    });
+      });
+    }
   }),
 });

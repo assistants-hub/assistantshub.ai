@@ -5,6 +5,7 @@ import ChatPage from '@/app/assistants/[id]/chat/ChatPage';
 import { Spinner } from 'flowbite-react';
 import AssistantContext from '@/app/assistants/[id]/AssistantContext';
 import { useRouter } from 'next/navigation';
+import Unauthenticated from '@/components/unauthenticated';
 
 export default function ChatPageContextWrapper(props: { assistantId: string }) {
   let { assistantLoading, assistantResponse, assistantEmpty, reload } =
@@ -42,6 +43,6 @@ export default function ChatPageContextWrapper(props: { assistantId: string }) {
       <ChatPage />
     </AssistantContext.Provider>
   ) : (
-    <>Redirecting...</>
+    <Unauthenticated />
   );
 }

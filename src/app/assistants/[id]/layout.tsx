@@ -70,11 +70,10 @@ export default function AssistantsLayout({
             value={{ assistant, setAssistant: changeAssistant }}
           >
             <Button
-              outline
               pill
               color={'light'}
               onClick={handleToggleSideBar}
-              className='m-2 sm:hidden'
+              className='m-2 border-0 bg-gray-50 sm:hidden'
             >
               <HiMenuAlt2 className='h-5 w-5' />
             </Button>
