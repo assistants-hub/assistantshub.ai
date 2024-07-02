@@ -10,15 +10,11 @@ export default function Dashboard() {
         Analytics on your Assistants Hub instance
       </p>
       <div className={'pt-4'}>
-        <div className={'pb-4 text-xl text-gray-400'}>
-          Assistant Metrics
-        </div>
+        <div className={'pb-4 text-xl text-gray-400'}>Assistant Metrics</div>
         <AssistantMetrics />
       </div>
       <div className={'pt-4'}>
-        <div className={'pb-4 text-xl text-gray-400'}>
-          User Metrics
-        </div>
+        <div className={'pb-4 text-xl text-gray-400'}>User Metrics</div>
         <UserMetrics />
       </div>
     </div>

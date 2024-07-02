@@ -15,7 +15,7 @@ export interface UserDropdownProps {
 
 export default function UserDropdown(props: UserDropdownProps) {
   return (
-    <div className='order-last flex pb-2 pl-2 pt-2 md:pl-10'>
+    <div className='order-last flex items-center justify-center pb-2 pl-2 pt-2 md:pl-10'>
       <Dropdown
         arrowIcon={false}
         inline
